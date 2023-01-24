@@ -116,7 +116,7 @@ return {
 			end
 		end
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 240000 / bpm) < 100 then
+		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
 
 			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
@@ -125,15 +125,15 @@ return {
 		girlfriend:update(dt)
 		boyfriend:update(dt)
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 120000 / bpm) < 100 then
+		boyfriend:beat()
+
+		if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
 			spriteTimers[1] = math.max(spriteTimers[1], spriteTimers[2]) -- Gross hack, but whatever
 
 			if spriteTimers[1] == 0 then
 				girlfriend:animate("idle", false)
 			end
-			if spriteTimers[3] == 0 then
-				weeks:safeAnimate(boyfriend, "idle", false, 3)
-			end
+
 
 			girlfriend:setAnimSpeed(14.4 / (60 / bpm))
 		end

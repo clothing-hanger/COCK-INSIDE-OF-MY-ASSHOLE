@@ -98,7 +98,7 @@ return {
 	update = function(self, dt)
 		weeks:update(dt)
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 240000 / bpm) < 100 then
+		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
 			winColor = winColor + 1
 
 			if winColor > 5 then

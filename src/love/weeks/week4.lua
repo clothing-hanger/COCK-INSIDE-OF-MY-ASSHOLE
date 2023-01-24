@@ -160,7 +160,7 @@ return {
 		limoDancer:update(dt)
 		limo:update(dt)
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 120000 / bpm) < 100 then
+		if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
 			limoDancer:animate("anim", false)
 
 			limoDancer:setAnimSpeed(14.4 / (60 / bpm))

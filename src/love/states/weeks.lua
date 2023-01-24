@@ -573,12 +573,11 @@ return {
 			end
 		end
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 240000 / bpm) < 100 then
+		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
 
 			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
 		end
-
 		--[[
 		if beatHandler.onBeat() then 
 			print("beat")
@@ -592,7 +591,7 @@ return {
 		enemy:update(dt)
 		boyfriend:update(dt)
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 120000 / bpm) < 100 then
+		if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
 			if spriteTimers[1] == 0 then
 				self:safeAnimate(girlfriend, "idle", true, 1)
 				girlfriend:setAnimSpeed(14.4 / (60 / bpm))
@@ -804,7 +803,7 @@ return {
 		enemyIcon.x = 425 - health * 10
 		boyfriendIcon.x = 585 - health * 10
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 60000 / bpm) < 100 then
+		if beatHandler.onBeat() then
 			if enemyIconTimer then Timer.cancel(enemyIconTimer) end
 			if boyfriendIconTimer then Timer.cancel(boyfriendIconTimer) end
 

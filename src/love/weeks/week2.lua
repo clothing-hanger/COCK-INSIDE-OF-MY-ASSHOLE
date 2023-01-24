@@ -101,7 +101,7 @@ return {
 			weeks:safeAnimate(boyfriend, "shaking", true, 3)
 		end
 
-		if song ~= 3 and musicThres ~= oldMusicThres and math.fmod(absMusicTime, 60000 / bpm) < 100 then
+		if beatHandler.onBeat() then
 			if enemy:getAnimName() == "idle" then
 				enemy:setAnimSpeed(14.4 / (120 / bpm))
 			end

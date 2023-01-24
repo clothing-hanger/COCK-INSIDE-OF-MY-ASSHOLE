@@ -223,7 +223,7 @@ return {
 				anim.offsetX = anims[animName].offsetX
 				anim.offsetY = anims[animName].offsetY
 
-				if anim.name == "hey" then 
+				if not (util.startsWith(animName, "sing") or self:getAnimName() == "idle") then
 					self.heyTimer = 0.6
 					self.specialAnim = true
 				else

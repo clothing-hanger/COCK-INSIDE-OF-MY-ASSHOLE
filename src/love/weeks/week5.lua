@@ -215,7 +215,7 @@ return {
 				bottomBop:update(dt)
 				santa:update(dt)
 
-				if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 60000 / bpm) < 100 then
+				if beatHandler.onBeat() then
 					topBop:animate("anim", false)
 					bottomBop:animate("anim", false)
 					santa:animate("anim", false)
