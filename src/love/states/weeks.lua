@@ -1015,6 +1015,7 @@ return {
 
 			boyfriendIcon:draw()
 			enemyIcon:draw()
+			
 			if (additionalAccuracy / (noteCounter + misses)) >= 100 and noteCounter + misses <= 0 then 
 				convertedAcc = "0%"
 			elseif (additionalAccuracy / (noteCounter + misses)) >= 100 and not (noteCounter + misses <= 0) then
