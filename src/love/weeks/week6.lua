@@ -29,7 +29,8 @@ return {
 	enter = function(self, from, songNum, songAppend)
 		love.graphics.setDefaultFilter("nearest")
 
-		font = love.graphics.newFont("fonts/pixel_small.fnt")
+		camera.sizeX, camera.sizeY = 0.85, 0.85
+		camera.scaleX, camera.scaleY = 0.85, 0.85
 
 		weeks:enter("pixel")
 
@@ -55,8 +56,8 @@ return {
 
 		fakeBoyfriend = love.filesystem.load("sprites/pixel/boyfriend-dead.lua")()
 
-		boyfriend.x, boyfriend.y = 50, 30
-		fakeBoyfriend.x, fakeBoyfriend.y = 50, 30
+		boyfriend.x, boyfriend.y = 300, 190
+		fakeBoyfriend.x, fakeBoyfriend.y = 300, 190
 
 		boyfriendIcon:animate("boyfriend (pixel)", false)
 		enemyIcon:animate("senpai", false)
@@ -90,7 +91,7 @@ return {
 			inst = love.audio.newSource("songs/week6/senpai/Inst.ogg", "stream")
 			voices = love.audio.newSource("songs/week6/senpai/Voices.ogg", "stream")
 		end
-		enemy.x, enemy.y = -50, 0
+		enemy.x, enemy.y = -340, -20
 
 		self:initUI()
 

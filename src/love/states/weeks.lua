@@ -858,9 +858,9 @@ return {
 						numbers[k]:draw()
 					end
 				else
-					rating:udraw(6.85, 6.85)
+					rating:udraw(6, 6)
 					for k = 1, 3 do
-						numbers[k]:udraw(6.85, 6.85)
+						numbers[k]:udraw(6, 6)
 					end
 				end
 				graphics.setColor(1, 1, 1)
