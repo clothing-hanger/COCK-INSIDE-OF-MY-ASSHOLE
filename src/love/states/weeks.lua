@@ -141,6 +141,14 @@ return {
 	end,
 
 	load = function(self)
+		botplayY = 0
+		botplayAlpha = {1}
+		function boyPlayAlphaChange()
+			Timer.tween(1.25, botplayAlpha, {0}, "in-out-cubic", function()
+				Timer.tween(1.25, botplayAlpha, {1}, "in-out-cubic", boyPlayAlphaChange)
+			end)
+		end
+		boyPlayAlphaChange()
 		for i = 1, 4 do
 			notMissed[i] = true
 		end
@@ -252,7 +260,11 @@ return {
 		end
 		beatHandler.setBPM(bpm)
 
-		speed = chart["speed"] or 1
+		if settings.customScrollSpeed == 1 then
+			speed = chart["speed"] or 1
+		else
+			speed = settings.customScrollSpeed
+		end
 
 		for i = 1, #chart["notes"] do
 			for j = 1, #chart["notes"][i]["sectionNotes"] do
@@ -644,6 +656,11 @@ return {
 			if not enemyArrow:isAnimated() then
 				enemyArrow:animate("off", false)
 			end
+			if settings.botPlay then
+				if not boyfriendArrow:isAnimated() then
+					boyfriendArrow:animate("off", false)
+				end
+			end
 
 			if #enemyNote > 0 then
 				if (enemyNote[1].y - musicPos <= -400) then
@@ -693,7 +710,60 @@ return {
 				end
 			end
 
+			if settings.botPlay then 
+				if #boyfriendNote > 0 then
+					if (boyfriendNote[1].y - musicPos <= -400) then
+						voices:setVolume(1)
+
+						boyfriendArrow:animate("confirm", false)
+
+						if boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end" then
+							if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 2) end
+						else
+							self:safeAnimate(boyfriend, curAnim, false, 2)
+						end
+
+						boyfriend.lastHit = musicTime
+
+						if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
+							additionalAccuracy = additionalAccuracy + 100.0
+							noteCounter = noteCounter + 1
+							combo = combo + 1
+
+							table.insert(judgements, {ratingAnim, 1, girlfriend.y - 50})
+							numbers[1]:animate(tostring(math.floor(combo / 100 % 10)), false)
+							numbers[2]:animate(tostring(math.floor(combo / 10 % 10)), false)
+							numbers[3]:animate(tostring(math.floor(combo % 10)), false)
+
+							for i = 1, 5 do
+								if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
+							end
+
+							rating.y = girlfriend.y - 50
+							for i = 1, 3 do
+								numbers[i].y = girlfriend.y + 50
+							end
+
+							Timer.tween(2, judgements[#judgements], {[2] = 0}, "linear")
+							Timer.tween(2, judgements[#judgements], {[3] = girlfriend.y - 100}, "out-elastic")
+
+							ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+							health = health + 0.095
+							score = score + 350
+						else
+							health = health + 0.0125
+						end
+
+						table.remove(boyfriendNote, 1)
+					end
+				end
+			end
+
 			if input:pressed(curInput) then
+				-- if settings.botPlay is true, break our the if statement
+				if settings.botPlay then break end
 				local success = false
 
 				if settings.ghostTapping then
@@ -882,6 +952,7 @@ return {
 	end,
 
 	drawUI = function(self)
+		self:drawHealthbar()
 		love.graphics.push()
 			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
 			if not settings.downscroll then
@@ -999,8 +1070,6 @@ return {
 			end
 			graphics.setColor(1, 1, 1)
 		love.graphics.pop()
-
-		self:drawHealthbar()
 	end,
 
 	healthbarText = function(self, text, colourInline, colourOutline)
@@ -1025,6 +1094,15 @@ return {
 	drawHealthbar = function(self, visibility)
 		local visibility = visibility or 1
 		love.graphics.push()
+			love.graphics.push()
+				graphics.setColor(0,0,0,settings.scrollUnderlayTrans)
+				if settings.middleScroll and not settings.multiplayer then
+					love.graphics.rectangle("fill", 400, -100, 90 + 170 * 2.35, 1000)
+				else
+					love.graphics.rectangle("fill", 755, -100, 90 + 170 * 2.35, 1000)
+				end
+			graphics.setColor(1,1,1,1)
+			love.graphics.pop()
 			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
 			love.graphics.scale(0.7, 0.7)
 			love.graphics.scale(uiScale.x, uiScale.y)
@@ -1055,6 +1133,10 @@ return {
 				convertedAcc = math.floor(additionalAccuracy / (noteCounter + misses)) .. "%"
 			end
 			self:healthbarText("Score: " .. score .. " | Misses: " .. misses .. " | Accuracy: " .. convertedAcc)
+			if settings.botPlay then
+				botplayY = botplayY + math.sin(love.timer.getTime()) * 0.15
+				uitext("BOTPLAY", -85, botplayY, 0, 2, 2, 0, 0, 0, 0, botplayAlpha[1])
+			end
 		love.graphics.pop()
 	end,
 

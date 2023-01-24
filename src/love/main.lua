@@ -288,6 +288,9 @@ function love.load()
 		love.filesystem.write("settings", serialized)
 	end
 
+	volumeWidth = {width = 160}
+	volFade = 0
+
 	-- Load settings
 	--settings = require "settings"
 	input = require "input"
@@ -467,7 +470,25 @@ function love.keypressed(key)
 		love.graphics.captureScreenshot("screenshots/" .. os.time() .. ".png")
 	elseif key == "7" then
 		Gamestate.switch(debugMenu)
-	else
+	elseif key == "0" then
+		volFade = 1
+		if fixVol == 0 then
+			love.audio.setVolume(lastAudioVolume)
+		else
+			lastAudioVolume = love.audio.getVolume()
+			love.audio.setVolume(0)
+		end
+	elseif key == "-" then
+		volFade = 1
+		if fixVol > 0 then
+			love.audio.setVolume(love.audio.getVolume() - 0.1)
+		end
+	elseif key == "=" then
+		volFade = 1
+		if fixVol <= 0.9 then
+			love.audio.setVolume(love.audio.getVolume() + 0.1)
+		end
+    else
 		Gamestate.keypressed(key)
 	end
 end
@@ -478,6 +499,10 @@ end
 
 function love.update(dt)
 	dt = math.min(dt, 1 / 30)
+
+	if volFade > 0 then
+		volFade = volFade - 0.4 * dt
+	end
 
 	input:update()
 
@@ -498,28 +523,38 @@ end
 
 function love.draw()
 	love.graphics.setFont(font)
-	if status.getNoResize() then
+	graphics.screenBase(lovesize.getWidth(), lovesize.getHeight())
+
+	lovesize.begin()
 		graphics.setColor(1, 1, 1) -- Fade effect on
 		Gamestate.draw()
 		love.graphics.setColor(1, 1, 1) -- Fade effect off
 		love.graphics.setFont(font)
-
 		if status.getLoading() then
-			love.graphics.print("Loading...", graphics.getWidth() - 175, graphics.getHeight() - 50)
+			love.graphics.print("Loading...", lovesize.getWidth() - 175, lovesize.getHeight() - 50)
 		end
-	else
-		graphics.screenBase(lovesize.getWidth(), lovesize.getHeight())
-		lovesize.begin()
-			graphics.setColor(1, 1, 1) -- Fade effect on
-			Gamestate.draw()
-			love.graphics.setColor(1, 1, 1) -- Fade effect off
-			love.graphics.setFont(font)
+		love.graphics.setColor(1, 1, 1, volFade)
+		fixVol = tonumber(string.format(
+			"%.1f  ",
+			(love.audio.getVolume())
+		))
+		love.graphics.setColor(0.5, 0.5, 0.5, volFade - 0.3)
 
-			if status.getLoading() then
-				love.graphics.print("Loading...", lovesize.getWidth() - 175, lovesize.getHeight() - 50)
-			end
-		lovesize.finish()
-	end
+		love.graphics.rectangle("fill", 1110, 0, 170, 50)
+
+		love.graphics.setColor(1, 1, 1, volFade)
+
+		if volTween then Timer.cancel(volTween) end
+		volTween = Timer.tween(
+			0.2, 
+			volumeWidth, 
+			{width = fixVol * 160}, 
+			"out-quad"
+		)
+		love.graphics.rectangle("fill", 1113, 10, volumeWidth.width, 30)
+		graphics.setColor(1, 1, 1, 1)
+	lovesize.finish()
+
 	graphics.screenBase(love.graphics.getWidth(), love.graphics.getHeight())
 
 	-- Debug output

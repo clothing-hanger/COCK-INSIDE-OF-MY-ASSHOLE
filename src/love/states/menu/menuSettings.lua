@@ -181,7 +181,7 @@ return {
                 if settingsMenuState == 2 then
                     if settingSelect == 6 then
                         settings.customScrollSpeed = settings.customScrollSpeed + 0.05
-                    elseif settingSelect == 8 then
+                    elseif settingSelect == 7 then
                         if settings.scrollUnderlayTrans < 1 then
                             settings.scrollUnderlayTrans = settings.scrollUnderlayTrans + 0.05
                         else
@@ -197,7 +197,7 @@ return {
                         else
                             settings.customScrollSpeed = 0.05
                         end
-                    elseif settingSelect == 8 then
+                    elseif settingSelect == 7 then
                         if settings.scrollUnderlayTrans > 0 then
                             settings.scrollUnderlayTrans = settings.scrollUnderlayTrans - 0.05
                         else
