@@ -68,12 +68,17 @@ return graphics.newSprite(
 		{x = 1369, y = 730, width = 419, height = 767, offsetX = -6, offsetY = 0, offsetWidth = 429, offsetHeight = 767} -- 45: Dad idle dance0012
 	},
 	{
-		["down"] = {start = 1, stop = 7, speed = 24, offsetX = -19, offsetY = -14},
-		["left"] = {start = 8, stop = 8, speed = 24, offsetX = 18, offsetY = 5},
-		["right"] = {start = 9, stop = 27, speed = 24, offsetX = -21, offsetY = 13},
-		["up"] = {start = 28, stop = 32, speed = 24, offsetX = 1, offsetY = 24},
-		["idle"] = {start = 33, stop = 45, speed = 24, offsetX = 0, offsetY = 0}
+		["singDOWN"] = {start = 1, stop = 7, speed = 24, offsetX = -19, offsetY = -14},
+		["singLEFT"] = {start = 8, stop = 8, speed = 24, offsetX = 18, offsetY = 5},
+		["singRIGHT"] = {start = 9, stop = 27, speed = 24, offsetX = -21, offsetY = 13},
+		["singUP"] = {start = 28, stop = 32, speed = 24, offsetX = 1, offsetY = 24},
+		["idle"] = {start = 33, stop = 45, speed = 24, offsetX = 0, offsetY = 0},
+		["idlecock"] = {indiced = true, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 6.1,
+		isCharacter = true,
+	}
 )

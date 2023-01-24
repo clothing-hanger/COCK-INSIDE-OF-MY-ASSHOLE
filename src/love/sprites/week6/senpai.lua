@@ -107,12 +107,16 @@ return graphics.newSprite(
 		{x = 1206, y = 347, width = 124, height = 163, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0} -- 84: Senpai Idle instance 10027
 	},
 	{
-		["down"] = {start = 1, stop = 14, speed = 24, offsetX = 2, offsetY = 0},
-		["left"] = {start = 15, stop = 28, speed = 24, offsetX = 6, offsetY = 0},
-		["right"] = {start = 29, stop = 42, speed = 24, offsetX = 0, offsetY = 0},
-		["up"] = {start = 43, stop = 56, speed = 24, offsetX = 0, offsetY = 6},
+		["singDOWN"] = {start = 1, stop = 14, speed = 24, offsetX = 2, offsetY = 0},
+		["singLEFT"] = {start = 15, stop = 28, speed = 24, offsetX = 6, offsetY = 0},
+		["singRIGHT"] = {start = 29, stop = 42, speed = 24, offsetX = 0, offsetY = 0},
+		["singUP"] = {start = 43, stop = 56, speed = 24, offsetX = 0, offsetY = 6},
 		["idle"] = {start = 57, stop = 84, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

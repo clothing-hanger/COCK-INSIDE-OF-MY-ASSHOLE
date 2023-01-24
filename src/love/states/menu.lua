@@ -348,7 +348,7 @@ return {
 					-525,
 					90,
 					450,
-					"right",
+					"singRIGHT",
 					nil,
 					1,
 					1

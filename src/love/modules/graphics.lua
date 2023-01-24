@@ -187,6 +187,16 @@ return {
 			scrollX = 1,
 			scrollY = 1,
 
+			holdTimer = 0,
+			lastHit = 0,
+
+			heyTimer = 0,
+			specialAnim = false,
+
+			singDuration = optionsTable and optionsTable.singDuration or 4,
+			isCharacter = optionsTable and optionsTable.isCharacter or false,
+			danceSpeed = optionsTable and optionsTable.danceSpeed or 2,
+
 			setSheet = function(self, imageData)
 				sheet = imageData
 				sheetWidth = sheet:getWidth()
@@ -201,7 +211,8 @@ return {
 				return anims[name] ~= nil
 			end,
 
-			animate = function(self, animName, loopAnim)
+			animate = function(self, animName, loopAnim, func)
+				self.holdTimer = 0
 				if not self:isAnimName(animName) then
 					return
 				end
@@ -212,6 +223,16 @@ return {
 				anim.offsetX = anims[animName].offsetX
 				anim.offsetY = anims[animName].offsetY
 
+				if anim.name == "hey" then 
+					self.heyTimer = 0.6
+					self.specialAnim = true
+				else
+					self.heyTimer = 0
+					self.specialAnim = false
+				end
+
+				self.func = func
+				
 				frame = anim.start
 				isLooped = loopAnim
 
@@ -246,13 +267,54 @@ return {
 				end
 
 				if isAnimated and frame > anim.stop then
+					if self.func then
+						self.func()
+						self.func = nil
+					end
 					if isLooped then
 						frame = anim.start
 					else
 						isAnimated = false
 					end
 				end
+
+				if self.specialAnim then 
+					self.heyTimer = self.heyTimer - dt 
+					if self.heyTimer <= 0 then 
+						self.heyTimer = 0 
+						self.specialAnim = false
+						self:animate("idle", false) 
+					end
+				end
 			end,
+
+			beat = function(self, beat)
+				if self.isCharacter then
+					if beatHandler.onBeat() then
+						if (not self:isAnimated() and util.startsWith(self:getAnimName(), "sing")) or (self:getAnimName() == "idle" or self:getAnimName() == "idle loop") then
+							if beat % self.danceSpeed == 0 then 
+								if self.lastHit > 0 then
+									if self.lastHit + beatHandler.getStepCrochet() * self.singDuration <= musicTime then
+										self:animate("idle", false, function()
+											if self:isAnimName("idle loop") then 
+												self:animate("idle loop", true)
+											end
+										end)
+										self.lastHit = 0
+									end
+								else
+									self:animate("idle", false, function()
+										if self:isAnimName("idle loop") then 
+											self:animate("idle loop", true)
+										end
+									end)
+								end
+							end
+						end
+					end
+				end
+			end,
+			
 			draw = function(self)
 				local flooredFrame = math.floor(frame)
 

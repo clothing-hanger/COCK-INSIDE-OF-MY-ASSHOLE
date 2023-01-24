@@ -33,6 +33,8 @@ function love.load()
 	audio = require "modules.audio"
 	graphics = require "modules.graphics"
 	camera = require "modules.camera"
+	beatHandler = require "modules.beatHandler"
+	util = require "modules.util"
 
 	-- Load settings
 	settings = require "settings"

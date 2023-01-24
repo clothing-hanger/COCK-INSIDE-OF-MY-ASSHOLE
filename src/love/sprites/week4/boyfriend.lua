@@ -293,16 +293,25 @@ return graphics.newSprite(
 		{x = 838, y = 1763, width = 408, height = 412, offsetX = -2, offsetY = 0, offsetWidth = 411, offsetHeight = 412} -- 270: BF idle dance0013
 	},
 	{
-		["down"] = {start = 1, stop = 30, speed = 24, offsetX = -4, offsetY = -24},
-		["miss down"] = {start = 31, stop = 59, speed = 24, offsetX = 6, offsetY = -11},
-		["left"] = {start = 60, stop = 75, speed = 24, offsetX = 20, offsetY = -4},
-		["miss left"] = {start = 76, stop = 109, speed = 24, offsetX = 20, offsetY = 8},
-		["right"] = {start = 110, stop = 171, speed = 24, offsetX = -41, offsetY = -3},
-		["miss right"] = {start = 172, stop = 217, speed = 24, offsetX = -41, offsetY = 10},
-		["up"] = {start = 218, stop = 232, speed = 24, offsetX = -21, offsetY = 13},
-		["miss up"] = {start = 233, stop = 256, speed = 24, offsetX = -18, offsetY = 11},
-		["idle"] = {start = 257, stop = 270, speed = 24, offsetX = 0, offsetY = 0}
+		["singDOWN"] = {start = 1, stop = 30, speed = 24, offsetX = -4, offsetY = -24},
+		["miss singDOWN"] = {start = 31, stop = 59, speed = 24, offsetX = 6, offsetY = -11},
+		["singLEFT"] = {start = 60, stop = 75, speed = 24, offsetX = 20, offsetY = -4},
+		["miss singLEFT"] = {start = 76, stop = 109, speed = 24, offsetX = 20, offsetY = 8},
+		["singRIGHT"] = {start = 110, stop = 171, speed = 24, offsetX = -41, offsetY = -3},
+		["miss singRIGHT"] = {start = 172, stop = 217, speed = 24, offsetX = -41, offsetY = 10},
+		["singUP"] = {start = 218, stop = 232, speed = 24, offsetX = -21, offsetY = 13},
+		["miss singUP"] = {start = 233, stop = 256, speed = 24, offsetX = -18, offsetY = 11},
+		["idle"] = {start = 257, stop = 270, speed = 24, offsetX = 0, offsetY = 0},
+		["idle loop"] = {start = 267, stop = 270, speed = 24, offsetX = 0, offsetY = 0},
+		["singDOWN loop"] = {start = 26, stop = 30, speed = 24, offsetX = -4, offsetY = -24},
+		["singLEFT loop"] = {start = 71, stop = 75, speed = 24, offsetX = 20, offsetY = -4},
+		["singRIGHT loop"] = {start = 167, stop = 171, speed = 24, offsetX = -41, offsetY = -3},
+		["singUP loop"] = {start = 228, stop = 232, speed = 24, offsetX = -21, offsetY = 13}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

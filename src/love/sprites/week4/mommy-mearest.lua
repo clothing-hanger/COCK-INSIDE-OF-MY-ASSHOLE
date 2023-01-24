@@ -87,13 +87,21 @@ return graphics.newSprite(
 		{x = 5466, y = 1648, width = 455, height = 857, offsetX = -6, offsetY = -4, offsetWidth = 473, offsetHeight = 861} -- 64: Mom Up Pose0014
 	},
 	{
-		["down"] = {start = 1, stop = 15, speed = 24, offsetX = -1, offsetY = -60},
+		["singDOWN"] = {start = 1, stop = 15, speed = 24, offsetX = -1, offsetY = -60},
 		["idle"] = {start = 16, stop = 29, speed = 24, offsetX = 0, offsetY = 0},
-		["left"] = {start = 30, stop = 39, speed = 24, offsetX = 195, offsetY = -18},
-		-- Frames are called "Mom Pose Left" but they're for right poses lol
-		["right"] = {start = 40, stop = 49, speed = 24, offsetX = 41, offsetY = -30},
-		["up"] = {start = 50, stop = 64, speed = 24, offsetX = 2, offsetY = 58}
+		["singLEFT"] = {start = 30, stop = 39, speed = 24, offsetX = 195, offsetY = -18},
+		["singRIGHT"] = {start = 40, stop = 49, speed = 24, offsetX = 41, offsetY = -30},
+		["singUP"] = {start = 50, stop = 64, speed = 24, offsetX = 2, offsetY = 58},
+		["singDOWN loop"] = {start = 1, stop = 15, speed = 24, offsetX = -1, offsetY = -60},
+		["idle loop"] = {start = 25, stop = 29, speed = 24, offsetX = 0, offsetY = 0},
+		["singLEFT loop"] = {start = 35, stop = 39, speed = 24, offsetX = 195, offsetY = -18},
+		["singRIGHT loop"] = {start = 45, stop = 49, speed = 24, offsetX = 41, offsetY = -30},
+		["singUP loop"] = {start = 60, stop = 64, speed = 24, offsetX = 2, offsetY = 58}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

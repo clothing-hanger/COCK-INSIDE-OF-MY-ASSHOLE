@@ -150,14 +150,14 @@ return graphics.newSprite(
 	},
 	{
 		["miss down"] = {start = 1, stop = 14, speed = 24, offsetX = 0, offsetY = 0},
-		["down"] = {start = 15, stop = 28, speed = 24, offsetX = 0, offsetY = 0},
+		["singDOWN"] = {start = 15, stop = 28, speed = 24, offsetX = 0, offsetY = 0},
 		["idle"] = {start = 29, stop = 42, speed = 24, offsetX = 0, offsetY = 0},
 		["miss left"] = {start = 43, stop = 56, speed = 24, offsetX = 0, offsetY = 0},
-		["left"] = {start = 57, stop = 70, speed = 24, offsetX = 0, offsetY = 0},
+		["singLEFT"] = {start = 57, stop = 70, speed = 24, offsetX = 0, offsetY = 0},
 		["miss right"] = {start = 71, stop = 84, speed = 24, offsetX = 0, offsetY = 0},
-		["right"] = {start = 85, stop = 98, speed = 24, offsetX = 0, offsetY = 0},
+		["singRIGHT"] = {start = 85, stop = 98, speed = 24, offsetX = 0, offsetY = 0},
 		["miss up"] = {start = 99, stop = 112, speed = 24, offsetX = 0, offsetY = 0},
-		["up"] = {start = 113, stop = 126, speed = 24, offsetX = 0, offsetY = 0}
+		["singUP"] = {start = 113, stop = 126, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
 	true

@@ -125,11 +125,15 @@ return graphics.newSprite(
 	},
 	{
 		["idle"] = {start = 1, stop = 20, speed = 24, offsetX = 2, offsetY = 0},
-		["down"] = {start = 21, stop = 40, speed = 24, offsetX = 2, offsetY = 0},
-		["left"] = {start = 41, stop = 60, speed = 24, offsetX = 2, offsetY = 0},
-		["right"] = {start = 61, stop = 80, speed = 24, offsetX = 2, offsetY = 0},
-		["up"] = {start = 81, stop = 100, speed = 24, offsetX = 2, offsetY = 0},
+		["singDOWN"] = {start = 21, stop = 40, speed = 24, offsetX = 2, offsetY = 0},
+		["singLEFT"] = {start = 41, stop = 60, speed = 24, offsetX = 2, offsetY = 0},
+		["singRIGHT"] = {start = 61, stop = 80, speed = 24, offsetX = 2, offsetY = 0},
+		["singUP"] = {start = 81, stop = 100, speed = 24, offsetX = 2, offsetY = 0},
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

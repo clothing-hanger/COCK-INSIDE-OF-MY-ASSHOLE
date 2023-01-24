@@ -128,11 +128,11 @@ return graphics.newSprite(
 	},
     {
         -- Left and right are swapped in the data
-		["left"] = {start = 1, stop = 15, speed = 24, offsetX = -10, offsetY = 5},
-        ["right"] = {start = 16, stop = 35, speed = 24, offsetX = -30, offsetY = 11},
-        ["down"] = {start = 36, stop = 65, speed = 24, offsetX = -34, offsetY = -47},
+		["singLEFT"] = {start = 1, stop = 15, speed = 24, offsetX = -10, offsetY = 5},
+        ["singRIGHT"] = {start = 16, stop = 35, speed = 24, offsetX = -30, offsetY = 11},
+        ["singDOWN"] = {start = 36, stop = 65, speed = 24, offsetX = -34, offsetY = -47},
         ["idle"] = {start = 66, stop = 80, speed = 24, offsetX = 0, offsetY = 0},
-        ["up"] = {start = 81, stop = 104, speed = 24, offsetX = 4, offsetY = 32}
+        ["singUP"] = {start = 81, stop = 104, speed = 24, offsetX = 4, offsetY = 32}
     },
     "idle",
 	false

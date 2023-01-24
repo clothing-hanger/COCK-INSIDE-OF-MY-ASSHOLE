@@ -18,10 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
 local animList = {
-	"left",
-	"down",
-	"up",
-	"right"
+	"singLEFT",
+	"singDOWN",
+	"singUP",
+	"singRIGHT"
 }
 local inputList = {
 	"gameLeft",
@@ -62,6 +62,7 @@ return {
 				numbers = love.graphics.newImage(graphics.imagePath("numbers"))
 			}
 	
+			-- put our rating images in a cache
 			images.sickCache = graphics.newImage(graphics.imagePath("engine/sick"))
 			images.goodCache = graphics.newImage(graphics.imagePath("engine/good"))
 			images.badCache = graphics.newImage(graphics.imagePath("engine/bad"))
@@ -102,6 +103,7 @@ return {
 				numbers = love.graphics.newImage(graphics.imagePath("pixel/numbers"))
 			}
 
+			-- put our rating images in a cache
 			images.sickCache = graphics.newImage(graphics.imagePath("pixel/sick"))
 			images.goodCache = graphics.newImage(graphics.imagePath("pixel/good"))
 			images.badCache = graphics.newImage(graphics.imagePath("pixel/bad"))
@@ -232,7 +234,7 @@ return {
 		chart = chart["song"]
 		curSong = chart["song"]
 
-		for i = 1, #chart do
+		for i = 1, #chart["notes"] do
 			bpm = chart["notes"][i]["bpm"]
 
 			if bpm then
@@ -240,14 +242,16 @@ return {
 			end
 		end
 		if not bpm then
+			bpm = chart["bpm"]
+		end
+		if not bpm then
 			bpm = 100
 		end
+		beatHandler.setBPM(bpm)
 
 		speed = chart["speed"] or 1
 
 		for i = 1, #chart["notes"] do
-			eventBpm = chart["notes"][i]["bpm"] or 100
-
 			for j = 1, #chart["notes"][i]["sectionNotes"] do
 				local sprite
 				local sectionNotes = chart["notes"][i]["sectionNotes"]
@@ -515,6 +519,8 @@ return {
 	end,
 
 	update = function(self, dt)
+		beatHandler.update(dt)
+
 		oldMusicThres = musicThres
 		if countingDown or love.system.getOS() == "Web" then -- Source:tell() can't be trusted on love.js!
 			musicTime = musicTime + 1000 * dt
@@ -542,6 +548,8 @@ return {
 				if events[i].bpm then
 					bpm = events[i].bpm
 					if not bpm then bpm = oldBpm end
+					print(bpm)
+					beatHandler.setBPM(bpm)
 				end
 
 				if camTimer then
@@ -571,23 +579,27 @@ return {
 			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
 		end
 
+		--[[
+		if beatHandler.onBeat() then 
+			print("beat")
+			if not util.startsWith(boyfriend:getAnimName(), "sing") then
+				--boyfriend:animate("idle")
+			end
+		end
+		--]]
+
 		girlfriend:update(dt)
 		enemy:update(dt)
 		boyfriend:update(dt)
 
 		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 120000 / bpm) < 100 then
 			if spriteTimers[1] == 0 then
-				girlfriend:animate("idle", false)
-
+				self:safeAnimate(girlfriend, "idle", true, 1)
 				girlfriend:setAnimSpeed(14.4 / (60 / bpm))
 			end
-			if spriteTimers[2] == 0 then
-				self:safeAnimate(enemy, "idle", false, 2)
-			end
-			if spriteTimers[3] == 0 then
-				self:safeAnimate(boyfriend, "idle", false, 3)
-			end
 		end
+		boyfriend:beat(beatHandler.getBeat())
+		enemy:beat(beatHandler.getBeat())
 
 		for i = 1, 3 do
 			local spriteTimer = spriteTimers[i]
@@ -626,9 +638,9 @@ return {
 
 					if enemyNote[1]:getAnimName() == "hold" or enemyNote[1]:getAnimName() == "end" then
 						if useAltAnims then
-							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then self:safeAnimate(enemy, curAnim .. " alt", true, 2) end
+							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then self:safeAnimate(enemy, curAnim .. " alt", false, 2) end
 						else
-							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then self:safeAnimate(enemy, curAnim, true, 2) end
+							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then self:safeAnimate(enemy, curAnim, false, 2) end
 						end
 					else
 						if useAltAnims then
@@ -637,6 +649,8 @@ return {
 							self:safeAnimate(enemy, curAnim, false, 2)
 						end
 					end
+
+					enemy.lastHit = musicTime
 
 					table.remove(enemyNote, 1)
 				end
@@ -678,6 +692,8 @@ return {
 								notePos = math.abs(-400 - (boyfriendNote[i].y - musicPos))
 
 								voices:setVolume(1)
+
+								boyfriend.lastHit = musicTime
 
 								if notePos <= 30 then -- "Sick"
 									score = score + 350
@@ -759,7 +775,7 @@ return {
 
 				boyfriendArrow:animate("confirm", false)
 
-				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, true, 3) end
+				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 3) end
 
 				health = health + 1
 			end

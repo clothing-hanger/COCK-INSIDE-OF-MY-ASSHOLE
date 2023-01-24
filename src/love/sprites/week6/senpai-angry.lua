@@ -92,12 +92,16 @@ return graphics.newSprite(
 		{x = 1620, y = 0, width = 125, height = 164, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 70: Angry Senpai UP NOTE instance 10013
 	},
 	{
-		["down"] = {start = 1, stop = 14, speed = 24, offsetX = 2, offsetY = 0},
+		["singDOWN"] = {start = 1, stop = 14, speed = 24, offsetX = 2, offsetY = 0},
 		["idle"] = {start = 15, stop = 28, speed = 24, offsetX = 0, offsetY = 0},
-		["left"] = {start = 29, stop = 42, speed = 24, offsetX = 6, offsetY = 0},
-		["right"] = {start = 43, stop = 56, speed = 24, offsetX = 0, offsetY = 0},
-		["up"] = {start = 57, stop = 70, speed = 24, offsetX = 0, offsetY = 6}
+		["singLEFT"] = {start = 29, stop = 42, speed = 24, offsetX = 6, offsetY = 0},
+		["singRIGHT"] = {start = 43, stop = 56, speed = 24, offsetX = 0, offsetY = 0},
+		["singUP"] = {start = 57, stop = 70, speed = 24, offsetX = 0, offsetY = 6}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )
