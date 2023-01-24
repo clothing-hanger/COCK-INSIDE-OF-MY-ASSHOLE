@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("girlfriend")),
 	-- Automatically generated from GF_assets.xml
 	{
@@ -279,11 +279,11 @@ return Sprite (
 		["idle"] = {start = 22, stop = 51, speed = 24, offsetX = 0, offsetY = 0},
 		["hair landing"] = {start = 52, stop = 81, speed = 24, offsetX = 0, offsetY = 0},
 		["hair blowing"] = {start = 82, stop = 111, speed = 24, offsetX = 22, offsetY = 0},
-		["down"] = {start = 112, stop = 131, speed = 24, offsetX = 0, offsetY = -5},
+		["singDOWN"] = {start = 112, stop = 131, speed = 24, offsetX = 0, offsetY = -5},
 		["fear"] = {start = 132, stop = 135, speed = 24, offsetX = 0, offsetY = -4},
-		["right"] = {start = 136, stop = 150, speed = 24, offsetX = 0, offsetY = -5},
-		["up"] = {start = 151, stop = 157, speed = 24, offsetX = 0, offsetY = 7},
-		["left"] = {start = 158, stop = 172, speed = 24, offsetX = 0, offsetY = -5},
+		["singRIGHT"] = {start = 136, stop = 150, speed = 24, offsetX = 0, offsetY = -5},
+		["singUP"] = {start = 151, stop = 157, speed = 24, offsetX = 0, offsetY = 7},
+		["singLEFT"] = {start = 158, stop = 172, speed = 24, offsetX = 0, offsetY = -5},
 		["sad"] = {start = 173, stop = 252, speed = 24, offsetX = 0, offsetY = -6}
 	},
 	"idle",

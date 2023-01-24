@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("week5/boyfriend")),
     -- Automatically generated from bfChristmas.xml
 	{
@@ -319,16 +319,20 @@ return Sprite (
 	},
     {
 		["hey"] = {start = 1, stop = 26, speed = 24, offsetX = 0, offsetY = 0},
-        ["down"] = {start = 27, stop = 56, speed = 24, offsetX = -4, offsetY = -24},
+        ["singDOWN"] = {start = 27, stop = 56, speed = 24, offsetX = -4, offsetY = -24},
         ["miss down"] = {start = 57, stop = 85, speed = 24, offsetX = 6, offsetY = -11},
-        ["left"] = {start = 86, stop = 100, speed = 24, offsetX = 20, offsetY = -4},
+        ["singLEFT"] = {start = 86, stop = 100, speed = 24, offsetX = 20, offsetY = -4},
         ["miss left"] = {start = 101, stop = 134, speed = 24, offsetX = 20, offsetY = 8},
-        ["right"] = {start = 135, stop = 196, speed = 24, offsetX = -41, offsetY = -3},
+        ["singRIGHT"] = {start = 135, stop = 196, speed = 24, offsetX = -41, offsetY = -3},
         ["miss right"] = {start = 197, stop = 242, speed = 24, offsetX = -41, offsetY = 10},
-        ["up"] = {start = 243, stop = 257, speed = 24, offsetX = -21, offsetY = 13},
+        ["singUP"] = {start = 243, stop = 257, speed = 24, offsetX = -21, offsetY = 13},
         ["miss up"] = {start = 258, stop = 281, speed = 24, offsetX = -18, offsetY = 11},
         ["idle"] = {start = 282, stop = 295, speed = 24, offsetX = 0, offsetY = 0}
     },
 	"idle",
-	true
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("week5/girlfriend")),
 	-- Automatically generated from gfChristmas.xml
 	{
@@ -243,18 +243,21 @@ return Sprite (
 		{x = 1654, y = 5785, width = 817, height = 704, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 220: gf sad0077
 		{x = 2481, y = 5785, width = 817, height = 704, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 221: gf sad0078
 		{x = 2481, y = 5785, width = 817, height = 704, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0} -- 222: gf sad0079
-	},	
+	},
 	{
 		["cheer"] = {start = 1, stop = 21, speed = 24, offsetX = 0, offsetY = 5},
 		["idle"] = {start = 22, stop = 51, speed = 24, offsetX = 0, offsetY = 0},
 		["hair landing"] = {start = 52, stop = 81, speed = 24, offsetX = 0, offsetY = 0},
-		["down"] = {start = 82, stop = 101, speed = 24, offsetX = 0, offsetY = -5},
+		["singDOWN"] = {start = 82, stop = 101, speed = 24, offsetX = 0, offsetY = -5},
 		["fear"] = {start = 102, stop = 105, speed = 24, offsetX = 0, offsetY = -4},
-		["right"] = {start = 106, stop = 120, speed = 24, offsetX = 0, offsetY = -5},
-		["up"] = {start = 121, stop = 127, speed = 24, offsetX = 0, offsetY = 7},
-		["left"] = {start = 128, stop = 142, speed = 24, offsetX = 0, offsetY = -5},
+		["singRIGHT"] = {start = 106, stop = 120, speed = 24, offsetX = 0, offsetY = -5},
+		["singUP"] = {start = 121, stop = 127, speed = 24, offsetX = 0, offsetY = 7},
+		["singLEFT"] = {start = 128, stop = 142, speed = 24, offsetX = 0, offsetY = -5},
 		["sad"] = {start = 153, stop = 222, speed = 24, offsetX = 0, offsetY = -6}
 	},
 	"idle",
-	false
+	false,
+	{
+		isGirlfriend = true
+	}
 )

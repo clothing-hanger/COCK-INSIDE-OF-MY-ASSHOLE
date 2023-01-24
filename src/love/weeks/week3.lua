@@ -17,16 +17,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
+local song, difficulty
+
 local sky, city, cityWindows, behindTrain, street
 local winColors, winColor
 
 return {
-	enter = function(self)
+	enter = function(self, from, songNum, songAppend)
 		weeks:enter()
-		
-		cam.sizeX, cam.sizeY = 1, 1
-		camScale.x, camScale.y = 1, 1
-		
+
+		song = songNum
+		difficulty = songAppend
+
+		camera.sizeX, camera.sizeY = 1, 1
+		camera.scaleX, camera.scaleY = 1, 1
+
 		winColors = {
 			{49, 162, 253}, -- Blue
 			{49, 253, 140}, -- Green
@@ -35,171 +40,153 @@ return {
 			{251, 166, 51}, -- Yellow
 		}
 		winColor = 1
-		
-		sky = Image(love.graphics.newImage(graphics.imagePath("week3/sky")))
-		city = Image(love.graphics.newImage(graphics.imagePath("week3/city")))
-		cityWindows = Image(love.graphics.newImage(graphics.imagePath("week3/city-windows")))
-		behindTrain = Image(love.graphics.newImage(graphics.imagePath("week3/behind-train")))
-		street = Image(love.graphics.newImage(graphics.imagePath("week3/street")))
-		
+
+		sky = graphics.newImage(graphics.imagePath("week3/sky"))
+		city = graphics.newImage(graphics.imagePath("week3/city"))
+		cityWindows = graphics.newImage(graphics.imagePath("week3/city-windows"))
+		behindTrain = graphics.newImage(graphics.imagePath("week3/behind-train"))
+		street = graphics.newImage(graphics.imagePath("week3/street"))
+
 		behindTrain.y = -100
 		behindTrain.sizeX, behindTrain.sizeY = 1.25, 1.25
 		street.y = -100
 		street.sizeX, street.sizeY = 1.25, 1.25
-		
+
 		enemy = love.filesystem.load("sprites/week3/pico-enemy.lua")()
-		
+
 		girlfriend.x, girlfriend.y = -70, -140
 		enemy.x, enemy.y = -480, 50
 		enemy.sizeX = -1 -- Reverse, reverse!
 		boyfriend.x, boyfriend.y = 165, 50
-		
+
 		enemyIcon:animate("pico", false)
-		
+
 		self:load()
 	end,
-	
+
 	load = function(self)
 		weeks:load()
-		
-		if songNum == 3 then
-			inst = love.audio.newSource("music/week3/blammed-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week3/blammed-voices.ogg", "stream")
-		elseif songNum == 2 then
-			inst = love.audio.newSource("music/week3/philly-nice-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week3/philly-nice-voices.ogg", "stream")
+
+		if song == 3 then
+			inst = love.audio.newSource("songs/week3/blammed/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week3/blammed/Voices.ogg", "stream")
+		elseif song == 2 then
+			inst = love.audio.newSource("songs/week3/philly/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week3/philly/Voices.ogg", "stream")
 		else
-			inst = love.audio.newSource("music/week3/pico-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week3/pico-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week3/pico/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week3/pico/Voices.ogg", "stream")
 		end
-		
+
 		self:initUI()
-		
-		inst:play()
-		weeks:voicesPlay()
+
+		weeks:setupCountdown()
 	end,
-	
+
 	initUI = function(self)
 		weeks:initUI()
-		
-		if songNum == 3 then
-			weeks:generateNotes(love.filesystem.load("charts/week3/blammed" .. songAppend .. ".lua")())
-		elseif songNum == 2 then
-			weeks:generateNotes(love.filesystem.load("charts/week3/philly-nice" .. songAppend .. ".lua")())
+
+		if song == 3 then
+			weeks:generateNotes("data/week3/blammed/blammed" .. difficulty .. ".json")
+		elseif song == 2 then
+			weeks:generateNotes("data/week3/philly/philly" .. difficulty .. ".json")
 		else
-			weeks:generateNotes(love.filesystem.load("charts/week3/pico" .. songAppend .. ".lua")())
+			weeks:generateNotes("data/week3/pico/pico" .. difficulty .. ".json")
 		end
 	end,
-	
+
 	update = function(self, dt)
-		if gameOver then
-			if not graphics.isFading then
-				if input:pressed("confirm") then
-					inst:stop()
-					inst = love.audio.newSource("music/game-over-end.ogg", "stream")
-					inst:play()
-					
-					Timer.clear()
-					
-					cam.x, cam.y = -boyfriend.x, -boyfriend.y
-					
-					boyfriend:animate("dead confirm", false)
-					
-					graphics.fadeOut(3, function() self:load() end)
-				elseif input:pressed("gameBack") then
-					graphics.fadeOut(0.5, function() Gamestate.switch(menu) end)
-				end
-			end
-			
-			boyfriend:update(dt)
-			
-			return
-		end
-		
 		weeks:update(dt)
-		
-		if musicThres ~= oldMusicThres and math.fmod(musicTime, 240000 / bpm) < 100 then
+
+		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
 			winColor = winColor + 1
-			
+
 			if winColor > 5 then
 				winColor = 1
 			end
 		end
-		
+
 		if health >= 80 then
-			if enemyIcon.anim.name == "pico" then
+			if enemyIcon:getAnimName() == "pico" then
 				enemyIcon:animate("pico losing", false)
 			end
 		else
-			if enemyIcon.anim.name == "pico losing" then
+			if enemyIcon:getAnimName() == "pico losing" then
 				enemyIcon:animate("pico", false)
 			end
 		end
-		
-		if not graphics.isFading and not inst:isPlaying() and not voices:isPlaying() then
-			if storyMode and songNum < 3 then
-				songNum = songNum + 1
-				
+
+		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) then
+			if storyMode and song < 3 then
+				song = song + 1
+
 				self:load()
 			else
-				graphics.fadeOut(0.5, function() Gamestate.switch(menu) end)
+				status.setLoading(true)
+
+				graphics.fadeOut(
+					0.5,
+					function()
+						Gamestate.switch(menu)
+
+						status.setLoading(false)
+					end
+				)
 			end
 		end
-		
+
 		weeks:updateUI(dt)
 	end,
-	
+
 	draw = function(self)
 		local curWinColor = winColors[winColor]
-		
-		weeks:draw()
-		
-		if gameOver then return end
-		
+
 		love.graphics.push()
-			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
-			love.graphics.scale(cam.sizeX, cam.sizeY)
-			
+			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
+			love.graphics.scale(camera.sizeX, camera.sizeY)
+
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.25, cam.y * 0.25)
-				
+				love.graphics.translate(camera.x * 0.25, camera.y * 0.25)
+
 				sky:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.5, cam.y * 0.5)
-				
+				love.graphics.translate(camera.x * 0.5, camera.y * 0.5)
+
 				city:draw()
 				graphics.setColor(curWinColor[1] / 255, curWinColor[2] / 255, curWinColor[3] / 255)
 				cityWindows:draw()
 				graphics.setColor(1, 1, 1)
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
-				
+				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
+
 				behindTrain:draw()
 				street:draw()
-				
+
 				girlfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x, cam.y)
-				
+				love.graphics.translate(camera.x, camera.y)
+
 				enemy:draw()
 				boyfriend:draw()
 			love.graphics.pop()
 			weeks:drawRating(0.9)
 		love.graphics.pop()
-		
+
 		weeks:drawUI()
 	end,
-	
+
 	leave = function(self)
 		sky = nil
 		city = nil
 		cityWindows = nil
 		behindTrain = nil
 		street = nil
-		
+
+		graphics.clearCache()
+
 		weeks:leave()
 	end
 }

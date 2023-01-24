@@ -17,20 +17,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("rating")),
 	{
 		{x = 0, y = 0, width = 403, height = 152, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 1: Sick
 		{x = 404, y = 0, width = 317, height = 126, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 2: Good
 		{x = 722, y = 0, width = 261, height = 131, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 3: Bad
 		{x = 984, y = 0, width = 285, height = 163, offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0}, -- 4: Shit
-    },
+	},
 	{
 		["sick"] = {start = 1, stop = 1, speed = 0, offsetX = 0, offsetY = 0},
-        ["good"] = {start = 2, stop = 2, speed = 0, offsetX = 0, offsetY = 0},
-        ["bad"] = {start = 3, stop = 3, speed = 0, offsetX = 0, offsetY = 0},
-        ["shit"] = {start = 4, stop = 4, speed = 0, offsetX = 0, offsetY = 0}
-    },
+		["good"] = {start = 2, stop = 2, speed = 0, offsetX = 0, offsetY = 0},
+		["bad"] = {start = 3, stop = 3, speed = 0, offsetX = 0, offsetY = 0},
+		["shit"] = {start = 4, stop = 4, speed = 0, offsetX = 0, offsetY = 0}
+	},
 	"sick",
 	false
 )

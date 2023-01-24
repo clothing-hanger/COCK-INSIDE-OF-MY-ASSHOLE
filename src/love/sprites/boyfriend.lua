@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("boyfriend")),
 	-- Automatically generated from BOYFRIEND.xml
 	{
@@ -523,18 +523,22 @@ return Sprite (
 		["dead"] = {start = 1, stop = 34, speed = 24, offsetX = 14, offsetY = -12},
 		["dead confirm"] = {start = 35, stop = 68, speed = 24, offsetX = 14, offsetY = 20},
 		["hey"] = {start = 69, stop = 94, speed = 24, offsetX = 0, offsetY = 0},
-		["down"] = {start = 95, stop = 124, speed = 24, offsetX = -4, offsetY = -24},
+		["singDOWN"] = {start = 95, stop = 124, speed = 24, offsetX = -4, offsetY = -24},
 		["miss down"] = {start = 125, stop = 153, speed = 24, offsetX = 6, offsetY = -11},
-		["left"] = {start = 154, stop = 168, speed = 24, offsetX = 20, offsetY = -4},
+		["singLEFT"] = {start = 154, stop = 168, speed = 24, offsetX = 20, offsetY = -4},
 		["miss left"] = {start = 169, stop = 202, speed = 24, offsetX = 20, offsetY = 8},
-		["right"] = {start = 203, stop = 264, speed = 24, offsetX = -41, offsetY = -3},
+		["singRIGHT"] = {start = 203, stop = 264, speed = 24, offsetX = -41, offsetY = -3},
 		["miss right"] = {start = 265, stop = 310, speed = 24, offsetX = -41, offsetY = 10},
-		["up"] = {start = 311, stop = 325, speed = 24, offsetX = -21, offsetY = 13},
+		["singUP"] = {start = 311, stop = 325, speed = 24, offsetX = -21, offsetY = 13},
 		["miss up"] = {start = 326, stop = 349, speed = 24, offsetX = -18, offsetY = 11},
 		["dies"] = {start = 350, stop = 407, speed = 24, offsetX = 14, offsetY = -11},
 		["idle"] = {start = 427, stop = 440, speed = 24, offsetX = 0, offsetY = 0},
 		["shaking"] = {start = 441, stop = 444, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

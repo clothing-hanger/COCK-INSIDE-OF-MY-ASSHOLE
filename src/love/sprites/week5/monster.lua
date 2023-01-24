@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("week5/monster")),
     -- Automatically generated from monsterChristmas.xml
 	{
@@ -127,11 +127,12 @@ return Sprite (
 		{x = 4272, y = 2831, width = 418, height = 725, offsetX = 0, offsetY = -34, offsetWidth = 418, offsetHeight = 759} -- 104: monster up note0023
 	},
     {
-        ["right"] = {start = 1, stop = 15, speed = 24, offsetX = -10, offsetY = 5},
-        ["left"] = {start = 16, stop = 35, speed = 24, offsetX = -30, offsetY = 11},
-        ["down"] = {start = 36, stop = 65, speed = 24, offsetX = -34, offsetY = -47},
+        -- Left and right are swapped in the data
+		["singLEFT"] = {start = 1, stop = 15, speed = 24, offsetX = -10, offsetY = 5},
+        ["singRIGHT"] = {start = 16, stop = 35, speed = 24, offsetX = -30, offsetY = 11},
+        ["singDOWN"] = {start = 36, stop = 65, speed = 24, offsetX = -34, offsetY = -47},
         ["idle"] = {start = 66, stop = 80, speed = 24, offsetX = 0, offsetY = 0},
-        ["up"] = {start = 81, stop = 104, speed = 24, offsetX = 4, offsetY = 32}
+        ["singUP"] = {start = 81, stop = 104, speed = 24, offsetX = 4, offsetY = 32}
     },
     "idle",
 	false

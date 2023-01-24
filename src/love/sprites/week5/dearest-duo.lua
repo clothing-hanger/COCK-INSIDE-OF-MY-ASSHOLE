@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("week5/dearest-duo")),
     -- Automatically generated from mom_dad_christmas_assets.xml
 	{
@@ -158,15 +158,19 @@ return Sprite (
 	},
     {
         ["idle"] = {start = 1, stop = 14, speed = 24, offsetX = 0, offsetY = 0},
-        ["down"] = {start = 15, stop = 29, speed = 24, offsetX = -24, offsetY = -12},
-        ["down alt"] = {start = 30, stop = 44, speed = 24, offsetX = -24, offsetY = -12},
-        ["left"] = {start = 45, stop = 60, speed = 24, offsetX = 16, offsetY = 10},
-        ["left alt"] = {start = 61, stop = 75, speed = 24, offsetX = 16, offsetY = 9},
-        ["right"] = {start = 76, stop = 91, speed = 24, offsetX = -37, offsetY = -11},
-        ["right alt"] = {start = 92, stop = 106, speed = 24, offsetX = -37, offsetY = -10},
-        ["up"] = {start = 107, stop = 120, speed = 24, offsetX = 0, offsetY = 11},
-        ["up alt"] = {start = 121, stop = 134, speed = 24, offsetX = 0, offsetY = 13}
+        ["singDOWN"] = {start = 15, stop = 29, speed = 24, offsetX = -24, offsetY = -12},
+        ["singDOWN alt"] = {start = 30, stop = 44, speed = 24, offsetX = -24, offsetY = -12},
+        ["singLEFT"] = {start = 45, stop = 60, speed = 24, offsetX = 16, offsetY = 10},
+        ["singLEFT alt"] = {start = 61, stop = 75, speed = 24, offsetX = 16, offsetY = 9},
+        ["singRIGHT"] = {start = 76, stop = 91, speed = 24, offsetX = -37, offsetY = -11},
+        ["singRIGHT alt"] = {start = 92, stop = 106, speed = 24, offsetX = -37, offsetY = -10},
+        ["singUP"] = {start = 107, stop = 120, speed = 24, offsetX = 0, offsetY = 11},
+        ["singUP alt"] = {start = 121, stop = 134, speed = 24, offsetX = 0, offsetY = 13}
     },
     "idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

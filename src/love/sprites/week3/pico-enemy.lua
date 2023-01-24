@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
 -- NOTE: Pico's sprites are flipped horizontally as an enemy
-return Sprite (
+return graphics.newSprite(
 	love.graphics.newImage(graphics.imagePath("pico")),
 	-- Automatically generated from Pico_FNF_assetss.xml
 	{
@@ -97,12 +97,16 @@ return Sprite (
 		{x = 897, y = 1495, width = 432, height = 490, offsetX = -1, offsetY = -5, offsetWidth = 433, offsetHeight = 495} -- 73: pico Up note0013
 	},
 	{
-		["down"] = {start = 1, stop = 11, speed = 24, offsetX = -38, offsetY = -43},
+		["singDOWN"] = {start = 1, stop = 11, speed = 24, offsetX = -38, offsetY = -43},
 		["idle"] = {start = 12, stop = 25, speed = 24, offsetX = 0, offsetY = 0},
-		["right"] = {start = 26, stop = 42, speed = 24, offsetX = 83, offsetY = -5}, -- Swapped
-		["left"] = {start = 43, stop = 59, speed = 24, offsetX = -50, offsetY = 0}, -- Swapped
-		["up"] = {start = 60, stop = 73, speed = 24, offsetX = 27, offsetY = 10}
+		["singRIGHT"] = {start = 26, stop = 42, speed = 24, offsetX = 83, offsetY = -5}, -- Swapped
+		["singLEFT"] = {start = 43, stop = 59, speed = 24, offsetX = -50, offsetY = 0}, -- Swapped
+		["singUP"] = {start = 60, stop = 73, speed = 24, offsetX = 27, offsetY = 10}
 	},
 	"idle",
-	false
+	false,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )
