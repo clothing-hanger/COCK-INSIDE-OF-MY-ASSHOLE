@@ -42,20 +42,11 @@ settingsDescriptions1 = { -- The big spaces are so it lines up lol
     "Custom Scroll Speed" ..
     "\n       \"Custom Scroll Speed\" Allows you to set a custom scroll speed\n       for the game.\n       1 = Default",
 
-    "Keystrokes" ..
-    "\n       \"Keystrokes\" Show your keystrokes at the bottom of the screen",
-
     "Scroll Underlay" ..
     "\n       \"Scroll Underlay\" set a opacity for a scroll underlay\n       0 = Default",
 
-    "Hitsounds" ..
-    "\n       \"Hitsounds\" ", -- CH YOU DO THIS ONE
-
-    "Noteskins" ..
-    "\n       \"Noteskins\" ",
-
-    "Flashing Lights" ..
-    "\n       \"Flashing Lights\" Enable/Disable flashing lights",
+    --"Noteskins" ..
+    --"\n       \"Noteskins\" ", -- this one is a maybe
 }
 settingsDescriptions2 = {
 
@@ -67,18 +58,6 @@ settingsDescriptions2 = {
     "\n       \"Show Debug\" Shows debug info on the screen" ..
     "\n\n       \"fps\" only displays FPS count" ..
     "\n\n       \"detailed\" shows things for debugging. (E.g. Music time,\n       Health, etc)",
-
-    "Instrumental Volume" .. 
-    "\n       \"Instrumental Volume\" Raise or lower the volume of the\n       Instrumental" ..
-    "\n\n       1 = Default",
-
-    "Vocals Volume" ..
-    "\n       \"Vocals Volume\" Raise or lower the volume of the Vocals" ..
-    "\n\n       1 = Default",
-
-    "Hitsounds Volume" ..
-    "\n       \"Hitsounds Volume\" Raise or lower the volume of the\n       Hitsounds" ..
-    "\n\n       1 = Default",
 }
 settingsDescriptions3 = { 
 
@@ -87,9 +66,6 @@ settingsDescriptions3 = {
 
     "Sudden Death:" ..
     "\n       \"Sudden Death\" Too easy? Enable this to lose if you miss one note",
-
-    "Multiplayer" ..
-    "\n       \"Multiplayer\" Play with your friends!",
 }
 
 local function switchMenu(menu)end
@@ -101,8 +77,8 @@ return {
         settingSelect = 1
         settingsMenuState = 0
 
-		cam.sizeX, cam.sizeY = 0.9, 0.9
-		camScale.x, camScale.y = 0.9, 0.9
+		camera.sizeX, camera.sizeY = 0.9, 0.9
+		camera.scaleX, camera.scaleY = 0.9, 0.9
 
 		switchMenu(1)
 
@@ -124,7 +100,9 @@ return {
                         elseif settingSelect == 3 then
                             graphics.fadeOut(0.3,
                             function()
-                                Gamestate.switch(settingsKeybinds)
+                                --Gamestate.switch(settingsKeybinds)
+                                love.window.showMessageBox("lol", "Not implemented yet :P", "error")
+                                Gamestate.switch(menuSettings)
                             end)
                         elseif settingSelect == 4 then
                             settingSelect = 1
@@ -135,84 +113,28 @@ return {
                         end
                     elseif settingsMenuState == 1 then
                         if settingSelect == 1 then
-                            if settings.practiceMode then
-                                settings.practiceMode = false
-                            else
-                                settings.practiceMode = true
-                            end
+                            settings.practiceMode = not settings.practiceMode
                         elseif settingSelect == 2 then
-                            if settings.noMiss then
-                                settings.noMiss = false
-                            else
-                                settings.noMiss = true
-                            end
-                        elseif settingSelect == 3 then
-                            if settings.multiplayer then
-                                settings.multiplayer = false
-                            else
-                                settings.multiplayer = true
-                            end
+                            settings.noMiss = not settings.noMiss
                         end
                     elseif settingsMenuState == 2 then
                         if settingSelect == 1 then
-                            if settings.downscroll then
-                                settings.downscroll = false
-                            else
-                                settings.downscroll = true
-                            end
+                            settings.downscroll = not settings.downscroll
                         elseif settingSelect == 2 then
-                            if settings.middleScroll then
-                                settings.middleScroll = false
-                            else
-                                settings.middleScroll = true
-                            end
+                            settings.middleScroll = not settings.middleScroll
                         elseif settingSelect == 3 then
-                            if settings.ghostTapping then
-                                settings.ghostTapping = false
-                            else
-                                settings.ghostTapping = true
-                            end
+                            settings.ghostTapping = not settings.ghostTapping
                         elseif settingSelect == 4 then
-                            if not settings.sideJudgements then
-                                settings.sideJudgements = true
-                            else
-                                settings.sideJudgements = false
-                            end
+                            settings.sideJudgements = not settings.sideJudgements
                         elseif settingSelect == 5 then
-                            if not settings.botPlay then
-                                settings.botPlay = true
-                            else
-                                settings.botPlay = false
-                            end
+                            settings.botPlay = not settings.botPlay
                         -- 6 is scroll speed
-                        elseif settingSelect == 7 then
-                            if not settings.keystrokes then
-                                settings.keystrokes = true
-                            else
-                                settings.keystrokes = false
-                            end
-                        -- 8 is scroll underlay transparency
-                        elseif settingSelect == 9 then
-                            if not settings.Hitsounds then
-                                settings.Hitsounds = true
-                            else
-                                settings.Hitsounds = false
-                            end
-                        -- 10 is noteskins
-                        elseif settingSelect == 11 then
-                            if not settings.flashinglights then
-                                settings.flashinglights = true
-                            else
-                                settings.flashinglights = false
-                            end
+                        -- 7 is scroll underlay transparency
+                        -- 8 is noteskins -- this one is a maybe
                         end
                     elseif settingsMenuState == 3 then
                         if settingSelect == 1 then
-                            if settings.hardwareCompression then
-                                settings.hardwareCompression = false
-                            else
-                                settings.hardwareCompression = true
-                            end
+                            settings.hardwareCompression = not settings.hardwareCompression
                         elseif settingSelect == 2 then
                             if not settings.showDebug then
                                 settings.showDebug = "fps"
@@ -221,9 +143,6 @@ return {
                             elseif settings.showDebug == "detailed" then
                                 settings.showDebug = false
                             end
-                            -- 3 is inst volume
-                            -- 4 is vocals volume
-                            -- 5 is Hitsounds volume
                         end
                     end
                 end
@@ -234,7 +153,6 @@ return {
 				audio.playSound(selectSound)
 
                 if settingsMenuState == 0 then
-			    	saveSettings()
                 else
                     settingsMenuState = 0
                     settingSelect = 1
@@ -243,21 +161,21 @@ return {
                 if settingsMenuState == 0 then
                     settingSelect = settingSelect ~= 1 and settingSelect - 1 or 5
                 elseif settingsMenuState == 1 then
-                    settingSelect = settingSelect ~= 1 and settingSelect - 1 or 2
+                    settingSelect = settingSelect ~= 1 and settingSelect - 1 or #settingsDescriptions3
                 elseif settingsMenuState == 2 then
-                    settingSelect = settingSelect ~= 1 and settingSelect - 1 or 11
+                    settingSelect = settingSelect ~= 1 and settingSelect - 1 or #settingsDescriptions1
                 elseif settingsMenuState == 3 then
-                    settingSelect = settingSelect ~= 1 and settingSelect - 1 or 5
+                    settingSelect = settingSelect ~= 1 and settingSelect - 1 or #settingsDescriptions2
                 end
             elseif input:pressed("down") then
                 if settingsMenuState == 0 then
                     settingSelect = settingSelect ~= 5 and settingSelect + 1 or 1
                 elseif settingsMenuState == 1 then
-                    settingSelect = settingSelect ~= 3 and settingSelect + 1 or 1
+                    settingSelect = settingSelect ~= #settingsDescriptions3 and settingSelect + 1 or 1
                 elseif settingsMenuState == 2 then
-                    settingSelect = settingSelect ~= 11 and settingSelect + 1 or 1
+                    settingSelect = settingSelect ~= #settingsDescriptions1 and settingSelect + 1 or 1
                 elseif settingsMenuState == 3 then
-                    settingSelect = settingSelect ~= 5 and settingSelect + 1 or 1               
+                    settingSelect = settingSelect ~= #settingsDescriptions3 and settingSelect + 1 or 1           
                 end
             elseif input:pressed("right") then
                 if settingsMenuState == 2 then
@@ -268,30 +186,6 @@ return {
                             settings.scrollUnderlayTrans = settings.scrollUnderlayTrans + 0.05
                         else
                             settings.scrollUnderlayTrans = 1
-                        end
-                    elseif settingSelect == 10 then
-                        if settings.noteSkins ~= #noteskins then
-                            settings.noteSkins = settings.noteSkins + 1
-                        end
-                    end
-                elseif settingsMenuState == 3 then
-                    if settingSelect == 3 then
-                        if settings.instVol < 1 then
-                            settings.instVol = settings.instVol + 0.05
-                        else
-                            settings.instVol = 1
-                        end
-                    elseif settingSelect == 4 then
-                        if settings.vocalsVol < 1 then
-                            settings.vocalsVol = settings.vocalsVol + 0.05
-                        else
-                            settings.vocalsVol = 1
-                        end
-                    elseif settingSelect == 5 then
-                        if settings.hitsoundVol < 1 then
-                            settings.hitsoundVol = settings.hitsoundVol + 0.05
-                        else
-                            settings.hitsoundVol = 1
                         end
                     end
                 end
@@ -310,29 +204,11 @@ return {
                             settings.scrollUnderlayTrans = 0
                         end
                     elseif settingSelect == 10 then
+                        --[[
                         if settings.noteSkins ~= 1 then
                             settings.noteSkins = settings.noteSkins - 1
                         end
-                    end
-                elseif settingsMenuState == 3 then
-                    if settingSelect == 3 then
-                        if settings.instVol > 0 then
-                            settings.instVol = settings.instVol - 0.05
-                        else
-                            settings.instVol = 0
-                        end
-                    elseif settingSelect == 4 then
-                        if settings.vocalsVol > 0 then
-                            settings.vocalsVol = settings.vocalsVol - 0.05
-                        else
-                            settings.vocalsVol = 0
-                        end
-                    elseif settingSelect == 5 then
-                        if settings.hitsoundVol > 0 then
-                            settings.hitsoundVol = settings.hitsoundVol - 0.05
-                        else
-                            settings.hitsoundVol = 0
-                        end
+                        --]]
                     end
                 end
 			end
@@ -365,7 +241,6 @@ return {
                 elseif settingsMenuState == 1 then
                     love.graphics.print("Practice Mode = " .. tostring(settings.practiceMode), -628, -300)
                     love.graphics.print("\n\nNo Miss = " .. tostring(settings.noMiss), -628, -300)
-                    love.graphics.print("\n\n\n\nMultiplayer = " .. tostring(settings.multiplayer), -628, -300)
                 elseif settingsMenuState == 2 then -- I need a better way for this lmfao
                     love.graphics.print("Downscroll = " .. tostring(settings.downscroll), -628, -300)
                     love.graphics.print("\n\nMiddlescroll = " .. tostring(settings.middleScroll), -628, -300)
@@ -373,17 +248,11 @@ return {
                     love.graphics.print("\n\n\n\n\n\nSide Judgements = " .. tostring(settings.sideJudgements), -628, -300)
                     love.graphics.print("\n\n\n\n\n\n\n\nBot Play = " .. tostring(settings.botPlay), -628, -300)
                     love.graphics.print("\n\n\n\n\n\n\n\n\n\nCustom Scroll Speed = " .. tostring(settings.customScrollSpeed), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\nKeystrokes = " .. tostring(settings.keystrokes), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\nScroll Underlay Transparency = " .. tostring(settings.scrollUnderlayTrans), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHitsounds = " .. tostring(settings.Hitsounds), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteskin = " .. tostring(noteskins[settings.noteSkins]), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFlashing Lights = " .. tostring(settings.flashinglights), -628, -300)
+                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\nScroll Underlay Transparency = " .. tostring(settings.scrollUnderlayTrans), -628, -300)
+                    --love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteskin = " .. tostring(noteskins[settings.noteSkins]), -628, -300)
                 elseif settingsMenuState == 3 then
                     love.graphics.print("Hardware Compression = " .. tostring(settings.hardwareCompression) .. " " .. isRestartNeeded, -628, -300) 
                     love.graphics.print("\n\nShow Debug = " .. tostring(settings.showDebug), -628, -300)
-                    love.graphics.print("\n\n\n\nInstrumental Volume = " .. tostring(settings.instVol), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\nVocals Volume = " .. tostring(settings.vocalsVol), -628, -300)
-                    love.graphics.print("\n\n\n\n\n\n\n\nHitsounds Volume = " .. tostring(settings.hitsoundVol), -628, -300)
                 end
                 love.graphics.print(newlinesMoment[settingSelect] .. ">", -640, -300)
                 
@@ -401,14 +270,14 @@ return {
                     end
                 end
 
-				love.graphics.scale(cam.sizeX, cam.sizeY)
+				love.graphics.scale(camera.sizeX, camera.sizeY)
 
 				love.graphics.pop()
 		love.graphics.pop()
 	end,
 
 	leave = function(self)
-		
+        saveSettings()
 
 		Timer.clear()
 	end

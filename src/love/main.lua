@@ -78,7 +78,96 @@ function uitext(text,x,y,r,sx,sy,ox,oy,kx,ky,alpha)
     love.graphics.print(text,x,y,r,sx,sy,a,ox,oy,kx,ky)
 end
 
+function saveSettings()
+    if settings.hardwareCompression ~= settingdata.saveSettingsMoment.hardwareCompression then
+        settingdata = {}
+        if settings.hardwareCompression then
+            imageTyppe = "dds" 
+        else
+            imageTyppe = "png"
+        end
+        settingdata.saveSettingsMoment = {
+            hardwareCompression = settings.hardwareCompression,
+            downscroll = settings.downscroll,
+            ghostTapping = settings.ghostTapping,
+            showDebug = settings.showDebug,
+            setImageType = "dds",
+            sideJudgements = settings.sideJudgements,
+            botPlay = settings.botPlay,
+            middleScroll = settings.middleScroll,
+            randomNotePlacements = settings.randomNotePlacements,
+            practiceMode = settings.practiceMode,
+            noMiss = settings.noMiss,
+            customScrollSpeed = settings.customScrollSpeed,
+            keystrokes = settings.keystrokes,
+            scrollUnderlayTrans = settings.scrollUnderlayTrans,
+            Hitsounds = settings.Hitsounds,
+            vocalsVol = settings.vocalsVol,
+            instVol = settings.instVol,
+            hitsoundVol = settings.hitsoundVol,
+            noteSkins = settings.noteSkins,
+            flashinglights = settings.flashinglights,
+            window = settings.window,
+            customBindDown = customBindDown,
+            customBindUp = customBindUp,
+            customBindLeft = customBindLeft,
+            customBindRight = customBindRight,
+            settingsVer = settingsVer
+        }
+        serialized = lume.serialize(settingdata)
+        love.filesystem.write("settings", serialized)
+        love.window.showMessageBox("Settings Saved!", "Settings saved. Vanilla Engine will now restart to make sure your settings saved")
+        love.event.quit("restart")
+    else
+        settingdata = {}
+        if settings.hardwareCompression then
+            imageTyppe = "dds" 
+        else
+            imageTyppe = "png"
+        end
+        settingdata.saveSettingsMoment = {
+            hardwareCompression = settings.hardwareCompression,
+            downscroll = settings.downscroll,
+            ghostTapping = settings.ghostTapping,
+            showDebug = settings.showDebug,
+            setImageType = "dds",
+            sideJudgements = settings.sideJudgements,
+            botPlay = settings.botPlay,
+            middleScroll = settings.middleScroll,
+            randomNotePlacements = settings.randomNotePlacements,
+            practiceMode = settings.practiceMode,
+            noMiss = settings.noMiss,
+            customScrollSpeed = settings.customScrollSpeed,
+            keystrokes = settings.keystrokes,
+            scrollUnderlayTrans = settings.scrollUnderlayTrans,
+            Hitsounds = settings.Hitsounds,
+            vocalsVol = settings.vocalsVol,
+            instVol = settings.instVol,
+            hitsoundVol = settings.hitsoundVol,
+            noteSkins = settings.noteSkins,
+            flashinglights = settings.flashinglights,
+            multiplayer = settings.multiplayer,
+
+            customBindDown = customBindDown,
+            customBindUp = customBindUp,
+            customBindLeft = customBindLeft,
+            customBindRight = customBindRight,
+            settingsVer = settingsVer
+        }
+        serialized = lume.serialize(settingdata)
+        love.filesystem.write("settings", serialized)
+        graphics.fadeOut(
+            0.3,
+            function()
+                Gamestate.switch(menuSelect)
+                status.setLoading(false)
+            end
+        )
+    end
+end
+
 function love.load()
+	settings = {}
 	local curOS = love.system.getOS()
 
 	-- Load libraries
@@ -88,6 +177,7 @@ function love.load()
 	Gamestate = require "lib.gamestate"
 	Timer = require "lib.timer"
 	json = require "lib.json"
+	lume = require "lib.lume"
 
 	-- Load modules
 	status = require "modules.status"
@@ -97,9 +187,109 @@ function love.load()
 	beatHandler = require "modules.beatHandler"
 	util = require "modules.util"
 	cutscene = require "modules.cutscene"
+	settings = require "settings"
+
+	if love.filesystem.getInfo("settings") then 
+		settingdata = love.filesystem.read("settings")
+		settingdata = lume.deserialize(settingdata)
+	
+		settings.hardwareCompression = settingdata.saveSettingsMoment.hardwareCompression
+		settings.downscroll = settingdata.saveSettingsMoment.downscroll
+		settings.ghostTapping = settingdata.saveSettingsMoment.ghostTapping
+		settings.showDebug = settingdata.saveSettingsMoment.showDebug
+		graphics.setImageType(settingdata.saveSettingsMoment.setImageType)
+		settings.sideJudgements = settingdata.saveSettingsMoment.sideJudgements
+		settings.botPlay = settingdata.saveSettingsMoment.botPlay
+		settings.middleScroll = settingdata.saveSettingsMoment.middleScroll
+		settings.practiceMode = settingdata.saveSettingsMoment.practiceMode
+		settings.noMiss = settingdata.saveSettingsMoment.noMiss
+		settings.customScrollSpeed = settingdata.saveSettingsMoment.customScrollSpeed
+		settings.scrollUnderlayTrans = settingdata.saveSettingsMoment.scrollUnderlayTrans
+		settings.noteSkins = settingdata.saveSettingsMoment.noteSkins
+		customBindDown = settingdata.saveSettingsMoment.customBindDown
+		customBindUp = settingdata.saveSettingsMoment.customBindUp
+		customBindLeft = settingdata.saveSettingsMoment.customBindLeft
+		customBindRight = settingdata.saveSettingsMoment.customBindRight
+	
+		settingsVer = settingdata.saveSettingsMoment.settingsVer
+	
+		settingdata.saveSettingsMoment = {
+			hardwareCompression = settings.hardwareCompression,
+			downscroll = settings.downscroll,
+			ghostTapping = settings.ghostTapping,
+			showDebug = settings.showDebug,
+			setImageType = "dds",
+			sideJudgements = settings.sideJudgements,
+			botPlay = settings.botPlay,
+			middleScroll = settings.middleScroll,
+			practiceMode = settings.practiceMode,
+			noMiss = settings.noMiss,
+			customScrollSpeed = settings.customScrollSpeed,
+			keystrokes = settings.keystrokes,
+			scrollUnderlayTrans = settings.scrollUnderlayTrans,
+			customBindDown = customBindDown,
+			customBindUp = customBindUp,
+			customBindLeft = customBindLeft,
+			customBindRight = customBindRight,
+			settingsVer = settingsVer
+		}
+		serialized = lume.serialize(settingdata)
+		love.filesystem.write("settings", serialized)
+	end
+	if settingsVer ~= 7 then
+		love.window.showMessageBox("Uh Oh!", "Settings have been reset.", "warning")
+		love.filesystem.remove("settings")
+	end
+	if not love.filesystem.getInfo("settings") or settingsVer ~= 7 then
+		settings.hardwareCompression = true
+		graphics.setImageType("dds")
+		settings.downscroll = false
+		settings.middleScroll = false
+		settings.ghostTapping = false
+		settings.showDebug = false
+		settings.sideJudgements = false
+		settings.botPlay = false
+		settings.practiceMode = false
+		settings.noMiss = false
+		settings.customScrollSpeed = 1
+		settings.keystrokes = false
+		settings.scrollUnderlayTrans = 0
+		--settings.noteSkins = 1
+		customBindLeft = "a"
+		customBindRight = "d"
+		customBindUp = "w"
+		customBindDown = "s"
+	
+		settings.flashinglights = false
+		settingsVer = 7
+		settingdata = {}
+		settingdata.saveSettingsMoment = {
+			hardwareCompression = settings.hardwareCompression,
+			downscroll = settings.downscroll,
+			ghostTapping = settings.ghostTapping,
+			showDebug = settings.showDebug,
+			setImageType = "dds",
+			sideJudgements = settings.sideJudgements,
+			botPlay = settings.botPlay,
+			middleScroll = settings.middleScroll,
+			practiceMode = settings.practiceMode,
+			noMiss = settings.noMiss,
+			customScrollSpeed = settings.customScrollSpeed,
+			keystrokes = settings.keystrokes,
+			scrollUnderlayTrans = settings.scrollUnderlayTrans,
+			customBindLeft = customBindLeft,
+			customBindRight = customBindRight,
+			customBindUp = customBindUp,
+			customBindDown = customBindDown,
+			
+			settingsVer = settingsVer
+		}
+		serialized = lume.serialize(settingdata)
+		love.filesystem.write("settings", serialized)
+	end
 
 	-- Load settings
-	settings = require "settings"
+	--settings = require "settings"
 	input = require "input"
 
 	-- Load Debugs

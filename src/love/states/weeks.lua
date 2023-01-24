@@ -205,8 +205,18 @@ return {
 		}
 
 		for i = 1, 4 do
-			enemyArrows[i].x = -925 + 165 * i
-			boyfriendArrows[i].x = 100 + 165 * i
+			if settings.middleScroll then 
+				boyfriendArrows[i].x = -410 + 165 * i
+				-- ew stuff
+				enemyArrows[1].x = -925 + 165 * 1 
+				enemyArrows[2].x = -925 + 165 * 2
+				enemyArrows[3].x = 100 + 165 * 3
+				enemyArrows[4].x = 100 + 165 * 4
+			else
+				enemyArrows[i].x = -925 + 165 * i
+				boyfriendArrows[i].x = 100 + 165 * i
+			end
+
 			enemyArrows[i].y = -400
 			boyfriendArrows[i].y = -400
 
@@ -883,7 +893,11 @@ return {
 
 			for i = 1, 4 do
 				if enemyArrows[i]:getAnimName() == "off" then
-					graphics.setColor(0.6, 0.6, 0.6)
+					if not settings.middleScroll then
+						graphics.setColor(0.6, 0.6, 0.6)
+					else
+						graphics.setColor(0.6, 0.6, 0.6, 0.6)
+					end
 				end
 				if not pixel then
 					enemyArrows[i]:draw()
@@ -913,7 +927,17 @@ return {
 							local animName = enemyNotes[i][j]:getAnimName()
 
 							if animName == "hold" or animName == "end" then
-								graphics.setColor(1, 1, 1, 0.5)
+								if settings.middleScroll then
+									graphics.setColor(1, 1, 1, 0.3)
+								else
+									graphics.setColor(1, 1, 1, 0.5)
+								end
+							else
+								if settings.middleScroll then
+									graphics.setColor(1, 1, 1, 0.5)
+								else
+									graphics.setColor(1, 1, 1, 1)
+								end
 							end
 							if not pixel then
 								enemyNotes[i][j]:draw()

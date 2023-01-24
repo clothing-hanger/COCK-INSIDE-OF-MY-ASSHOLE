@@ -99,10 +99,10 @@ return {
                 graphics.fadeOut(
                     0.3,
                     function()
-                        --Gamestate.push(menuSettings)
-                        love.window.showMessageBox("lol", "Not implemented yet :P", "error")
+                        Gamestate.push(menuSettings)
+                        --love.window.showMessageBox("lol", "Not implemented yet :P", "error")
                         status.setLoading(false)
-                        Gamestate.switch(menuSelect)
+                        --Gamestate.switch(menuSelect)
                     end
                 )
                 Timer.tween(0.9, freeplay, {y = -700}, "out-expo")
