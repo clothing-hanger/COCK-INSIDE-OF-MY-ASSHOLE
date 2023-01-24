@@ -286,6 +286,5 @@ return graphics.newSprite(
 		["singLEFT"] = {start = 158, stop = 172, speed = 24, offsetX = 0, offsetY = -5},
 		["sad"] = {start = 173, stop = 252, speed = 24, offsetX = 0, offsetY = -6}
 	},
-	"idle",
-	false
+	"idle"
 )

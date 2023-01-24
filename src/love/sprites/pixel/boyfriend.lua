@@ -160,5 +160,9 @@ return graphics.newSprite(
 		["singUP"] = {start = 113, stop = 126, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
-	true
+	true,
+	{
+		sing_duration = 4,
+		isCharacter = true
+	}
 )

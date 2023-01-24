@@ -256,5 +256,8 @@ return graphics.newSprite(
 		["sad"] = {start = 153, stop = 222, speed = 24, offsetX = 0, offsetY = -6}
 	},
 	"idle",
-	false
+	false,
+	{
+		isGirlfriend = true
+	}
 )

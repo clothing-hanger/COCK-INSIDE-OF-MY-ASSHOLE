@@ -183,7 +183,7 @@ return {
 		events = {}
 		enemyNotes = {}
 		boyfriendNotes = {}
-		health = 50
+		health = 1
 		score = 0
 
 		if not pixel then
@@ -663,12 +663,17 @@ return {
 
 					notMissed[noteNum] = false
 
+					if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
+						health = health - 0.095
+					else
+						health = health - 0.0125
+					end
+
 					table.remove(boyfriendNote, 1)
 
 					if combo >= 5 then self:safeAnimate(girlfriend, "sad", true, 1) end
 
 					combo = 0
-					health = health - 2
 				end
 			end
 
@@ -736,17 +741,21 @@ return {
 								ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
 								ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
 
-								table.remove(boyfriendNote, i)
-
 								if not settings.ghostTapping or success then
 									boyfriendArrow:animate("confirm", false)
 
 									self:safeAnimate(boyfriend, curAnim, false, 3)
 
-									health = health + 1
+									if boyfriendNote[i]:getAnimName() ~= "hold" and boyfriendNote[i]:getAnimName() ~= "end" then
+										health = health + 0.095
+									else
+										health = health + 0.0125
+									end
 
 									success = true
 								end
+
+								table.remove(boyfriendNote, i)
 							else
 								break
 							end
@@ -765,20 +774,20 @@ return {
 
 					score = score - 10
 					combo = 0
-					health = health - 2
+					health = health - 0.135
 				end
 			end
 
 			if notMissed[noteNum] and #boyfriendNote > 0 and input:down(curInput) and ((boyfriendNote[1].y - musicPos <= -400)) and (boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end") then
 				voices:setVolume(1)
 
-				table.remove(boyfriendNote, 1)
-
 				boyfriendArrow:animate("confirm", false)
+
+				health = health + 0.0125
 
 				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 3) end
 
-				health = health + 1
+				table.remove(boyfriendNote, 1)
 			end
 
 			if input:released(curInput) then
@@ -786,24 +795,24 @@ return {
 			end
 		end
 
-		if health > 100 then
-			health = 100
-		elseif health > 20 and boyfriendIcon:getAnimName() == "boyfriend losing" then
+		if health > 2 then
+			health = 2
+		elseif health > 0.325 and boyfriendIcon:getAnimName() == "boyfriend losing" then
 			if not pixel then 
 				boyfriendIcon:animate("boyfriend", false)
 			else
 				boyfriendIcon:animate("boyfriend (pixel)", false)
 			end
-		--elseif health <= 0 then -- Game over
-			Gamestate.push(gameOver)
-		elseif health <= 20 and boyfriendIcon:getAnimName() == "boyfriend" then
+		elseif health <= 0 then -- Game over
+			--Gamestate.push(gameOver)
+		elseif health <= 0.325 and boyfriendIcon:getAnimName() == "boyfriend" then
 			if not pixel then 
 				boyfriendIcon:animate("boyfriend losing", false)
 			end
 		end
 
-		enemyIcon.x = 425 - health * 10
-		boyfriendIcon.x = 585 - health * 10
+		enemyIcon.x = 425 - health * 500
+		boyfriendIcon.x = 585 - health * 500
 
 		if beatHandler.onBeat() then
 			if enemyIconTimer then Timer.cancel(enemyIconTimer) end
@@ -940,7 +949,7 @@ return {
 			graphics.setColor(1, 0, 0)
 			love.graphics.rectangle("fill", -500, 350, 1000, 25)
 			graphics.setColor(0, 1, 0)
-			love.graphics.rectangle("fill", 500, 350, -health * 10, 25)
+			love.graphics.rectangle("fill", 500, 350, -health * 500, 25)
 			graphics.setColor(0, 0, 0)
 			love.graphics.setLineWidth(10)
 			love.graphics.rectangle("line", -500, 350, 1000, 25)
