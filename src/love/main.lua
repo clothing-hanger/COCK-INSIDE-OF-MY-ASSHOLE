@@ -91,7 +91,7 @@ function love.load()
 
 	--cam = {x = 0, y = 0, sizeX = 0.9, sizeY = 0.9}
 	--camScale = {x = 0.9, y = 0.9}
-	uiScale = {x = 0.7, y = 0.7}
+	uiScale = {x = 1, y = 1, sizeX = 1, sizeY = 1}
 
 	musicTime = 0
 	health = 0

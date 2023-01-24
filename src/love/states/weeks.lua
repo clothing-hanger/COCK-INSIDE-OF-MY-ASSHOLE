@@ -566,8 +566,12 @@ return {
 
 		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
+			if uiScaleTimer then Timer.cancel(uiScaleTimer) end
 
 			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
+			if beatHandler.getBeat() % 8 == 0  then
+				uiScaleTimer = Timer.tween((60 / bpm) / 16, uiScale, {x = uiScale.x * 1.05, y = uiScale.y * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), uiScale, {x = uiScale.sizeX, y = uiScale.sizeY}, "out-quad") end)
+			end
 		end
 		--[[
 		if beatHandler.onBeat() then 
@@ -709,7 +713,10 @@ return {
 								end
 								combo = combo + 1
 
-								table.insert(judgements, {ratingAnim, 1, girlfriend.y - 50, {tostring(math.floor(combo / 100 % 10)), tostring(math.floor(combo / 10 % 10)), tostring(math.floor(combo % 10))}, {0, 0, 0}})
+								table.insert(judgements, {ratingAnim, 1, girlfriend.y - 50})
+								numbers[1]:animate(tostring(math.floor(combo / 100 % 10)), false)
+								numbers[2]:animate(tostring(math.floor(combo / 10 % 10)), false)
+								numbers[3]:animate(tostring(math.floor(combo % 10)), false)
 
 								for i = 1, 5 do
 									if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
@@ -720,16 +727,12 @@ return {
 									numbers[i].y = girlfriend.y + 50
 								end
 
-								--ratingTimers[1] = Timer.tween(2, ratingVisibility, {0})
 								Timer.tween(2, judgements[#judgements], {[2] = 0}, "linear")
-								--ratingTimers[2] = Timer.tween(2, rating, {y = girlfriend.y - 100}, "out-elastic")
 								Timer.tween(2, judgements[#judgements], {[3] = girlfriend.y - 100}, "out-elastic")
-								--ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								--ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								--ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								Timer.tween(2, judgements[#judgements][5], {[1]=girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								Timer.tween(2, judgements[#judgements][5], {[2]=girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								Timer.tween(2, judgements[#judgements][5], {[3]=girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+
+								ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
 
 								if not settings.ghostTapping or success then
 									boyfriendArrow:animate("confirm", false)
@@ -832,12 +835,6 @@ return {
 				rating:animate(judgements[i][1], false)
 				rating.y = judgements[i][3]
 				graphics.setColor(1, 1, 1, judgements[i][2])
-				numbers[1]:animate(judgements[i][4][1], false)
-				numbers[2]:animate(judgements[i][4][2], false)
-				numbers[3]:animate(judgements[i][4][3], false)
-				for k = 1, 3 do 
-					numbers[k].y = judgements[i][5][k]
-				end
 				if not pixel then
 					rating:draw()
 					for k = 1, 3 do
@@ -862,6 +859,7 @@ return {
 			else
 				love.graphics.scale(0.7, -0.7)
 			end
+			love.graphics.scale(uiScale.x, uiScale.y)
 
 			for i = 1, 4 do
 				if enemyArrows[i]:getAnimName() == "off" then
@@ -966,6 +964,7 @@ return {
 		love.graphics.push()
 			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
 			love.graphics.scale(0.7, 0.7)
+			love.graphics.scale(uiScale.x, uiScale.y)
 
 			graphics.setColor(1, 1, 1, visibility)
 			graphics.setColor(1, 0, 0)

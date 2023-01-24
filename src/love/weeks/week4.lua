@@ -150,8 +150,10 @@ return {
 		-- Hardcoded M.I.L.F camera scaling
 		if song == 3 and musicTime > 56000 and musicTime < 67000 and musicThres ~= oldMusicThres and math.fmod(absMusicTime, 60000 / bpm) < 100 then
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
+			if uiScaleTimer then Timer.cancel(uiScaleTimer) end
 
 			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
+			uiScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = uiScale.x * 1.05, sizeY = uiScale.y * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = uiScale.sizeX, sizeY = uiScale.sizeY}, "out-quad") end)
 		end
 
 		bgLimo:update(dt)

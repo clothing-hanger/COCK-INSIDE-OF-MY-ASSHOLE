@@ -27,42 +27,13 @@ local scaryIntro = false
 
 return {
 	enter = function(self, from, songNum, songAppend)
+		weeks:enter()
+
 		camera.sizeX, camera.sizeY = 0.7, 0.7
 		camera.scaleX, camera.scaleY = 0.7, 0.7
 
-		bpm = 100
-		useAltAnims = false
-
-		enemyFrameTimer = 0
-		boyfriendFrameTimer = 0
-
-		sounds = {
-			countdown = {
-				three = love.audio.newSource("sounds/countdown-3.ogg", "static"),
-				two = love.audio.newSource("sounds/countdown-2.ogg", "static"),
-				one = love.audio.newSource("sounds/countdown-1.ogg", "static"),
-				go = love.audio.newSource("sounds/countdown-go.ogg", "static")
-			},
-			miss = {
-				love.audio.newSource("sounds/miss1.ogg", "static"),
-				love.audio.newSource("sounds/miss2.ogg", "static"),
-				love.audio.newSource("sounds/miss3.ogg", "static")
-			},
-			death = love.audio.newSource("sounds/death.ogg", "static"),
-			lightsOff = love.audio.newSource("sounds/week5/lights-off.ogg", "static"),
-			lightsOn = love.audio.newSource("sounds/week5/lights-on.ogg", "static")
-		}
-
-		images = {
-			icons = love.graphics.newImage(graphics.imagePath("icons")),
-			notes = love.graphics.newImage(graphics.imagePath("notes")),
-			numbers = love.graphics.newImage(graphics.imagePath("numbers"))
-		}
-
-		sprites = {
-			icons = love.filesystem.load("sprites/icons.lua"),
-			numbers = love.filesystem.load("sprites/numbers.lua")
-		}
+		sounds.lightsOff = love.audio.newSource("sounds/week5/lights-off.ogg", "static")
+		sounds.lightsOn = love.audio.newSource("sounds/week5/lights-on.ogg", "static")
 
 		song = songNum
 		difficulty = songAppend
@@ -92,41 +63,10 @@ return {
 		boyfriend = love.filesystem.load("sprites/week5/boyfriend.lua")()
 		fakeBoyfriend = love.filesystem.load("sprites/boyfriend.lua")() -- Used for game over
 
-		rating = love.filesystem.load("sprites/rating.lua")()
-
 		girlfriend.x, girlfriend.y = -50, 410
 		enemy.x, enemy.y = -780, 410
 		boyfriend.x, boyfriend.y = 300, 620
 		fakeBoyfriend.x, fakeBoyfriend.y = 300, 620
-
-		rating.sizeX, rating.sizeY = 0.75, 0.75
-		numbers = {}
-		for i = 1, 3 do
-			numbers[i] = sprites.numbers()
-
-			numbers[i].sizeX, numbers[i].sizeY = 0.5, 0.5
-		end
-
-		enemyIcon = sprites.icons()
-		boyfriendIcon = sprites.icons()
-
-		if settings.downscroll then
-			downscrollOffset = -750
-		else
-			downscrollOffset = 0
-		end
-
-
-		enemyIcon.y = 350 + downscrollOffset
-		boyfriendIcon.y = 350 + downscrollOffset
-
-		enemyIcon.sizeX = 1.5
-		boyfriendIcon.sizeX = -1.5
-		enemyIcon.sizeY = 1.5
-		boyfriendIcon.sizeY = 1.5
-
-		countdownFade = {}
-		countdown = love.filesystem.load("sprites/countdown.lua")()
 
 		enemyIcon:animate("dearest duo", false)
 
@@ -319,73 +259,7 @@ return {
 		love.graphics.pop()
 
 		if not scaryIntro then
-			love.graphics.push()
-				love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-				if not settings.downscroll then
-					love.graphics.scale(0.7, 0.7)
-				else
-					love.graphics.scale(0.7, -0.7)
-				end
-
-				for i = 1, 4 do
-					if enemyArrows[i]:getAnimName() == "off" then
-						graphics.setColor(0.6, 0.6, 0.6)
-					end
-					enemyArrows[i]:draw()
-					graphics.setColor(1, 1, 1)
-					boyfriendArrows[i]:draw()
-
-					love.graphics.push()
-						love.graphics.translate(0, -musicPos)
-
-						for j = #enemyNotes[i], 1, -1 do
-							if (enemyNotes[i][j].y - musicPos <= 560) then
-								local animName = enemyNotes[i][j]:getAnimName()
-
-								if animName == "hold" or animName == "end" then
-									graphics.setColor(1, 1, 1, 0.5)
-								end
-								enemyNotes[i][j]:draw()
-								graphics.setColor(1, 1, 1)
-							end
-						end
-						for j = #boyfriendNotes[i], 1, -1 do
-							if (boyfriendNotes[i][j].y - musicPos <= 560) then
-								local animName = boyfriendNotes[i][j]:getAnimName()
-
-								if animName == "hold" or animName == "end" then
-									graphics.setColor(1, 1, 1, math.min(0.5, (500 + (boyfriendNotes[i][j].y - musicPos)) / 150))
-								else
-									graphics.setColor(1, 1, 1, math.min(1, (500 + (boyfriendNotes[i][j].y - musicPos)) / 75))
-								end
-								boyfriendNotes[i][j]:draw()
-							end
-						end
-						graphics.setColor(1, 1, 1)
-					love.graphics.pop()
-				end
-
-				graphics.setColor(1, 0, 0)
-				love.graphics.rectangle("fill", -500, 350, 1000, 25)
-				graphics.setColor(0, 1, 0)
-				love.graphics.rectangle("fill", 500, 350, -health * 10, 25)
-				graphics.setColor(0, 0, 0)
-				love.graphics.setLineWidth(10)
-				love.graphics.rectangle("line", -500, 350, 1000, 25)
-				love.graphics.setLineWidth(1)
-				graphics.setColor(1, 1, 1)
-
-				boyfriendIcon:draw()
-				enemyIcon:draw()
-
-				graphics.setColor(0, 0, 0)
-				love.graphics.print("Score: " .. score, 300, 400)
-				graphics.setColor(1, 1, 1)
-
-				graphics.setColor(1, 1, 1, countdownFade[1])
-				countdown:draw()
-				graphics.setColor(1, 1, 1)
-			love.graphics.pop()
+			weeks:drawUI()
 		end
 	end,
 
