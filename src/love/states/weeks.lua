@@ -174,6 +174,9 @@ return {
 		judgements = {}
 		health = 1
 		score = 0
+		misses = 0
+		additionalAccuracy = 0
+		noteCounter = 0
 
 		if not pixel then
 			sprites.leftArrow = love.filesystem.load("sprites/left-arrow.lua")
@@ -512,6 +515,11 @@ return {
 	update = function(self, dt)
 		beatHandler.update(dt)
 
+		convertedAcc = string.format(
+			"%.2f%%",
+			(additionalAccuracy / (noteCounter + misses))
+		)
+
 		oldMusicThres = musicThres
 		if countingDown or love.system.getOS() == "Web" then -- Source:tell() can't be trusted on love.js!
 			musicTime = musicTime + 1000 * dt
@@ -658,6 +666,8 @@ return {
 
 					if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
 						health = health - 0.095
+						misses = misses + 1
+						additionalAccuracy = additionalAccuracy + 1.11
 					else
 						health = health - 0.0125
 					end
@@ -697,21 +707,26 @@ return {
 								if notePos <= 45 then -- "Sick"
 									score = score + 350
 									ratingAnim = "sick"
+									additionalAccuracy = additionalAccuracy + 100.0
 								elseif notePos <= 80 then -- "Good"
 									score = score + 200
 									ratingAnim = "good"
+									additionalAccuracy = additionalAccuracy + 75.55
 								elseif notePos <= 110 then -- "Bad"
 									score = score + 100
 									ratingAnim = "bad"
+									additionalAccuracy = additionalAccuracy + 50.55
 								else -- "Shit"
 									if settings.ghostTapping then
 										success = false
 									else
 										score = score + 50
+										additionalAccuracy = additionalAccuracy + 25.55
 									end
 									ratingAnim = "shit"
 								end
 								combo = combo + 1
+								noteCounter = noteCounter + 1
 
 								table.insert(judgements, {ratingAnim, 1, girlfriend.y - 50})
 								numbers[1]:animate(tostring(math.floor(combo / 100 % 10)), false)
@@ -768,6 +783,8 @@ return {
 					score = score - 10
 					combo = 0
 					health = health - 0.135
+					additionalAccuracy = additionalAccuracy + 1.11
+					misses = misses + 1
 				end
 			end
 
@@ -959,6 +976,25 @@ return {
 		self:drawHealthbar()
 	end,
 
+	healthbarText = function(self, text, colourInline, colourOutline)
+		local text = text or "???"
+		local colourInline = colourInline or {1, 1, 1, 1}
+		if not colourInline[4] then colourInline[4] = 1 end
+		local colourOutline = colourOutline or {0, 0, 0, 1}
+		if not colourOutline[4] then colourOutline[4] = 1 end
+		--textshiz, -600, 400+downscrollOffset, 1200, "center"
+
+		graphics.setColor(colourOutline[1], colourOutline[2], colourOutline[3], colourOutline[4])
+		love.graphics.printf(text, -600-2, 400+downscrollOffset, 1200, "center")
+		love.graphics.printf(text, -600+2, 400+downscrollOffset, 1200, "center")
+		love.graphics.printf(text, -600, 400+downscrollOffset-2, 1200, "center")
+		love.graphics.printf(text, -600, 400+downscrollOffset+2, 1200, "center")
+
+		graphics.setColor(colourInline[1], colourInline[2], colourInline[3], colourInline[4])
+		love.graphics.printf(text, -600, 400+downscrollOffset, 1200, "center")
+
+	end,
+
 	drawHealthbar = function(self, visibility)
 		local visibility = visibility or 1
 		love.graphics.push()
@@ -979,7 +1015,15 @@ return {
 
 			boyfriendIcon:draw()
 			enemyIcon:draw()
-			love.graphics.print("Score: " .. score, 300, 400+downscrollOffset)
+			if (additionalAccuracy / (noteCounter + misses)) >= 100 and noteCounter + misses <= 0 then 
+				convertedAcc = "0%"
+			elseif (additionalAccuracy / (noteCounter + misses)) >= 100 and not (noteCounter + misses <= 0) then
+				convertedAcc = "100%"
+			end
+			if convertedAcc == "nan%" then
+				convertedAcc = "0%"
+			end
+			self:healthbarText("Score: " .. score .. " | Misses: " .. misses .. " | Accuracy: " .. convertedAcc)
 		love.graphics.pop()
 	end,
 
