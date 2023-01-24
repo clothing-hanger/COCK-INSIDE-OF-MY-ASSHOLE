@@ -59,7 +59,7 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		sunset = graphics.newImage(love.graphics.newImage(graphics.imagePath("week4/sunset")))
+		sunset = graphics.newImage(graphics.imagePath("week4/sunset"))
 
 		bgLimo = love.filesystem.load("sprites/week4/bg-limo.lua")()
 		limoDancer = love.filesystem.load("sprites/week4/limo-dancer.lua")()
@@ -91,20 +91,26 @@ return {
 		enemyIcon = sprites.icons()
 		boyfriendIcon = sprites.icons()
 
-		if settings.downscroll then
-			enemyIcon.y = -400
-			boyfriendIcon.y = -400
-		else
-			enemyIcon.y = 350
-			boyfriendIcon.y = 350
-		end
-		enemyIcon.sizeX, enemyIcon.sizeY = 1.5, 1.5
-		boyfriendIcon.sizeX, boyfriendIcon.sizeY = -1.5, 1.5
+		enemyIcon.y = 350 
+		boyfriendIcon.y = 350 
+
+		enemyIcon.sizeX = 1.5
+		boyfriendIcon.sizeX = -1.5
 
 		countdownFade = {}
 		countdown = love.filesystem.load("sprites/countdown.lua")()
 
 		enemyIcon:animate("mommy mearest", false)
+
+		if settings.downscroll then
+			downscrollOffset = -750
+			enemyIcon.sizeY = -1.5
+			boyfriendIcon.sizeY = -1.5
+		else
+			downscrollOffset = 0
+			enemyIcon.sizeY = 1.5
+			boyfriendIcon.sizeY = 1.5
+		end
 
 		self:load()
 	end,
@@ -132,11 +138,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("data/week4/milf/milf" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week4/milf/milf" .. difficulty .. ".json")
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("data/week4/high/high" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week4/high/high" .. difficulty .. ".json")
 		else
-			weeks:generateNotes(love.filesystem.load("data/week4/satin-panties/sain-panties" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week4/satin-panties/satin-panties" .. difficulty .. ".json")
 		end
 	end,
 

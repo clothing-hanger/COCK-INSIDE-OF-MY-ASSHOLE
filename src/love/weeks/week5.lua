@@ -68,10 +68,10 @@ return {
 		difficulty = songAppend
 
 		if song ~= 3 then
-			walls = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/walls")))
-			escalator = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/escalator")))
-			christmasTree = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/christmas-tree")))
-			snow = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/snow")))
+			walls = graphics.newImage(graphics.imagePath("week5/walls"))
+			escalator = graphics.newImage(graphics.imagePath("week5/escalator"))
+			christmasTree = graphics.newImage(graphics.imagePath("week5/christmas-tree"))
+			snow = graphics.newImage(graphics.imagePath("week5/snow"))
 
 			escalator.x = 125
 			christmasTree.x = 75
@@ -110,20 +110,26 @@ return {
 		enemyIcon = sprites.icons()
 		boyfriendIcon = sprites.icons()
 
-		if settings.downscroll then
-			enemyIcon.y = -400
-			boyfriendIcon.y = -400
-		else
-			enemyIcon.y = 350
-			boyfriendIcon.y = 350
-		end
-		enemyIcon.sizeX, enemyIcon.sizeY = 1.5, 1.5
-		boyfriendIcon.sizeX, boyfriendIcon.sizeY = -1.5, 1.5
+		enemyIcon.y = 350 
+		boyfriendIcon.y = 350 
+
+		enemyIcon.sizeX = 1.5
+		boyfriendIcon.sizeX = -1.5
 
 		countdownFade = {}
 		countdown = love.filesystem.load("sprites/countdown.lua")()
 
 		enemyIcon:animate("dearest duo", false)
+
+		if settings.downscroll then
+			downscrollOffset = -750
+			enemyIcon.sizeY = -1.5
+			boyfriendIcon.sizeY = -1.5
+		else
+			downscrollOffset = 0
+			enemyIcon.sizeY = 1.5
+			boyfriendIcon.sizeY = 1.5
+		end
 
 		self:load()
 	end,
@@ -143,9 +149,9 @@ return {
 				camera.sizeX, camera.sizeY = 0.9, 0.9
 			end
 
-			walls = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/evil-bg")))
-			christmasTree = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/evil-tree")))
-			snow = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/evil-snow")))
+			walls = graphics.newImage(graphics.imagePath("week5/evil-bg"))
+			christmasTree = graphics.newImage(graphics.imagePath("week5/evil-tree"))
+			snow = graphics.newImage(graphics.imagePath("week5/evil-snow"))
 
 			walls.y = -250
 			christmasTree.x = 75
@@ -159,13 +165,13 @@ return {
 			enemyIcon:animate("monster", false)
 
 			inst = love.audio.newSource("songs/week5/winter-horrorland/Inst.ogg", "stream")
-			voices = love.audio.newSource("songs/week5/winter-horrorland/VVoices.ogg", "stream")
+			voices = love.audio.newSource("songs/week5/winter-horrorland/Voices.ogg", "stream")
 		elseif song == 2 then
 			inst = love.audio.newSource("songs/week5/eggnog/Inst.ogg", "stream")
-			voices = love.audio.newSource("songs/week5/eggnog/VVoices.ogg", "stream")
+			voices = love.audio.newSource("songs/week5/eggnog/Voices.ogg", "stream")
 		else
 			inst = love.audio.newSource("songs/week5/cocoa/Inst.ogg", "stream")
-			voices = love.audio.newSource("songs/week5/cocoa/VVoices.ogg", "stream")
+			voices = love.audio.newSource("songs/week5/cocoa/Voices.ogg", "stream")
 		end
 
 		self:initUI()
@@ -192,11 +198,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("data/week5/winter-horrorland/winter-horrorland" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week5/winter-horrorland/winter-horrorland" .. difficulty .. ".json")
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("data/week5/eggnog/eggnog" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week5/eggnog/eggnog" .. difficulty .. ".json")
 		else
-			weeks:generateNotes(love.filesystem.load("data/week5/cocoa/cocoa" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week5/cocoa/cocoa" .. difficulty .. ".json")
 		end
 	end,
 
@@ -316,7 +322,11 @@ return {
 		if not scaryIntro then
 			love.graphics.push()
 				love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-				love.graphics.scale(0.7, 0.7)
+				if not settings.downscroll then
+					love.graphics.scale(0.7, 0.7)
+				else
+					love.graphics.scale(0.7, -0.7)
+				end
 
 				for i = 1, 4 do
 					if enemyArrows[i]:getAnimName() == "off" then
@@ -330,7 +340,7 @@ return {
 						love.graphics.translate(0, -musicPos)
 
 						for j = #enemyNotes[i], 1, -1 do
-							if (not settings.downscroll and enemyNotes[i][j].y - musicPos <= 560) or (settings.downscroll and enemyNotes[i][j].y - musicPos >= -560) then
+							if (enemyNotes[i][j].y - musicPos <= 560) then
 								local animName = enemyNotes[i][j]:getAnimName()
 
 								if animName == "hold" or animName == "end" then
@@ -341,21 +351,13 @@ return {
 							end
 						end
 						for j = #boyfriendNotes[i], 1, -1 do
-							if (not settings.downscroll and boyfriendNotes[i][j].y - musicPos <= 560) or (settings.downscroll and boyfriendNotes[i][j].y - musicPos >= -560) then
+							if (boyfriendNotes[i][j].y - musicPos <= 560) then
 								local animName = boyfriendNotes[i][j]:getAnimName()
 
-								if settings.downscroll then
-									if animName == "hold" or animName == "end" then
-										graphics.setColor(1, 1, 1, math.min(0.5, (500 - (boyfriendNotes[i][j].y - musicPos)) / 150))
-									else
-										graphics.setColor(1, 1, 1, math.min(1, (500 - (boyfriendNotes[i][j].y - musicPos)) / 75))
-									end
+								if animName == "hold" or animName == "end" then
+									graphics.setColor(1, 1, 1, math.min(0.5, (500 + (boyfriendNotes[i][j].y - musicPos)) / 150))
 								else
-									if animName == "hold" or animName == "end" then
-										graphics.setColor(1, 1, 1, math.min(0.5, (500 + (boyfriendNotes[i][j].y - musicPos)) / 150))
-									else
-										graphics.setColor(1, 1, 1, math.min(1, (500 + (boyfriendNotes[i][j].y - musicPos)) / 75))
-									end
+									graphics.setColor(1, 1, 1, math.min(1, (500 + (boyfriendNotes[i][j].y - musicPos)) / 75))
 								end
 								boyfriendNotes[i][j]:draw()
 							end
@@ -364,40 +366,22 @@ return {
 					love.graphics.pop()
 				end
 
-				if settings.downscroll then
-					graphics.setColor(1, 0, 0)
-					love.graphics.rectangle("fill", -500, -400, 1000, 25)
-					graphics.setColor(0, 1, 0)
-					love.graphics.rectangle("fill", 500, -400, -health * 10, 25)
-					graphics.setColor(0, 0, 0)
-					love.graphics.setLineWidth(10)
-					love.graphics.rectangle("line", -500, -400, 1000, 25)
-					love.graphics.setLineWidth(1)
-					graphics.setColor(1, 1, 1)
-				else
-					graphics.setColor(1, 0, 0)
-					love.graphics.rectangle("fill", -500, 350, 1000, 25)
-					graphics.setColor(0, 1, 0)
-					love.graphics.rectangle("fill", 500, 350, -health * 10, 25)
-					graphics.setColor(0, 0, 0)
-					love.graphics.setLineWidth(10)
-					love.graphics.rectangle("line", -500, 350, 1000, 25)
-					love.graphics.setLineWidth(1)
-					graphics.setColor(1, 1, 1)
-				end
+				graphics.setColor(1, 0, 0)
+				love.graphics.rectangle("fill", -500, 350, 1000, 25)
+				graphics.setColor(0, 1, 0)
+				love.graphics.rectangle("fill", 500, 350, -health * 10, 25)
+				graphics.setColor(0, 0, 0)
+				love.graphics.setLineWidth(10)
+				love.graphics.rectangle("line", -500, 350, 1000, 25)
+				love.graphics.setLineWidth(1)
+				graphics.setColor(1, 1, 1)
 
 				boyfriendIcon:draw()
 				enemyIcon:draw()
 
-				if settings.downscroll then
-					graphics.setColor(0, 0, 0)
-					love.graphics.print("Score: " .. score, 300, -350)
-					graphics.setColor(1, 1, 1)
-				else
-					graphics.setColor(0, 0, 0)
-					love.graphics.print("Score: " .. score, 300, 400)
-					graphics.setColor(1, 1, 1)
-				end
+				graphics.setColor(0, 0, 0)
+				love.graphics.print("Score: " .. score, 300, 400)
+				graphics.setColor(1, 1, 1)
 
 				graphics.setColor(1, 1, 1, countdownFade[1])
 				countdown:draw()

@@ -935,7 +935,19 @@ return {
 			love.graphics.print("Score: " .. score, 300, 400)
 
 			graphics.setColor(1, 1, 1, countdownFade[1])
-			countdown:draw()
+			if not settings.downscroll then
+				if not pixel or pixel then 
+					countdown:draw()
+				else
+					countdown:udraw(6.75, 6.75)
+				end
+			else
+				if not pixel or pixel then 
+					countdown:udraw(1, -1)
+				else
+					countdown:udraw(6.75, -6.75)
+				end
+			end
 			graphics.setColor(1, 1, 1)
 		love.graphics.pop()
 	end,

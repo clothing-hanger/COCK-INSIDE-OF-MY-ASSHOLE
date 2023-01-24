@@ -41,11 +41,11 @@ return {
 		}
 		winColor = 1
 
-		sky = graphics.newImage(love.graphics.newImage(graphics.imagePath("week3/sky")))
-		city = graphics.newImage(love.graphics.newImage(graphics.imagePath("week3/city")))
-		cityWindows = graphics.newImage(love.graphics.newImage(graphics.imagePath("week3/city-windows")))
-		behindTrain = graphics.newImage(love.graphics.newImage(graphics.imagePath("week3/behind-train")))
-		street = graphics.newImage(love.graphics.newImage(graphics.imagePath("week3/street")))
+		sky = graphics.newImage(graphics.imagePath("week3/sky"))
+		city = graphics.newImage(graphics.imagePath("week3/city"))
+		cityWindows = graphics.newImage(graphics.imagePath("week3/city-windows"))
+		behindTrain = graphics.newImage(graphics.imagePath("week3/behind-train"))
+		street = graphics.newImage(graphics.imagePath("week3/street"))
 
 		behindTrain.y = -100
 		behindTrain.sizeX, behindTrain.sizeY = 1.25, 1.25
@@ -87,11 +87,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("data/week3/blammed/blammed" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week3/blammed/blammed" .. difficulty .. ".json")
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("data/week3/philly/philly" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week3/philly/philly" .. difficulty .. ".json")
 		else
-			weeks:generateNotes(love.filesystem.load("data/week3/pico/pico" .. difficulty .. ".json")())
+			weeks:generateNotes("data/week3/pico/pico" .. difficulty .. ".json")
 		end
 	end,
 
