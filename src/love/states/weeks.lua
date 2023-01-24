@@ -317,6 +317,7 @@ return {
 					   	table.insert(boyfriendNotes[id], sprite())
 					   	boyfriendNotes[id][c].x = x
 					   	boyfriendNotes[id][c].y = -400 + noteTime * 0.6 * speed
+						boyfriendNotes[id][c].time = noteTime
 						if settings.downscroll then
 							boyfriendNotes[id][c].sizeY = -1
 						end
@@ -352,6 +353,7 @@ return {
 					   	table.insert(boyfriendNotes[id], sprite())
 					   	boyfriendNotes[id][c].x = x
 					   	boyfriendNotes[id][c].y = -400 + noteTime * 0.6 * speed
+						boyfriendNotes[id][c].time = noteTime
 						if settings.downscroll then
 							boyfriendNotes[id][c].sizeY = -1
 						end
@@ -682,13 +684,13 @@ return {
 				if #boyfriendNote > 0 then
 					for i = 1, #boyfriendNote do
 						if boyfriendNote[i] and boyfriendNote[i]:getAnimName() == "on" then
-							if (boyfriendNote[i].y - musicPos <= -280) then
+							if (boyfriendNote[i].time - musicTime <= 150) then
 								local notePos
 								local ratingAnim
 
 								notMissed[noteNum] = true
 
-								notePos = math.abs(-400 - (boyfriendNote[i].y - musicPos))
+								notePos = math.abs(boyfriendNote[i].time - musicTime)
 
 								voices:setVolume(1)
 
