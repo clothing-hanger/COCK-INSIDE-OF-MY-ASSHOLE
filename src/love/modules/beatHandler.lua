@@ -61,6 +61,11 @@ function beatHandler.update(dt)
     end
 end
 
+function beatHandler.reset()
+    beatHandler.beat = 0
+    beatHandler.beatTime = 0
+end
+
 function beatHandler.onBeat()
     return beatHandler.beatTime == 0
 end

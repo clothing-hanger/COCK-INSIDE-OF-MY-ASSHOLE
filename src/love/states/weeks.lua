@@ -40,6 +40,7 @@ local judgements = {}
 
 return {
 	enter = function(self, option)
+		beatHandler.reset()
 		option = option or "normal"
 		if option ~= "pixel" then
 			pixel = false

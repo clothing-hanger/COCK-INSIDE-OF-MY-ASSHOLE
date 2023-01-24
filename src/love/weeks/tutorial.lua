@@ -30,9 +30,9 @@ return {
 
 		difficulty = songAppend
 
-		stageBack = graphics.newImage(love.graphics.newImage(graphics.imagePath("week1/stage-back")))
-		stageFront = graphics.newImage(love.graphics.newImage(graphics.imagePath("week1/stage-front")))
-		curtains = graphics.newImage(love.graphics.newImage(graphics.imagePath("week1/curtains")))
+		stageBack = graphics.newImage(graphics.imagePath("week1/stage-back"))
+		stageFront = graphics.newImage(graphics.imagePath("week1/stage-front"))
+		curtains = graphics.newImage(graphics.imagePath("week1/curtains"))
 
 		stageFront.y = 400
 		curtains.y = -100
@@ -63,7 +63,7 @@ return {
 	initUI = function(self)
 		weeks:initUI()
 
-		weeks:generateNotes(love.filesystem.load("data/tutorial/tutorial" .. difficulty .. ".json")())
+		weeks:generateNotes(love.filesystem.load("data/tutorial/tutorial-" .. difficulty .. ".json")())
 	end,
 
 	update = function(self, dt)

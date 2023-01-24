@@ -43,6 +43,7 @@ if love.system.getOS() == "NX" then
 			right = {"axis:leftx+", "button:dpright", "key:right"},
 			confirm = {"button:b", "key:return"},
 			back = {"button:a", "key:escape"},
+			tab = {"button:minus", "key:tab"},
 
 			gameLeft = gameLeft,
 			gameDown = gameDown,
@@ -73,6 +74,7 @@ else
 			right = {"key:right", "axis:leftx+", "button:dpright"},
 			confirm = {"key:return", "button:a"},
 			back = {"key:escape", "button:b"},
+			tab = {"key:tab", "button:back"},
 
 			gameLeft = gameLeft,
 			gameDown = gameDown,
