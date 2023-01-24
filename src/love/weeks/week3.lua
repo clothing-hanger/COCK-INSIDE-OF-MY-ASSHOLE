@@ -68,14 +68,14 @@ return {
 		weeks:load()
 
 		if song == 3 then
-			inst = love.audio.newSource("music/week3/blammed-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week3/blammed-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week3/blammed/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week3/blammed/Voices.ogg", "stream")
 		elseif song == 2 then
-			inst = love.audio.newSource("music/week3/philly-nice-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week3/philly-nice-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week3/philly/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week3/philly/Voices.ogg", "stream")
 		else
-			inst = love.audio.newSource("music/week3/pico-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week3/pico-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week3/pico/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week3/pico/Voices.ogg", "stream")
 		end
 
 		self:initUI()
@@ -87,11 +87,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("charts/week3/blammed" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week3/blammed/blammed" .. difficulty .. ".json")())
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("charts/week3/philly-nice" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week3/philly/philly" .. difficulty .. ".json")())
 		else
-			weeks:generateNotes(love.filesystem.load("charts/week3/pico" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week3/pico/pico" .. difficulty .. ".json")())
 		end
 	end,
 
@@ -184,6 +184,8 @@ return {
 		cityWindows = nil
 		behindTrain = nil
 		street = nil
+
+		graphics.clearCache()
 
 		weeks:leave()
 	end

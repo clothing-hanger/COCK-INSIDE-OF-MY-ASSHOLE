@@ -27,8 +27,8 @@ local weekNum = 1
 local songNum, songAppend
 local songDifficulty = 2
 
-local titleBG = graphics.newImage(love.graphics.newImage(graphics.imagePath("menu/title-bg")))
-local logo = graphics.newImage(love.graphics.newImage(graphics.imagePath("menu/logo")))
+local titleBG = graphics.newImage(graphics.imagePath("menu/title-bg"))
+local logo = graphics.newImage(graphics.imagePath("menu/logo"))
 
 local girlfriendTitle = love.filesystem.load("sprites/menu/girlfriend-title.lua")()
 
@@ -340,6 +340,7 @@ return {
 
 				girlfriendTitle:draw()
 
+				--[[ -- lol
 				love.graphics.printf(
 					"v1.1.0 beta 2\n" ..
 					"Developed by HTV04\n\n" ..
@@ -352,6 +353,7 @@ return {
 					1,
 					1
 				)
+				--]]
 
 				drawFunc()
 			love.graphics.pop()
@@ -360,6 +362,8 @@ return {
 
 	leave = function(self)
 		music:stop()
+
+		graphics.clearCache()
 
 		Timer.clear()
 	end

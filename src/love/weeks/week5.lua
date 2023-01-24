@@ -158,14 +158,14 @@ return {
 
 			enemyIcon:animate("monster", false)
 
-			inst = love.audio.newSource("music/week5/winter-horrorland-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week5/winter-horrorland-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week5/winter-horrorland/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week5/winter-horrorland/VVoices.ogg", "stream")
 		elseif song == 2 then
-			inst = love.audio.newSource("music/week5/eggnog-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week5/eggnog-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week5/eggnog/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week5/eggnog/VVoices.ogg", "stream")
 		else
-			inst = love.audio.newSource("music/week5/cocoa-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week5/cocoa-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week5/cocoa/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week5/cocoa/VVoices.ogg", "stream")
 		end
 
 		self:initUI()
@@ -192,11 +192,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("charts/week5/winter-horrorland" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week5/winter-horrorland/winter-horrorland" .. difficulty .. ".json")())
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("charts/week5/eggnog" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week5/eggnog/eggnog" .. difficulty .. ".json")())
 		else
-			weeks:generateNotes(love.filesystem.load("charts/week5/cocoa" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week5/cocoa/cocoa" .. difficulty .. ".json")())
 		end
 	end,
 
@@ -411,6 +411,8 @@ return {
 		escalator = nil
 
 		santa = nil
+
+		graphics.clearCache()
 
 		weeks:leave()
 	end

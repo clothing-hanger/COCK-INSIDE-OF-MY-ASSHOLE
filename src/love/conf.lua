@@ -18,9 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
 function love.conf(t)
-	t.identity = "funkin-rewritten"
+	t.identity = "ve-rewrite"
 	t.version = "11.3"
 	--t.console = true
 
-	t.window.title = "Friday Night Funkin' Rewritten v1.1.0 beta 2"
+	t.window.title = "Friday Night Funkin' Vanilla Engine (Rewrite)"
 end

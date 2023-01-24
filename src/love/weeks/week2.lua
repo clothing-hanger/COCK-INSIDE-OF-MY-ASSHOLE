@@ -58,14 +58,14 @@ return {
 
 			enemyIcon:animate("monster", false)
 
-			inst = love.audio.newSource("music/week2/monster-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week2/monster-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week2/monster/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week2/monster/Voices.ogg", "stream")
 		elseif song == 2 then
-			inst = love.audio.newSource("music/week2/south-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week2/south-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week2/south/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week2/south/Voices.ogg", "stream")
 		else
-			inst = love.audio.newSource("music/week2/spookeez-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week2/spookeez-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week2/spookeez/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week2/spookeez/Voices.ogg", "stream")
 		end
 
 		self:initUI()
@@ -77,11 +77,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("charts/week2/monster" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("data/week2/monster/monster" .. difficulty .. ".json")())
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("charts/week2/south" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("charts/week2/south/south" .. difficulty .. ".json")())
 		else
-			weeks:generateNotes(love.filesystem.load("charts/week2/spookeez" .. difficulty .. ".lua")())
+			weeks:generateNotes(love.filesystem.load("charts/week2/spookeez/spookeez" .. difficulty .. ".json")())
 		end
 	end,
 
@@ -176,6 +176,8 @@ return {
 
 	leave = function(self)
 		hauntedHouse = nil
+
+		graphics.clearCache()
 
 		weeks:leave()
 	end

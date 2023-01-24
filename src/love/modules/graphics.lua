@@ -36,6 +36,16 @@ return {
 		return screenHeight
 	end,
 
+	cache = {},
+
+	clearCache = function()
+		graphics.cache = {}
+	end,
+
+	clearItemCache = function(path)
+		graphics.cache[path] = nil
+	end,
+
 	imagePath = function(path)
 		local pathStr = "images/" .. imageType .. "/" .. path .. "." .. imageType
 
@@ -52,8 +62,14 @@ return {
 		return imageType
 	end,
 
-	newImage = function(imageData, optionsTable)
+	newImage = function(image, optionsTable)
+		local pathStr = image
+		if not graphics.cache[pathStr] then 
+			graphics.cache[pathStr] = love.graphics.newImage(pathStr)
+		end
 		local image, width, height
+
+		image = graphics.cache[pathStr]
 
 		local options
 
@@ -68,8 +84,8 @@ return {
 			shearX = 0,
 			shearY = 0,
 
-			setImage = function(self, imageData)
-				image = imageData
+			setImage = function(self, image)
+				image = image
 				width = image:getWidth()
 				height = image:getHeight()
 			end,
@@ -99,10 +115,35 @@ return {
 					self.shearX,
 					self.shearY
 				)
+			end,
+
+			udraw = function(self, sx, sy)
+				local sx = sx or 7
+				local sy = sy or 7
+				local x = self.x
+				local y = self.y
+
+				if options and options.floored then
+					x = math.floor(x)
+					y = math.floor(y)
+				end
+
+				love.graphics.draw(
+					image,
+					self.x,
+					self.y,
+					self.orientation,
+					sx,
+					sy,
+					math.floor(width / 2) + self.offsetX,
+					math.floor(height / 2) + self.offsetY,
+					self.shearX,
+					self.shearY
+				)
 			end
 		}
 
-		object:setImage(imageData)
+		object:setImage(image)
 
 		options = optionsTable
 
@@ -150,7 +191,14 @@ return {
 				return sheet
 			end,
 
+			isAnimName = function(self, name)
+				return anims[name] ~= nil
+			end,
+
 			animate = function(self, animName, loopAnim)
+				if not self:isAnimName(animName) then
+					return
+				end
 				anim.name = animName
 				anim.start = anims[animName].start
 				anim.stop = anims[animName].stop
@@ -241,6 +289,58 @@ return {
 						self.orientation,
 						self.sizeX,
 						self.sizeY,
+						width + anim.offsetX + self.offsetX,
+						height + anim.offsetY + self.offsetY,
+						self.shearX,
+						self.shearY
+					)
+				end
+			end,
+
+			udraw = function(self, sx, sy)
+				local sx = sx or 7
+				local sy = sy or 7
+				local flooredFrame = math.floor(frame)
+				
+				if flooredFrame <= anim.stop then
+					local x = self.x
+					local y = self.y
+					local width
+					local height
+
+					if options and options.floored then
+						x = math.floor(x)
+						y = math.floor(y)
+					end
+
+					if options and options.noOffset then
+						if frameData[flooredFrame].offsetWidth ~= 0 then
+							width = frameData[flooredFrame].offsetX
+						end
+						if frameData[flooredFrame].offsetHeight ~= 0 then
+							height = frameData[flooredFrame].offsetY
+						end
+					else
+						if frameData[flooredFrame].offsetWidth == 0 then
+							width = math.floor(frameData[flooredFrame].width / 2)
+						else
+							width = math.floor(frameData[flooredFrame].offsetWidth / 2) + frameData[flooredFrame].offsetX
+						end
+						if frameData[flooredFrame].offsetHeight == 0 then
+							height = math.floor(frameData[flooredFrame].height / 2)
+						else
+							height = math.floor(frameData[flooredFrame].offsetHeight / 2) + frameData[flooredFrame].offsetY
+						end
+					end
+
+					love.graphics.draw(
+						sheet,
+						frames[flooredFrame],
+						self.x,
+						self.y,
+						self.orientation,
+						sx,
+						sy,
 						width + anim.offsetX + self.offsetX,
 						height + anim.offsetY + self.offsetY,
 						self.shearX,

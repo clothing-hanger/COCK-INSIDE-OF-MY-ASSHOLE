@@ -28,9 +28,9 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		stageBack = graphics.newImage(love.graphics.newImage(graphics.imagePath("week1/stage-back")))
-		stageFront = graphics.newImage(love.graphics.newImage(graphics.imagePath("week1/stage-front")))
-		curtains = graphics.newImage(love.graphics.newImage(graphics.imagePath("week1/curtains")))
+		stageBack = graphics.newImage(graphics.imagePath("week1/stage-back"))
+		stageFront = graphics.newImage(graphics.imagePath("week1/stage-front"))
+		curtains = graphics.newImage(graphics.imagePath("week1/curtains"))
 
 		stageFront.y = 400
 		curtains.y = -100
@@ -50,14 +50,14 @@ return {
 		weeks:load()
 
 		if song == 3 then
-			inst = love.audio.newSource("music/week1/dadbattle-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week1/dadbattle-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week1/dadbattle/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week1/dadbattle/Voices.ogg", "stream")
 		elseif song == 2 then
-			inst = love.audio.newSource("music/week1/fresh-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week1/fresh-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week1/fresh/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week1/fresh/Voices.ogg", "stream")
 		else
-			inst = love.audio.newSource("music/week1/bopeebo-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week1/bopeebo-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week1/bopeebo/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week1/bopeebo/Voices.ogg", "stream")
 		end
 
 		self:initUI()
@@ -69,11 +69,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes(love.filesystem.load("charts/week1/dadbattle" .. difficulty .. ".lua")())
+			weeks:generateNotes("data/week1/dadbattle/dadbattle" .. difficulty .. ".json")
 		elseif song == 2 then
-			weeks:generateNotes(love.filesystem.load("charts/week1/fresh" .. difficulty .. ".lua")())
+			weeks:generateNotes("data/week1/fresh/fresh" .. difficulty .. ".json")
 		else
-			weeks:generateNotes(love.filesystem.load("charts/week1/bopeebo" .. difficulty .. ".lua")())
+			weeks:generateNotes("data/week1/bopeebo/bopeebo" .. difficulty .. ".json")
 		end
 	end,
 
@@ -150,6 +150,12 @@ return {
 		stageBack = nil
 		stageFront = nil
 		curtains = nil
+
+		enemy = nil
+		boyfriend = nil
+		girlfriend = nil
+
+		graphics.clearCache()
 
 		weeks:leave()
 	end

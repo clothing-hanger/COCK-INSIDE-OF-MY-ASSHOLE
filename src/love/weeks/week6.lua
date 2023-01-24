@@ -29,24 +29,21 @@ return {
 	enter = function(self, from, songNum, songAppend)
 		love.graphics.setDefaultFilter("nearest")
 
-		status.setNoResize(true)
-
-		canvas = love.graphics.newCanvas(256, 144)
 		font = love.graphics.newFont("fonts/pixel_small.fnt")
 
-		weeksPixel:enter()
+		weeks:enter("pixel")
 
 		song = songNum
 		difficulty = songAppend
 
-		cam.sizeX, cam.sizeY = 1, 1
-		camScale.x, camScale.y = 1, 1
+		cam.sizeX, cam.sizeY = 0.85, 0.85
+		camScale.x, camScale.y = 0.85, 0.85
 
 		if song ~= 3 then
-			sky = graphics.newImage(love.graphics.newImage(graphics.imagePath("week6/sky")))
-			school = graphics.newImage(love.graphics.newImage(graphics.imagePath("week6/school")))
-			street = graphics.newImage(love.graphics.newImage(graphics.imagePath("week6/street")))
-			treesBack = graphics.newImage(love.graphics.newImage(graphics.imagePath("week6/trees-back")))
+			sky = graphics.newImage(graphics.imagePath("week6/sky"))
+			school = graphics.newImage(graphics.imagePath("week6/school"))
+			street = graphics.newImage(graphics.imagePath("week6/street"))
+			treesBack = graphics.newImage(graphics.imagePath("week6/trees-back"))
 
 			trees = love.filesystem.load("sprites/week6/trees.lua")()
 			petals = love.filesystem.load("sprites/week6/petals.lua")()
@@ -56,9 +53,12 @@ return {
 			school.y = 1
 		end
 
+		fakeBoyfriend = love.filesystem.load("sprites/pixel/boyfriend-dead.lua")()
+
 		boyfriend.x, boyfriend.y = 50, 30
 		fakeBoyfriend.x, fakeBoyfriend.y = 50, 30
 
+		boyfriendIcon:animate("boyfriend (pixel)", false)
 		enemyIcon:animate("senpai", false)
 
 		self:load()
@@ -78,41 +78,39 @@ return {
 			enemy = love.filesystem.load("sprites/week6/senpai.lua")()
 		end
 
-		weeksPixel:load()
+		weeks:load("pixel")
 
 		if song == 3 then
-			inst = love.audio.newSource("music/week6/thorns-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week6/thorns-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week6/thorns/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week6/thorns/Voices.ogg", "stream")
 		elseif song == 2 then
-			inst = love.audio.newSource("music/week6/roses-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week6/roses-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week6/roses/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week6/roses/Voices.ogg", "stream")
 		else
-			inst = love.audio.newSource("music/week6/senpai-inst.ogg", "stream")
-			voices = love.audio.newSource("music/week6/senpai-voices.ogg", "stream")
+			inst = love.audio.newSource("songs/week6/senpai/Inst.ogg", "stream")
+			voices = love.audio.newSource("songs/week6/senpai/Voices.ogg", "stream")
 		end
 		enemy.x, enemy.y = -50, 0
 
 		self:initUI()
 
-		weeksPixel:setupCountdown()
+		weeks:setupCountdown()
 	end,
 
 	initUI = function(self)
-		weeksPixel:initUI()
+		weeks:initUI("pixel")
 
 		if song == 3 then
-			weeksPixel:generateNotes(love.filesystem.load("charts/week6/thorns" .. difficulty .. ".lua")())
+			weeks:generateNotes("data/week6/thorns/thorns" .. difficulty .. ".json")
 		elseif song == 2 then
-			weeksPixel:generateNotes(love.filesystem.load("charts/week6/roses" .. difficulty .. ".lua")())
+			weeks:generateNotes("data/week6/roses/roses" .. difficulty .. ".json")
 		else
-			weeksPixel:generateNotes(love.filesystem.load("charts/week6/senpai" .. difficulty .. ".lua")())
+			weeks:generateNotes("data/week6/senpai/senpai" .. difficulty .. ".json")
 		end
 	end,
 
 	update = function(self, dt)
-		graphics.screenBase(256, 144)
-
-		weeksPixel:update(dt)
+		weeks:update(dt)
 
 		if song == 3 then
 			school:update(dt)
@@ -141,70 +139,53 @@ return {
 			end
 		end
 
-		weeksPixel:updateUI(dt, canvas)
+		weeks:updateUI(dt)
 	end,
 
 	draw = function(self)
-		local canvasScale
-
-		love.graphics.setFont(font)
-		graphics.screenBase(256, 144)
-		love.graphics.setCanvas(canvas)
-			love.graphics.clear()
+		love.graphics.push()
+			love.graphics.translate(graphics.getWidth()/2, graphics.getHeight()/2)
+			love.graphics.scale(cam.sizeX, cam.sizeY)
 
 			love.graphics.push()
-				love.graphics.translate(128, 72)
-				love.graphics.scale(cam.sizeX, cam.sizeY)
+				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
 
-				love.graphics.push()
-					love.graphics.translate(math.floor(cam.x * 0.9), math.floor(cam.y * 0.9))
+				if song ~= 3 then
+					sky:udraw()
+				end
 
-					if song ~= 3 then
-						sky:draw()
-					end
-
-					school:draw()
-				love.graphics.pop()
-				love.graphics.push()
-					love.graphics.translate(math.floor(cam.x), math.floor(cam.y))
-
-					if song ~= 3 then
-						street:draw()
-						treesBack:draw()
-
-						trees:draw()
-						petals:draw()
-						freaks:draw()
-					end
-
-					girlfriend:draw()
-					enemy:draw()
-					boyfriend:draw()
-				love.graphics.pop()
-				weeksPixel:drawRating()
+				school:udraw()
 			love.graphics.pop()
+			love.graphics.push()
+				love.graphics.translate(cam.x, cam.y)
 
-			weeksPixel:drawUI()
-		love.graphics.setCanvas()
-		graphics.screenBase(love.graphics.getWidth(), love.graphics.getHeight())
+				if song ~= 3 then
+					street:udraw()
+					treesBack:udraw()
 
-		canvasScale = math.min(math.floor(graphics.getWidth() / 256), math.floor(graphics.getHeight() / 144))
-		if canvasScale < 1 then canvasScale = math.min(graphics.getWidth() / 256, graphics.getHeight() / 144) end
+					trees:udraw()
+					petals:udraw()
+					freaks:udraw()
+				end
 
-		love.graphics.draw(canvas, graphics.getWidth() / 2, graphics.getHeight() / 2, nil, canvasScale, canvasScale, 128, 72)
+				girlfriend:udraw()
+				enemy:udraw()
+				boyfriend:udraw()
+			love.graphics.pop()
+			weeks:drawRating()
+		love.graphics.pop()
+
+		weeks:drawUI()
 	end,
 
 	leave = function(self)
-		canvas = nil
-		font = nil
-
 		sky = nil
 		school = nil
 		street = nil
 
-		weeksPixel:leave()
+		graphics.clearCache()
 
-		status.setNoResize(false)
+		weeks:leave()
 
 		love.graphics.setDefaultFilter("linear")
 	end

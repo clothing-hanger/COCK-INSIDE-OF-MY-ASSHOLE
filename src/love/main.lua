@@ -26,6 +26,7 @@ function love.load()
 	lovesize = require "lib.lovesize"
 	Gamestate = require "lib.gamestate"
 	Timer = require "lib.timer"
+	json = require "lib.json"
 
 	-- Load modules
 	status = require "modules.status"
@@ -36,12 +37,15 @@ function love.load()
 	settings = require "settings"
 	input = require "input"
 
-	-- Load states
-	clickStart = require "states.click-start"
+	-- Load Debugs
 	debugMenu = require "states.debug-menu"
+
+	-- Load Menus
+	clickStart = require "states.click-start"
 	menu = require "states.menu"
+
+	-- Load weeks
 	weeks = require "states.weeks"
-	weeksPixel = require "states.weeks-pixel"
 
 	-- Load substates
 	gameOver = require "substates.game-over"

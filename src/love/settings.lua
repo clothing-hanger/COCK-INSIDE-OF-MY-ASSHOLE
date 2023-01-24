@@ -40,7 +40,7 @@ downscroll=false
 
 ; "Kade Input" disables anti-spam, but counts "Shit" inputs as misses
 ; NOTE: Currently unfinished, some aspects of this input mode still need to be implemented, like mash violations
-kadeInput=false
+ghostTapping=false
 
 [Advanced]
 ; Show debug info on the screen
@@ -49,7 +49,7 @@ showDebug=false
 
 ; These variables are read by the game for internal purposes, don't edit these unless you want to risk losing your current settings!
 [Data]
-settingsVer=4-nx
+settingsVer=5-nx
 ]]) or (curOS ~= "Web" and [[
 ; Friday Night Funkin' Rewritten Settings
 
@@ -83,7 +83,7 @@ downscroll=false
 
 ; "Kade Input" disables anti-spam, but counts "Shit" inputs as misses
 ; NOTE: Currently unfinished, some aspects of this input mode still need to be implemented, like mash violations
-kadeInput=false
+ghostTapping=false
 
 [Advanced]
 ; Show debug info on the screen
@@ -92,7 +92,7 @@ showDebug=false
 
 ; These variables are read by the game for internal purposes, don't edit these unless you want to risk losing your current settings!
 [Data]
-settingsVer=4
+settingsVer=5
 ]])
 
 local settingsIni
@@ -106,7 +106,7 @@ if curOS == "NX" then
 	if love.filesystem.getInfo("settings.ini") then
 		settingsIni = ini.load("settings.ini")
 
-		if not settingsIni["Data"] or ini.readKey(settingsIni, "Data", "settingsVer") ~= "4-nx" then
+		if not settingsIni["Data"] or ini.readKey(settingsIni, "Data", "settingsVer") ~= "5-nx" then
 			love.filesystem.write("settings.ini", settingsStr)
 		end
 	else
@@ -136,10 +136,10 @@ if curOS == "NX" then
 	else
 		settings.downscroll = false
 	end
-	if ini.readKey(settingsIni, "Game", "kadeInput") == "true" then
-		settings.kadeInput = true
+	if ini.readKey(settingsIni, "Game", "ghostTapping") == "true" then
+		settings.ghostTapping = true
 	else
-		settings.kadeInput = false
+		settings.ghostTapping = false
 	end
 
 	if ini.readKey(settingsIni, "Advanced", "showDebug") == "fps" or ini.readKey(settingsIni, "Advanced", "showDebug") == "detailed" then
@@ -154,14 +154,14 @@ elseif curOS == "Web" then -- For love.js, we won't bother creating and reading 
 
 	settings.dfjk = false
 	settings.downscroll = false
-	settings.kadeInput = false
+	settings.ghostTapping = false
 
 	settings.showDebug = false
 else
 	if love.filesystem.getInfo("settings.ini") then
 		settingsIni = ini.load("settings.ini")
 
-		if not settingsIni["Data"] or ini.readKey(settingsIni, "Data", "settingsVer") ~= "4" then
+		if not settingsIni["Data"] or ini.readKey(settingsIni, "Data", "settingsVer") ~= "5" then
 			love.window.showMessageBox("Warning", "The current settings file is outdated, and will now be reset.")
 
 			local success, message = love.filesystem.write("settings.ini", settingsStr)
@@ -228,10 +228,10 @@ else
 		settings.downscroll = false
 	end
 
-	if ini.readKey(settingsIni, "Game", "kadeInput") == "true" then
-		settings.kadeInput = true
+	if ini.readKey(settingsIni, "Game", "ghostTapping") == "true" then
+		settings.ghostTapping = true
 	else
-		settings.kadeInput = false
+		settings.ghostTapping = false
 	end
 
 	if ini.readKey(settingsIni, "Advanced", "showDebug") == "fps" or ini.readKey(settingsIni, "Advanced", "showDebug") == "detailed" then
