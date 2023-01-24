@@ -36,6 +36,8 @@ local useAltAnims
 local notMissed = {}
 local option = "normal"
 
+local judgements = {}
+
 return {
 	enter = function(self, option)
 		option = option or "normal"
@@ -61,12 +63,6 @@ return {
 				notes = love.graphics.newImage(graphics.imagePath("notes")),
 				numbers = love.graphics.newImage(graphics.imagePath("numbers"))
 			}
-	
-			-- put our rating images in a cache
-			images.sickCache = graphics.newImage(graphics.imagePath("engine/sick"))
-			images.goodCache = graphics.newImage(graphics.imagePath("engine/good"))
-			images.badCache = graphics.newImage(graphics.imagePath("engine/bad"))
-			images.shitCache = graphics.newImage(graphics.imagePath("engine/shit"))
 
 			sprites = {
 				icons = love.filesystem.load("sprites/icons.lua"),
@@ -103,12 +99,6 @@ return {
 				numbers = love.graphics.newImage(graphics.imagePath("pixel/numbers"))
 			}
 
-			-- put our rating images in a cache
-			images.sickCache = graphics.newImage(graphics.imagePath("pixel/sick"))
-			images.goodCache = graphics.newImage(graphics.imagePath("pixel/good"))
-			images.badCache = graphics.newImage(graphics.imagePath("pixel/bad"))
-			images.shitCache = graphics.newImage(graphics.imagePath("pixel/shit"))
-
 			sprites = {
 				icons = love.filesystem.load("sprites/icons.lua"),
 				numbers = love.filesystem.load("sprites/pixel/numbers.lua")
@@ -129,23 +119,21 @@ return {
 			end
 		end
 
+		if settings.downscroll then
+			downscrollOffset = -750
+		else
+			downscrollOffset = 0
+		end
+
 		enemyIcon = sprites.icons()
 		boyfriendIcon = sprites.icons()
 
-		if settings.downscroll then
-			downscrollOffset = -750
-			enemyIcon.sizeY = -1.5
-			boyfriendIcon.sizeY = -1.5
-		else
-			downscrollOffset = 0
-			enemyIcon.sizeY = 1.5
-			boyfriendIcon.sizeY = 1.5
-		end
-
-		enemyIcon.y = 350 
-		boyfriendIcon.y = 350 
+		enemyIcon.y = 350 + downscrollOffset
+		boyfriendIcon.y = 350 + downscrollOffset
 		enemyIcon.sizeX = 1.5
 		boyfriendIcon.sizeX = -1.5
+		enemyIcon.sizeY = 1.5
+		boyfriendIcon.sizeY = 1.5
 
 		countdownFade = {}
 		countdown = love.filesystem.load("sprites/countdown.lua")()
@@ -183,6 +171,7 @@ return {
 		events = {}
 		enemyNotes = {}
 		boyfriendNotes = {}
+		judgements = {}
 		health = 1
 		score = 0
 
@@ -701,13 +690,13 @@ return {
 
 								boyfriend.lastHit = musicTime
 
-								if notePos <= 30 then -- "Sick"
+								if notePos <= 45 then -- "Sick"
 									score = score + 350
 									ratingAnim = "sick"
-								elseif notePos <= 70 then -- "Good"
+								elseif notePos <= 80 then -- "Good"
 									score = score + 200
 									ratingAnim = "good"
-								elseif notePos <= 90 then -- "Bad"
+								elseif notePos <= 110 then -- "Bad"
 									score = score + 100
 									ratingAnim = "bad"
 								else -- "Shit"
@@ -720,26 +709,27 @@ return {
 								end
 								combo = combo + 1
 
-								rating:animate(ratingAnim, false)
-								numbers[1]:animate(tostring(math.floor(combo / 100 % 10), false))
-								numbers[2]:animate(tostring(math.floor(combo / 10 % 10), false))
-								numbers[3]:animate(tostring(math.floor(combo % 10), false))
+								table.insert(judgements, {ratingAnim, 1, girlfriend.y - 50, {tostring(math.floor(combo / 100 % 10)), tostring(math.floor(combo / 10 % 10)), tostring(math.floor(combo % 10))}, {0, 0, 0}})
 
 								for i = 1, 5 do
 									if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
 								end
 
-								ratingVisibility[1] = 1
 								rating.y = girlfriend.y - 50
 								for i = 1, 3 do
 									numbers[i].y = girlfriend.y + 50
 								end
 
-								ratingTimers[1] = Timer.tween(2, ratingVisibility, {0})
-								ratingTimers[2] = Timer.tween(2, rating, {y = girlfriend.y - 100}, "out-elastic")
-								ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								--ratingTimers[1] = Timer.tween(2, ratingVisibility, {0})
+								Timer.tween(2, judgements[#judgements], {[2] = 0}, "linear")
+								--ratingTimers[2] = Timer.tween(2, rating, {y = girlfriend.y - 100}, "out-elastic")
+								Timer.tween(2, judgements[#judgements], {[3] = girlfriend.y - 100}, "out-elastic")
+								--ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								--ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								--ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								Timer.tween(2, judgements[#judgements][5], {[1]=girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								Timer.tween(2, judgements[#judgements][5], {[2]=girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								Timer.tween(2, judgements[#judgements][5], {[3]=girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
 
 								if not settings.ghostTapping or success then
 									boyfriendArrow:animate("confirm", false)
@@ -818,13 +808,8 @@ return {
 			if enemyIconTimer then Timer.cancel(enemyIconTimer) end
 			if boyfriendIconTimer then Timer.cancel(boyfriendIconTimer) end
 
-			if not settings.downscroll then
-				enemyIconTimer = Timer.tween((60 / bpm) / 16, enemyIcon, {sizeX = 1.75, sizeY = 1.75}, "out-quad", function() enemyIconTimer = Timer.tween((60 / bpm), enemyIcon, {sizeX = 1.5, sizeY = 1.5}, "out-quad") end)
-				boyfriendIconTimer = Timer.tween((60 / bpm) / 16, boyfriendIcon, {sizeX = -1.75, sizeY = 1.75}, "out-quad", function() boyfriendIconTimer = Timer.tween((60 / bpm), boyfriendIcon, {sizeX = -1.5, sizeY = 1.5}, "out-quad") end)
-			else
-				enemyIconTimer = Timer.tween((60 / bpm) / 16, enemyIcon, {sizeX = 1.75, sizeY = -1.75}, "out-quad", function() enemyIconTimer = Timer.tween((60 / bpm), enemyIcon, {sizeX = 1.5, sizeY = -1.5}, "out-quad") end)
-				boyfriendIconTimer = Timer.tween((60 / bpm) / 16, boyfriendIcon, {sizeX = -1.75, sizeY = -1.75}, "out-quad", function() boyfriendIconTimer = Timer.tween((60 / bpm), boyfriendIcon, {sizeX = -1.5, sizeY = -1.5}, "out-quad") end)
-			end
+			enemyIconTimer = Timer.tween((60 / bpm) / 16, enemyIcon, {sizeX = 1.75, sizeY = 1.75}, "out-quad", function() enemyIconTimer = Timer.tween((60 / bpm), enemyIcon, {sizeX = 1.5, sizeY = 1.5}, "out-quad") end)
+			boyfriendIconTimer = Timer.tween((60 / bpm) / 16, boyfriendIcon, {sizeX = -1.75, sizeY = 1.75}, "out-quad", function() boyfriendIconTimer = Timer.tween((60 / bpm), boyfriendIcon, {sizeX = -1.5, sizeY = 1.5}, "out-quad") end)
 		end
 
 		if not countingDown and input:pressed("gameBack") then
@@ -843,19 +828,29 @@ return {
 				love.graphics.translate(camera.x, camera.y)
 			end
 
-			graphics.setColor(1, 1, 1, ratingVisibility[1])
-			if not pixel then
-				rating:draw()
-				for i = 1, 3 do
-					numbers[i]:draw()
+			for i = 1, #judgements do
+				rating:animate(judgements[i][1], false)
+				rating.y = judgements[i][3]
+				graphics.setColor(1, 1, 1, judgements[i][2])
+				numbers[1]:animate(judgements[i][4][1], false)
+				numbers[2]:animate(judgements[i][4][2], false)
+				numbers[3]:animate(judgements[i][4][3], false)
+				for k = 1, 3 do 
+					numbers[k].y = judgements[i][5][k]
 				end
-			else
-				rating:udraw(6.85, 6.85)
-				for i = 1, 3 do
-					numbers[i]:udraw(6.85, 6.85)
+				if not pixel then
+					rating:draw()
+					for k = 1, 3 do
+						numbers[k]:draw()
+					end
+				else
+					rating:udraw(6.85, 6.85)
+					for k = 1, 3 do
+						numbers[k]:udraw(6.85, 6.85)
+					end
 				end
+				graphics.setColor(1, 1, 1)
 			end
-			graphics.setColor(1, 1, 1)
 		love.graphics.pop()
 	end,
 
@@ -946,20 +941,6 @@ return {
 				love.graphics.pop()
 			end
 
-			graphics.setColor(1, 0, 0)
-			love.graphics.rectangle("fill", -500, 350, 1000, 25)
-			graphics.setColor(0, 1, 0)
-			love.graphics.rectangle("fill", 500, 350, -health * 500, 25)
-			graphics.setColor(0, 0, 0)
-			love.graphics.setLineWidth(10)
-			love.graphics.rectangle("line", -500, 350, 1000, 25)
-			love.graphics.setLineWidth(1)
-			graphics.setColor(1, 1, 1)
-
-			boyfriendIcon:draw()
-			enemyIcon:draw()
-			love.graphics.print("Score: " .. score, 300, 400)
-
 			graphics.setColor(1, 1, 1, countdownFade[1])
 			if not settings.downscroll then
 				if not pixel or pixel then 
@@ -975,6 +956,31 @@ return {
 				end
 			end
 			graphics.setColor(1, 1, 1)
+		love.graphics.pop()
+
+		self:drawHealthbar()
+	end,
+
+	drawHealthbar = function(self, visibility)
+		local visibility = visibility or 1
+		love.graphics.push()
+			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
+			love.graphics.scale(0.7, 0.7)
+
+			graphics.setColor(1, 1, 1, visibility)
+			graphics.setColor(1, 0, 0)
+			love.graphics.rectangle("fill", -500, 350+downscrollOffset, 1000, 25)
+			graphics.setColor(0, 1, 0)
+			love.graphics.rectangle("fill", 500, 350+downscrollOffset, -health * 500, 25)
+			graphics.setColor(0, 0, 0)
+			love.graphics.setLineWidth(10)
+			love.graphics.rectangle("line", -500, 350+downscrollOffset, 1000, 25)
+			love.graphics.setLineWidth(1)
+			graphics.setColor(1, 1, 1)
+
+			boyfriendIcon:draw()
+			enemyIcon:draw()
+			love.graphics.print("Score: " .. score, 300, 400+downscrollOffset)
 		love.graphics.pop()
 	end,
 

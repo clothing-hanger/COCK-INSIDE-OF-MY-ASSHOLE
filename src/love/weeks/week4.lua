@@ -91,26 +91,24 @@ return {
 		enemyIcon = sprites.icons()
 		boyfriendIcon = sprites.icons()
 
-		enemyIcon.y = 350 
-		boyfriendIcon.y = 350 
+		if settings.downscroll then
+			downscrollOffset = -750
+		else
+			downscrollOffset = 0
+		end
+
+		enemyIcon.y = 350 + downscrollOffset
+		boyfriendIcon.y = 350 + downscrollOffset
 
 		enemyIcon.sizeX = 1.5
 		boyfriendIcon.sizeX = -1.5
+		enemyIcon.sizeY = 1.5
+		boyfriendIcon.sizeY = 1.5
 
 		countdownFade = {}
 		countdown = love.filesystem.load("sprites/countdown.lua")()
 
 		enemyIcon:animate("mommy mearest", false)
-
-		if settings.downscroll then
-			downscrollOffset = -750
-			enemyIcon.sizeY = -1.5
-			boyfriendIcon.sizeY = -1.5
-		else
-			downscrollOffset = 0
-			enemyIcon.sizeY = 1.5
-			boyfriendIcon.sizeY = 1.5
-		end
 
 		self:load()
 	end,
