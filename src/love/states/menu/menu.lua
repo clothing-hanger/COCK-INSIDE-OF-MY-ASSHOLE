@@ -1,4 +1,4 @@
-local upFunc, downFunc, confirmFunc, backFunc, drawFunc, musicStop
+local upFunc, downFunc, confirmFunc, drawFunc, musicStop
 
 local menuState
 
@@ -85,8 +85,7 @@ return {
 				end
 			elseif input:pressed("back") then
 				audio.playSound(selectSound)
-
-				backFunc()
+				love.event.quit()
 			end
 		end
 	end,

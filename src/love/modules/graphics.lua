@@ -280,7 +280,7 @@ return {
 
 				if self.specialAnim then 
 					self.heyTimer = self.heyTimer - dt 
-					if self.heyTimer <= 0 then 
+					if self.heyTimer <= 0 and not self:isAnimated() then 
 						self.heyTimer = 0 
 						self.specialAnim = false
 						self:animate("idle", false) 

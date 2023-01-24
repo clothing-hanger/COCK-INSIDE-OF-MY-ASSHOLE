@@ -27,9 +27,9 @@ return {
         graphics.fadeIn(0.3)
 
         difficultyStrs = {
-            "easy",
-            "normal",
-            "hard"
+            "-easy",
+            "",
+            "-hard"
         }
         songBefore = ""
         songAfter = ""
@@ -352,6 +352,15 @@ return {
             -- make the current dificulties first letter uppercase
             local difficultyStr = difficultyStrs[songDifficulty]
             difficultyStr = difficultyStr:sub(1,1):upper() .. difficultyStr:sub(2)
+            if difficultyStr == "" then 
+                difficultyStr = "Normal"
+            else
+                -- remove the first letter from the difficulty string
+                difficultyStr = difficultyStr:sub(2)
+                -- make the first letter uppercase
+                difficultyStr = difficultyStr:sub(1,1):upper() .. difficultyStr:sub(2)
+                --difficultyStr:gsub("-", "")
+            end
             uitextf(difficultyStr, 65, -370, 600, "center")
             backButton:draw()
         love.graphics.pop()

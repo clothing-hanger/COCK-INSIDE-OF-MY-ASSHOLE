@@ -514,6 +514,7 @@ return {
 	end,
 
 	update = function(self, dt)
+		if inCutscene then return end
 		beatHandler.update(dt)
 
 		convertedAcc = string.format(
@@ -614,6 +615,7 @@ return {
 	end,
 
 	updateUI = function(self, dt)
+		if inCutscene then return end
 		musicPos = musicTime * 0.6 * speed
 
 		for i = 1, 4 do
@@ -1024,6 +1026,9 @@ return {
 			end
 			if convertedAcc == "nan%" then
 				convertedAcc = "0%"
+			end
+			if not convertedAcc then
+				convertedAcc = math.floor(additionalAccuracy / (noteCounter + misses)) .. "%"
 			end
 			self:healthbarText("Score: " .. score .. " | Misses: " .. misses .. " | Accuracy: " .. convertedAcc)
 		love.graphics.pop()

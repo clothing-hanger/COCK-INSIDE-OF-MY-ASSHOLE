@@ -8,10 +8,10 @@ weekNum = 1
 local songNum, songAppend
 local songDifficulty = 2
 
-local difficultyStrs = { 
-	"easy",
-	"normal",
-	"hard"
+local difficultyStrs = {
+	"-easy",
+	"",
+	"-hard"
 }
 local selectSound = love.audio.newSource("sounds/menu/select.ogg", "static")
 local confirmSound = love.audio.newSource("sounds/menu/confirm.ogg", "static")

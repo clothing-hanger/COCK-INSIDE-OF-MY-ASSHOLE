@@ -96,6 +96,7 @@ function love.load()
 	camera = require "modules.camera"
 	beatHandler = require "modules.beatHandler"
 	util = require "modules.util"
+	cutscene = require "modules.cutscene"
 
 	-- Load settings
 	settings = require "settings"
@@ -128,7 +129,8 @@ function love.load()
 		require "weeks.week3",
 		require "weeks.week4",
 		require "weeks.week5",
-		require "weeks.week6"
+		require "weeks.week6",
+		require "weeks.week7"
 	}
 
 	weekDesc = { -- Add your week description here
@@ -141,71 +143,8 @@ function love.load()
 		"HATING SIMULATOR FT. MOAWLING",
 		"TANKMAN"
 	}
-	weekMeta = { -- Add/remove weeks here
-		{
-			"Tutorial",
-			{
-				"Tutorial"
-			}
-		},
-		{
-			"Week 1",
-			{
-				"Bopeebo",
-				"Fresh",
-				"Dadbattle",
-				"Balls"
-			}
-		},
-		{
-			"Week 2",
-			{
-				"Spookeez",
-				"South",
-				"Monster"
-			}
-		},
-		{
-			"Week 3",
-			{
-				"Pico",
-				"Philly Nice",
-				"Blammed"
-			}
-		},
-		{
-			"Week 4",
-			{
-				"Satin Panties",
-				"High",
-				"M.I.L.F"
-			}
-		},
-		{
-			"Week 5",
-			{
-				"Cocoa",
-				"Eggnog",
-				"Winter Horrorland"
-			}
-		},
-		{
-			"Week 6",
-			{
-				"Senpai",
-				"Roses",
-				"Thorns"
-			},
-		},
-		{
-			"Week 7",
-			{
-				"Ugh",
-				"Guns",
-				"Stress"
-			}
-		}
-	}weekDesc = { -- Add your week description here
+
+	weekDesc = { -- Add your week description here
 		"LEARN TO FUNK",
 		"DADDY DEAREST",
 		"SPOOKY MONTH",

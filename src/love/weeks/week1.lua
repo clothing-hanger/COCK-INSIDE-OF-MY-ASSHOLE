@@ -69,11 +69,11 @@ return {
 		weeks:initUI()
 
 		if song == 3 then
-			weeks:generateNotes("data/week1/dadbattle/dadbattle-" .. difficulty .. ".json")
+			weeks:generateNotes("data/week1/dadbattle/dadbattle" .. difficulty .. ".json")
 		elseif song == 2 then
-			weeks:generateNotes("data/week1/fresh/fresh-" .. difficulty .. ".json")
+			weeks:generateNotes("data/week1/fresh/fresh" .. difficulty .. ".json")
 		else
-			weeks:generateNotes("data/week1/bopeebo/bopeebo-" .. difficulty .. ".json")
+			weeks:generateNotes("data/week1/bopeebo/bopeebo" .. difficulty .. ".json")
 		end
 	end,
 
