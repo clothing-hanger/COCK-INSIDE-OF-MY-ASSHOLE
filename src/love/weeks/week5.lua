@@ -27,8 +27,8 @@ local scaryIntro = false
 
 return {
 	enter = function(self, from, songNum, songAppend)
-		cam.sizeX, cam.sizeY = 0.7, 0.7
-		camScale.x, camScale.y = 0.7, 0.7
+		camera.sizeX, camera.sizeY = 0.7, 0.7
+		camera.scaleX, camera.scaleY = 0.7, 0.7
 
 		bpm = 100
 		useAltAnims = false
@@ -132,15 +132,15 @@ return {
 		weeks:load()
 
 		if song == 3 then
-			camScale.x, camScale.y = 0.9, 0.9
+			camera.scaleX, camera.scaleY = 0.9, 0.9
 
 			if scaryIntro then
-				cam.x, cam.y = -150, 750
-				cam.sizeX, cam.sizeY = 2.5, 2.5
+				camera.x, camera.y = -150, 750
+				camera.sizeX, camera.sizeY = 2.5, 2.5
 
 				graphics.setFade(1)
 			else
-				cam.sizeX, cam.sizeY = 0.9, 0.9
+				camera.sizeX, camera.sizeY = 0.9, 0.9
 			end
 
 			walls = graphics.newImage(love.graphics.newImage(graphics.imagePath("week5/evil-bg")))
@@ -176,7 +176,7 @@ return {
 				function()
 					scaryIntro = false
 
-					camTimer = Timer.tween(2, cam, {x = -boyfriend.x + 100, y = -boyfriend.y + 75, sizeX = 0.9, sizeY = 0.9}, "out-quad")
+					camTimer = Timer.tween(2, camera, {x = -boyfriend.x + 100, y = -boyfriend.y + 75, sizeX = 0.9, sizeY = 0.9}, "out-quad")
 
 					weeks:setupCountdown()
 				end
@@ -275,10 +275,10 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(cam.sizeX, cam.sizeY)
+			love.graphics.scale(camera.sizeX, camera.sizeY)
 
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.5, cam.y * 0.5)
+				love.graphics.translate(camera.x * 0.5, camera.y * 0.5)
 
 				walls:draw()
 				if song ~= 3 then
@@ -288,7 +288,7 @@ return {
 				christmasTree:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
+				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
 
 				if song ~= 3 then
 					bottomBop:draw()
@@ -299,7 +299,7 @@ return {
 				girlfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x, cam.y)
+				love.graphics.translate(camera.x, camera.y)
 
 				if song ~= 3 then
 					santa:draw()
@@ -308,7 +308,7 @@ return {
 				boyfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 1.1, cam.y * 1.1)
+				love.graphics.translate(camera.x * 1.1, camera.y * 1.1)
 			love.graphics.pop()
 			weeks:drawRating(0.9)
 		love.graphics.pop()

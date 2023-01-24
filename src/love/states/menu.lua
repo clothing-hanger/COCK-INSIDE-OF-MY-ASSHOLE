@@ -292,8 +292,8 @@ return {
 	enter = function(self, previous)
 		songNum = 0
 
-		cam.sizeX, cam.sizeY = 0.9, 0.9
-		camScale.x, camScale.y = 0.9, 0.9
+		camera.sizeX, camera.sizeY = 0.9, 0.9
+		camera.scaleX, camera.scaleY = 0.9, 0.9
 
 		switchMenu(1)
 
@@ -334,7 +334,7 @@ return {
 			titleBG:draw()
 
 			love.graphics.push()
-				love.graphics.scale(cam.sizeX, cam.sizeY)
+				love.graphics.scale(camera.sizeX, camera.sizeY)
 
 				logo:draw()
 

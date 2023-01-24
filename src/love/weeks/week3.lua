@@ -29,8 +29,8 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		cam.sizeX, cam.sizeY = 1, 1
-		camScale.x, camScale.y = 1, 1
+		camera.sizeX, camera.sizeY = 1, 1
+		camera.scaleX, camera.scaleY = 1, 1
 
 		winColors = {
 			{49, 162, 253}, -- Blue
@@ -143,15 +143,15 @@ return {
 
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(cam.sizeX, cam.sizeY)
+			love.graphics.scale(camera.sizeX, camera.sizeY)
 
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.25, cam.y * 0.25)
+				love.graphics.translate(camera.x * 0.25, camera.y * 0.25)
 
 				sky:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.5, cam.y * 0.5)
+				love.graphics.translate(camera.x * 0.5, camera.y * 0.5)
 
 				city:draw()
 				graphics.setColor(curWinColor[1] / 255, curWinColor[2] / 255, curWinColor[3] / 255)
@@ -159,7 +159,7 @@ return {
 				graphics.setColor(1, 1, 1)
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
+				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
 
 				behindTrain:draw()
 				street:draw()
@@ -167,7 +167,7 @@ return {
 				girlfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x, cam.y)
+				love.graphics.translate(camera.x, camera.y)
 
 				enemy:draw()
 				boyfriend:draw()

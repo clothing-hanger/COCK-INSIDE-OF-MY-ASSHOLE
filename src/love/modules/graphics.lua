@@ -84,6 +84,9 @@ return {
 			shearX = 0,
 			shearY = 0,
 
+			scrollX = 1,
+			scrollY = 1,
+
 			setImage = function(self, image)
 				image = image
 				width = image:getWidth()
@@ -180,6 +183,9 @@ return {
 			offsetY = 0,
 			shearX = 0,
 			shearY = 0,
+
+			scrollX = 1,
+			scrollY = 1,
 
 			setSheet = function(self, imageData)
 				sheet = imageData
@@ -301,7 +307,7 @@ return {
 				local sx = sx or 7
 				local sy = sy or 7
 				local flooredFrame = math.floor(frame)
-				
+
 				if flooredFrame <= anim.stop then
 					local x = self.x
 					local y = self.y

@@ -40,7 +40,7 @@ return {
 		Timer.tween(
 			2,
 			cam,
-			{x = -fakeBoyfriend.x, y = -fakeBoyfriend.y, sizeX = camScale.x, sizeY = camScale.y},
+			{x = -fakeBoyfriend.x, y = -fakeBoyfriend.y, sizeX = camera.scaleX, sizeY = camera.scaleY},
 			"out-quad",
 			function()
 				inst = love.audio.newSource("music/pixel/game-over.ogg", "stream")
@@ -61,7 +61,7 @@ return {
 
 				Timer.clear()
 
-				cam.x, cam.y = -fakeBoyfriend.x, -fakeBoyfriend.y
+				camera.x, camera.y = -fakeBoyfriend.x, -fakeBoyfriend.y
 
 				fakeBoyfriend:animate("dead confirm", false)
 
@@ -103,8 +103,8 @@ return {
 				love.graphics.translate(math.floor(graphics.getWidth() / 2), math.floor(graphics.getHeight() / 2))
 
 				love.graphics.push()
-					love.graphics.scale(cam.sizeX, cam.sizeY)
-					love.graphics.translate(math.floor(cam.x), math.floor(cam.y))
+					love.graphics.scale(camera.sizeX, camera.sizeY)
+					love.graphics.translate(math.floor(camera.x), math.floor(camera.y))
 
 					fakeBoyfriend:draw()
 				love.graphics.pop()

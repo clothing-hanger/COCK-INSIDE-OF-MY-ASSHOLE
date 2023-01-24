@@ -36,8 +36,8 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		cam.sizeX, cam.sizeY = 0.85, 0.85
-		camScale.x, camScale.y = 0.85, 0.85
+		camera.sizeX, camera.sizeY = 0.85, 0.85
+		camera.scaleX, camera.scaleY = 0.85, 0.85
 
 		if song ~= 3 then
 			sky = graphics.newImage(graphics.imagePath("week6/sky"))
@@ -145,10 +145,10 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth()/2, graphics.getHeight()/2)
-			love.graphics.scale(cam.sizeX, cam.sizeY)
+			love.graphics.scale(camera.sizeX, camera.sizeY)
 
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
+				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
 
 				if song ~= 3 then
 					sky:udraw()
@@ -157,7 +157,7 @@ return {
 				school:udraw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x, cam.y)
+				love.graphics.translate(camera.x, camera.y)
 
 				if song ~= 3 then
 					street:udraw()

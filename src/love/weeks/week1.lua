@@ -119,10 +119,10 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(cam.sizeX, cam.sizeY)
+			love.graphics.scale(camera.sizeX, camera.sizeY)
 
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
+				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
 
 				stageBack:draw()
 				stageFront:draw()
@@ -130,13 +130,13 @@ return {
 				girlfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x, cam.y)
+				love.graphics.translate(camera.x, camera.y)
 
 				enemy:draw()
 				boyfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 1.1, cam.y * 1.1)
+				love.graphics.translate(camera.x * 1.1, camera.y * 1.1)
 
 				curtains:draw()
 			love.graphics.pop()

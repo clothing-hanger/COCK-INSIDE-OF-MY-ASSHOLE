@@ -103,10 +103,10 @@ return {
 					Timer.cancel(zoomTimer)
 				end
 				if events[i].mustHitSection then
-					camTimer = Timer.tween(1.25, cam, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
+					camTimer = Timer.tween(1.25, camera, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
 					zoomTimer = Timer.tween(1.25, zoom, {1}, "in-bounce")
 				else
-					camTimer = Timer.tween(1.25, cam, {x = -girlfriend.x - 100, y = -girlfriend.y + 75}, "out-quad")
+					camTimer = Timer.tween(1.25, camera, {x = -girlfriend.x - 100, y = -girlfriend.y + 75}, "out-quad")
 					zoomTimer = Timer.tween(1.25, zoom, {1.25}, "in-bounce")
 				end
 
@@ -119,7 +119,7 @@ return {
 		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 240000 / bpm) < 100 then
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
 
-			camScaleTimer = Timer.tween((60 / bpm) / 16, cam, {sizeX = camScale.x * 1.05, sizeY = camScale.y * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), cam, {sizeX = camScale.x, sizeY = camScale.y}, "out-quad") end)
+			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
 		end
 
 		girlfriend:update(dt)
@@ -170,22 +170,22 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(cam.sizeX * zoom[1], cam.sizeY * zoom[1])
+			love.graphics.scale(camera.sizeX * zoom[1], camera.sizeY * zoom[1])
 
 			love.graphics.push()
-				love.graphics.translate(cam.x * 0.9, cam.y * 0.9)
+				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
 
 				stageBack:draw()
 				stageFront:draw()
 				girlfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x, cam.y)
+				love.graphics.translate(camera.x, camera.y)
 
 				boyfriend:draw()
 			love.graphics.pop()
 			love.graphics.push()
-				love.graphics.translate(cam.x * 1.1, cam.y * 1.1)
+				love.graphics.translate(camera.x * 1.1, camera.y * 1.1)
 
 				curtains:draw()
 			love.graphics.pop()

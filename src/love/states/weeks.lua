@@ -155,7 +155,7 @@ return {
 		end
 		useAltAnims = false
 
-		cam.x, cam.y = -boyfriend.x + 100, -boyfriend.y + 75
+		camera.x, camera.y = -boyfriend.x + 100, -boyfriend.y + 75
 
 		rating.x = girlfriend.x
 		if not pixel then
@@ -548,9 +548,9 @@ return {
 					Timer.cancel(camTimer)
 				end
 				if events[i].mustHitSection then
-					camTimer = Timer.tween(1.25, cam, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
+					camTimer = Timer.tween(1.25, camera, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
 				else
-					camTimer = Timer.tween(1.25, cam, {x = -enemy.x - 100, y = -enemy.y + 75}, "out-quad")
+					camTimer = Timer.tween(1.25, camera, {x = -enemy.x - 100, y = -enemy.y + 75}, "out-quad")
 				end
 
 				if events[i].altAnim then
@@ -568,7 +568,7 @@ return {
 		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 240000 / bpm) < 100 then
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
 
-			camScaleTimer = Timer.tween((60 / bpm) / 16, cam, {sizeX = camScale.x * 1.05, sizeY = camScale.y * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), cam, {sizeX = camScale.x, sizeY = camScale.y}, "out-quad") end)
+			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
 		end
 
 		girlfriend:update(dt)
@@ -812,9 +812,9 @@ return {
 	drawRating = function(self, multiplier)
 		love.graphics.push()
 			if multiplier then
-				love.graphics.translate(cam.x * multiplier, cam.y * multiplier)
+				love.graphics.translate(camera.x * multiplier, camera.y * multiplier)
 			else
-				love.graphics.translate(cam.x, cam.y)
+				love.graphics.translate(camera.x, camera.y)
 			end
 
 			graphics.setColor(1, 1, 1, ratingVisibility[1])

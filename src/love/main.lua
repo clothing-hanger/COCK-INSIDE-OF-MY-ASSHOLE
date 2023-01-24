@@ -32,6 +32,7 @@ function love.load()
 	status = require "modules.status"
 	audio = require "modules.audio"
 	graphics = require "modules.graphics"
+	camera = require "modules.camera"
 
 	-- Load settings
 	settings = require "settings"
@@ -86,8 +87,8 @@ function love.load()
 	storyMode = false
 	countingDown = false
 
-	cam = {x = 0, y = 0, sizeX = 0.9, sizeY = 0.9}
-	camScale = {x = 0.9, y = 0.9}
+	--cam = {x = 0, y = 0, sizeX = 0.9, sizeY = 0.9}
+	--camScale = {x = 0.9, y = 0.9}
 	uiScale = {x = 0.7, y = 0.7}
 
 	musicTime = 0
