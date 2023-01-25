@@ -901,7 +901,8 @@ return {
 				boyfriendIcon:animate("boyfriend (pixel)", false)
 			end
 		elseif health <= 0 then -- Game over
-			--Gamestate.push(gameOver)
+			Gamestate.push(gameOver)
+			health = 0
 		elseif health <= 0.325 and boyfriendIcon:getAnimName() == "boyfriend" then
 			if not pixel then 
 				boyfriendIcon:animate("boyfriend losing", false)

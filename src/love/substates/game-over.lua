@@ -21,6 +21,7 @@ local fromState
 
 return {
 	enter = function(self, from)
+		graphics.setFade(1)
 		local boyfriend = fakeBoyfriend or boyfriend
 
 		fromState = from
@@ -36,11 +37,15 @@ return {
 
 		Timer.tween(
 			2,
-			cam,
+			camera,
 			{x = -boyfriend.x, y = -boyfriend.y, sizeX = camera.scaleX, sizeY = camera.scaleY},
 			"out-quad",
 			function()
-				inst = love.audio.newSource("music/game-over.ogg", "stream")
+				if not pixel then
+					inst = love.audio.newSource("music/game-over.ogg", "stream")
+				else
+					inst = love.audio.newSource("music/pixel/game-over.ogg", "stream")
+				end
 				inst:setLooping(true)
 				inst:play()
 
@@ -52,41 +57,43 @@ return {
 	update = function(self, dt)
 		local boyfriend = fakeBoyfriend or boyfriend
 
-		if not graphics.isFading() then
-			if input:pressed("confirm") then
-				if inst then inst:stop() end -- In case inst is nil and "confirm" is pressed before game over music starts
+		if input:pressed("confirm") then
+			if inst then inst:stop() end -- In case inst is nil and "confirm" is pressed before game over music starts
 
+			if not pixel then
 				inst = love.audio.newSource("music/game-over-end.ogg", "stream")
-				inst:play()
-
-				Timer.clear()
-
-				camera.x, camera.y = -boyfriend.x, -boyfriend.y
-
-				boyfriend:animate("dead confirm", false)
-
-				graphics.fadeOut(
-					3,
-					function()
-						Gamestate.pop()
-
-						fromState:load()
-					end
-				)
-			elseif input:pressed("gameBack") then
-				status.setLoading(true)
-
-				graphics.fadeOut(
-					0.5,
-					function()
-						Gamestate.pop()
-
-						Gamestate.switch(menu)
-
-						status.setLoading(false)
-					end
-				)
+			else
+				inst = love.audio.newSource("music/pixel/game-over-end.ogg", "stream")
 			end
+			inst:play()
+
+			Timer.clear()
+
+			camera.x, camera.y = -boyfriend.x, -boyfriend.y
+
+			boyfriend:animate("dead confirm", false)
+
+			graphics.fadeOut(
+				3,
+				function()
+					Gamestate.pop()
+
+					fromState:load()
+				end
+			)
+		elseif input:pressed("gameBack") then
+			status.setLoading(true)
+
+			graphics.fadeOut(
+				0.5,
+				function()
+					Gamestate.pop()
+
+					Gamestate.switch(menu)
+
+					status.setLoading(false)
+				end
+			)
 		end
 
 		boyfriend:update(dt)
@@ -102,7 +109,11 @@ return {
 				love.graphics.scale(camera.sizeX, camera.sizeY)
 				love.graphics.translate(camera.x, camera.y)
 
-				boyfriend:draw()
+				if not pixel then
+					boyfriend:draw()
+				else
+					boyfriend:udraw()
+				end
 			love.graphics.pop()
 		love.graphics.pop()
 	end

@@ -53,40 +53,38 @@ return {
 	end,
 
 	update = function(self, dt)
-		if not graphics.isFading() then
-			if input:pressed("confirm") then
-				inst:stop()
-				inst = love.audio.newSource("music/pixel/game-over-end.ogg", "stream")
-				inst:play()
+		if input:pressed("confirm") then
+			inst:stop()
+			inst = love.audio.newSource("music/pixel/game-over-end.ogg", "stream")
+			inst:play()
 
-				Timer.clear()
+			Timer.clear()
 
-				camera.x, camera.y = -fakeBoyfriend.x, -fakeBoyfriend.y
+			camera.x, camera.y = -fakeBoyfriend.x, -fakeBoyfriend.y
 
-				fakeBoyfriend:animate("dead confirm", false)
+			fakeBoyfriend:animate("dead confirm", false)
 
-				graphics.fadeOut(
-					3,
-					function()
-						Gamestate.pop()
+			graphics.fadeOut(
+				3,
+				function()
+					Gamestate.pop()
 
-						fromState:load()
-					end
-				)
-			elseif input:pressed("gameBack") then
-				status.setLoading(true)
+					fromState:load()
+				end
+			)
+		elseif input:pressed("gameBack") then
+			status.setLoading(true)
 
-				graphics.fadeOut(
-					0.5,
-					function()
-						Gamestate.pop()
+			graphics.fadeOut(
+				0.5,
+				function()
+					Gamestate.pop()
 
-						Gamestate.switch(menu)
+					Gamestate.switch(menu)
 
-						status.setLoading(false)
-					end
-				)
-			end
+					status.setLoading(false)
+				end
+			)
 		end
 
 		fakeBoyfriend:update(dt)
