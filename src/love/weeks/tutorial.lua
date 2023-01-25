@@ -63,7 +63,7 @@ return {
 	initUI = function(self)
 		weeks:initUI()
 
-		weeks:generateNotes(love.filesystem.load("data/tutorial/tutorial" .. difficulty .. ".json")())
+		weeks:generateNotes("data/tutorial/tutorial/tutorial" .. difficulty .. ".json")
 	end,
 
 	update = function(self, dt)
@@ -125,16 +125,15 @@ return {
 		girlfriend:update(dt)
 		boyfriend:update(dt)
 
-		boyfriend:beat()
-
-		if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
+		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 120000 / bpm) < 100 then
 			spriteTimers[1] = math.max(spriteTimers[1], spriteTimers[2]) -- Gross hack, but whatever
 
 			if spriteTimers[1] == 0 then
 				girlfriend:animate("idle", false)
 			end
-
-
+			if spriteTimers[3] == 0 then
+				weeks:safeAnimate(boyfriend, "idle", false, 3)
+			end
 			girlfriend:setAnimSpeed(14.4 / (60 / bpm))
 		end
 

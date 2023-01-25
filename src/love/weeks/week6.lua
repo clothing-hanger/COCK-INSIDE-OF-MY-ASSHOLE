@@ -19,20 +19,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 local canvas, font
 
-local song, difficulty
-
-local sky, school, street, treesBack
-
-local petals, trees, freaks
+local difficulty
 
 return {
 	enter = function(self, from, songNum, songAppend)
 		love.graphics.setDefaultFilter("nearest")
-
-		camera.sizeX, camera.sizeY = 0.85, 0.85
-		camera.scaleX, camera.scaleY = 0.85, 0.85
-
 		weeks:enter("pixel")
+		stages["school"]:enter()
 
 		song = songNum
 		difficulty = songAppend
@@ -40,23 +33,8 @@ return {
 		camera.sizeX, camera.sizeY = 0.85, 0.85
 		camera.scaleX, camera.scaleY = 0.85, 0.85
 
-		if song ~= 3 then
-			sky = graphics.newImage(graphics.imagePath("week6/sky"))
-			school = graphics.newImage(graphics.imagePath("week6/school"))
-			street = graphics.newImage(graphics.imagePath("week6/street"))
-			treesBack = graphics.newImage(graphics.imagePath("week6/trees-back"))
-
-			trees = love.filesystem.load("sprites/week6/trees.lua")()
-			petals = love.filesystem.load("sprites/week6/petals.lua")()
-			freaks = love.filesystem.load("sprites/week6/freaks.lua")()
-
-			sky.y = 1
-			school.y = 1
-		end
-
 		fakeBoyfriend = love.filesystem.load("sprites/pixel/boyfriend-dead.lua")()
 
-		boyfriend.x, boyfriend.y = 300, 190
 		fakeBoyfriend.x, fakeBoyfriend.y = 300, 190
 
 		boyfriendIcon:animate("boyfriend (pixel)", false)
@@ -69,14 +47,17 @@ return {
 		if song == 3 then
 			school = love.filesystem.load("sprites/week6/evil-school.lua")()
 			enemy = love.filesystem.load("sprites/week6/spirit.lua")()
-
+			stages["evilSchool"]:enter()
+			stages["evilSchool"]:load()
+			stages["school"]:leave()
 			enemyIcon:animate("spirit", false)
 		elseif song == 2 then
 			enemy = love.filesystem.load("sprites/week6/senpai-angry.lua")()
 
-			freaks:animate("dissuaded", true)
+			stages["school"]:load()
 		else
 			enemy = love.filesystem.load("sprites/week6/senpai.lua")()
+			stages["school"]:load()
 		end
 
 		weeks:load("pixel")
@@ -112,13 +93,10 @@ return {
 
 	update = function(self, dt)
 		weeks:update(dt)
-
-		if song == 3 then
-			school:update(dt)
+		if song ~= 3 then
+			stages["school"]:update(dt)
 		else
-			trees:update(dt)
-			petals:update(dt)
-			freaks:update(dt)
+			stages["evilSchool"]:update(dt)
 		end
 
 		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) then
@@ -148,31 +126,11 @@ return {
 			love.graphics.translate(graphics.getWidth()/2, graphics.getHeight()/2)
 			love.graphics.scale(camera.sizeX, camera.sizeY)
 
-			love.graphics.push()
-				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
-
-				if song ~= 3 then
-					sky:udraw()
-				end
-
-				school:udraw()
-			love.graphics.pop()
-			love.graphics.push()
-				love.graphics.translate(camera.x, camera.y)
-
-				if song ~= 3 then
-					street:udraw()
-					treesBack:udraw()
-
-					trees:udraw()
-					petals:udraw()
-					freaks:udraw()
-				end
-
-				girlfriend:udraw()
-				enemy:udraw()
-				boyfriend:udraw()
-			love.graphics.pop()
+			if song ~= 3 then
+				stages["school"]:draw()
+			else
+				stages["evilSchool"]:draw()
+			end
 			weeks:drawRating()
 		love.graphics.pop()
 
@@ -187,6 +145,8 @@ return {
 		graphics.clearCache()
 
 		weeks:leave()
+		stages["school"]:leave()
+		stages["evilSchool"]:leave()
 
 		love.graphics.setDefaultFilter("linear")
 	end

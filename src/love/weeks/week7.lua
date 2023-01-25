@@ -2,26 +2,9 @@ return {
     enter = function(self, from, songNum, songAppend)
 		pauseColor = {50, 50, 50}
 		weeks:enter() 
+		stages["tank"]:enter()
 
 		week = 7
-
-        sky = graphics.newImage(graphics.imagePath("week7/tankSky"))
-        ground = graphics.newImage(graphics.imagePath("week7/tankGround"))
-        watchTower = love.filesystem.load("sprites/week7/tankWatchtower.lua")()
-        smokeLeft = love.filesystem.load("sprites/week7/smokeLeft.lua")()
-        smokeRight = love.filesystem.load("sprites/week7/smokeRight.lua")()
-
-        tank0 = love.filesystem.load("sprites/week7/tank0.lua")()
-        tank1 = love.filesystem.load("sprites/week7/tank1.lua")()
-        tank2 = love.filesystem.load("sprites/week7/tank2.lua")()
-        tank3 = love.filesystem.load("sprites/week7/tank3.lua")()
-        tank4 = love.filesystem.load("sprites/week7/tank4.lua")()
-        tank5 = love.filesystem.load("sprites/week7/tank5.lua")()
-
-        girlfriend = love.filesystem.load("sprites/week7/gfTankmen.lua")()
-        enemy = love.filesystem.load("sprites/week7/tankmanCaptain.lua")()
-
-		cutsceneTime, cutsceneTimeThres, oldcutsceneTimeThres = 0, 0, 0
 
 		if storyMode and not died then
 			musicPos = 0
@@ -29,29 +12,10 @@ return {
 			camera.scaleX, camera.scaleY = 1.1, 1.1
 		end
 
-        tank0.x, tank0.y = -1000, 603
-        tank1.x, tank1.y = -675, 739
-        tank2.x, tank2.y = -250, 614
-        tank3.x, tank3.y = 250, 703
-        tank4.x, tank4.y = 675, 606
-        tank5.x, tank5.y = 1000, 618
-
-        sky.sizeX, sky.sizeY = 1.3, 1.3
-        ground.sizeX, ground.sizeY = 1.3, 1.3
-        ground.y = 100
-
 		song = songNum
 		difficulty = songAppend
 
 		enemyIcon:animate("tankman")
-
-        girlfriend.x, girlfriend.y = 15, 190
-        enemy.x, enemy.y = -560, 340
-        boyfriend.x, boyfriend.y = 460, 423
-
-        watchTower.x, watchTower.y = -670, 250
-        smokeLeft.x, smokeLeft.y = -1000, 250
-        smokeRight.x, smokeRight.y = 1000, 250
         
         enemy.sizeX = -1
 
@@ -60,6 +24,7 @@ return {
 
 	load = function(self)
 		weeks:load()
+		stages["tank"]:load()
 
 		if song == 3 then
 			picoSpeaker = love.filesystem.load("sprites/week7/picoSpeaker.lua")()
@@ -113,24 +78,7 @@ return {
 
 	update = function(self, dt)
 		weeks:update(dt)
-        watchTower:update(dt)
-        smokeLeft:update(dt)
-        smokeRight:update(dt)
-        tank0:update(dt)
-        tank1:update(dt)
-        tank2:update(dt)
-        tank3:update(dt)
-        tank4:update(dt)
-        tank5:update(dt)
-
-        if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
-            tank0:animate("anim", false)
-            tank1:animate("anim", false)
-            tank2:animate("anim", false)
-            tank3:animate("anim", false)
-            tank4:animate("anim", false)
-            tank5:animate("anim", false)
-        end
+		stages["tank"]:update(dt)
 
 		if inCutscene then
 			if not video:isPlaying() then 
@@ -220,35 +168,7 @@ return {
         love.graphics.push()
             love.graphics.translate(graphics.getWidth()/2, graphics.getHeight()/2)
             love.graphics.scale(camera.sizeX, camera.sizeY)
-            love.graphics.push()
-                love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
-
-                sky:draw()
-                watchTower:draw()
-                smokeLeft:draw()
-                smokeRight:draw()
-                ground:draw()
-                if song ~= 3 then
-                    girlfriend:draw()
-                else
-                    picoSpeaker:draw()
-                end
-            love.graphics.pop()
-            love.graphics.push()
-                love.graphics.translate(camera.x, camera.y)
-
-                if not inCutscene then
-                    enemy:draw()
-                end
-                boyfriend:draw()
-                
-                tank0:draw()
-                tank1:draw()
-                tank2:draw()
-                tank3:draw()
-                tank4:draw()
-                tank5:draw()
-            love.graphics.pop()
+            stages["tank"]:draw()
         love.graphics.pop()
 
         weeks:drawUI()
@@ -258,20 +178,7 @@ return {
 		song = 1
         died = false
         inCutscene = false
-        sky = nil
-        ground = nil
-        girlfriend = nil
-        boyfriend = nil
-        enemy = nil
-        watchTower = nil
-        smokeLeft = nil
-        smokeRight = nil
-        tank0 = nil
-        tank1 = nil
-        tank2 = nil
-        tank3 = nil
-        tank4 = nil
-        tank5 = nil
+        stages["tank"]:leave()
 		weeks:leave()
 	end
 }

@@ -14,6 +14,9 @@ camera.esizeY = 1
 
 camera.flash = 0
 camera.col = {1, 1, 1}
+camera.points = {}
+
+camera.mustHit = true
 
 -- e stands for extra
 
@@ -55,6 +58,37 @@ function camera:flash(time, x, col)
         Timer.cancel(camTimer)
     end
     camTimer = Timer.tween(time, camera, {flash = x}, "in-bounce")
+end
+
+function camera:removePoint(name)
+    camera.points[name] = nil
+end
+
+function camera:addPoint(name, x, y)
+    camera.points[name] = {x = x, y = y}
+end
+
+function camera:moveToPoint(time, name, mustHit)
+    if camTimer then 
+        Timer.cancel(camTimer)
+    end
+    mustHit = mustHit or true 
+    camera.mustHit = mustHit
+    camTimer = Timer.tween(time, camera, {x = camera.points[name].x, y = camera.points[name].y}, "out-quad")
+end
+
+function camera:drawCameraPoints()
+    for k, v in pairs(camera.points) do
+        love.graphics.circle("fill", -v.x, -v.y, 10)
+        -- print the name under the circle
+        love.graphics.print(k, -v.x, -v.y + 10)
+    end
+end
+
+function camera:drawPoint(name)
+    love.graphics.circle("fill", -camera.points[name].x, -camera.points[name].y, 10)
+    -- print the name under the circle
+    love.graphics.print(name, -camera.points[name].x, -camera.points[name].y + 10)
 end
 
 function camera:attach()

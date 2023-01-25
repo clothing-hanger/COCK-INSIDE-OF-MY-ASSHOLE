@@ -173,6 +173,9 @@ return {
 		enemy:animate("idle")
 		boyfriend:animate("idle")
 
+		if not camera.points["boyfriend"] then camera:addPoint("boyfriend", -boyfriend.x + 100, -boyfriend.y + 75) end
+		if not camera.points["enemy"] then camera:addPoint("enemy", -enemy.x - 100, -enemy.y + 75) end
+
 		graphics.fadeIn(0.5)
 	end,
 
@@ -575,13 +578,14 @@ return {
 					beatHandler.setBPM(bpm)
 				end
 
-				if camTimer then
-					Timer.cancel(camTimer)
-				end
-				if events[i].mustHitSection then
-					camTimer = Timer.tween(1.25, camera, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
-				else
-					camTimer = Timer.tween(1.25, camera, {x = -enemy.x - 100, y = -enemy.y + 75}, "out-quad")
+				if camera.mustHit then
+					if events[i].mustHitSection then
+						--camTimer = Timer.tween(1.25, camera, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
+						camera:moveToPoint(1.25, "boyfriend")
+					else
+						--camTimer = Timer.tween(1.25, camera, {x = -enemy.x - 100, y = -enemy.y + 75}, "out-quad")
+						camera:moveToPoint(1.25, "enemy")
+					end
 				end
 
 				if events[i].altAnim then
@@ -787,15 +791,15 @@ return {
 
 								boyfriend.lastHit = musicTime
 
-								if notePos <= 45 then -- "Sick"
+								if notePos <= 55 then -- "Sick"
 									score = score + 350
 									ratingAnim = "sick"
 									additionalAccuracy = additionalAccuracy + 100.0
-								elseif notePos <= 80 then -- "Good"
+								elseif notePos <= 90 then -- "Good"
 									score = score + 200
 									ratingAnim = "good"
 									additionalAccuracy = additionalAccuracy + 75.55
-								elseif notePos <= 110 then -- "Bad"
+								elseif notePos <= 120 then -- "Bad"
 									score = score + 100
 									ratingAnim = "bad"
 									additionalAccuracy = additionalAccuracy + 50.55
@@ -1143,6 +1147,9 @@ return {
 	leave = function(self)
 		if inst then inst:stop() end
 		voices:stop()
+
+		camera:removePoint("boyfriend")
+		camera:removePoint("enemy")
 
 		Timer.clear()
 

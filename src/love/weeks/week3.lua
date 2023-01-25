@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-local song, difficulty
+local difficulty
 
 local sky, city, cityWindows, behindTrain, street
-local winColors, winColor
 
 return {
 	enter = function(self, from, songNum, songAppend)
 		weeks:enter()
+		stages["city"]:enter()
 
 		song = songNum
 		difficulty = songAppend
@@ -32,32 +32,7 @@ return {
 		camera.sizeX, camera.sizeY = 1, 1
 		camera.scaleX, camera.scaleY = 1, 1
 
-		winColors = {
-			{49, 162, 253}, -- Blue
-			{49, 253, 140}, -- Green
-			{251, 51, 245}, -- Magenta
-			{253, 69, 49}, -- Orange
-			{251, 166, 51}, -- Yellow
-		}
-		winColor = 1
-
-		sky = graphics.newImage(graphics.imagePath("week3/sky"))
-		city = graphics.newImage(graphics.imagePath("week3/city"))
-		cityWindows = graphics.newImage(graphics.imagePath("week3/city-windows"))
-		behindTrain = graphics.newImage(graphics.imagePath("week3/behind-train"))
-		street = graphics.newImage(graphics.imagePath("week3/street"))
-
-		behindTrain.y = -100
-		behindTrain.sizeX, behindTrain.sizeY = 1.25, 1.25
-		street.y = -100
-		street.sizeX, street.sizeY = 1.25, 1.25
-
-		enemy = love.filesystem.load("sprites/week3/pico-enemy.lua")()
-
-		girlfriend.x, girlfriend.y = -70, -140
-		enemy.x, enemy.y = -480, 50
-		enemy.sizeX = -1 -- Reverse, reverse!
-		boyfriend.x, boyfriend.y = 165, 50
+		
 
 		enemyIcon:animate("pico", false)
 
@@ -66,6 +41,7 @@ return {
 
 	load = function(self)
 		weeks:load()
+		stages["city"]:load()
 
 		if song == 3 then
 			inst = love.audio.newSource("songs/week3/blammed/Inst.ogg", "stream")
@@ -97,14 +73,7 @@ return {
 
 	update = function(self, dt)
 		weeks:update(dt)
-
-		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
-			winColor = winColor + 1
-
-			if winColor > 5 then
-				winColor = 1
-			end
-		end
+		stages["city"]:update(dt)
 
 		if health >= 80 then
 			if enemyIcon:getAnimName() == "pico" then
@@ -145,33 +114,7 @@ return {
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
 			love.graphics.scale(camera.sizeX, camera.sizeY)
 
-			love.graphics.push()
-				love.graphics.translate(camera.x * 0.25, camera.y * 0.25)
-
-				sky:draw()
-			love.graphics.pop()
-			love.graphics.push()
-				love.graphics.translate(camera.x * 0.5, camera.y * 0.5)
-
-				city:draw()
-				graphics.setColor(curWinColor[1] / 255, curWinColor[2] / 255, curWinColor[3] / 255)
-				cityWindows:draw()
-				graphics.setColor(1, 1, 1)
-			love.graphics.pop()
-			love.graphics.push()
-				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
-
-				behindTrain:draw()
-				street:draw()
-
-				girlfriend:draw()
-			love.graphics.pop()
-			love.graphics.push()
-				love.graphics.translate(camera.x, camera.y)
-
-				enemy:draw()
-				boyfriend:draw()
-			love.graphics.pop()
+			stages["city"]:draw()
 			weeks:drawRating(0.9)
 		love.graphics.pop()
 
@@ -179,11 +122,7 @@ return {
 	end,
 
 	leave = function(self)
-		sky = nil
-		city = nil
-		cityWindows = nil
-		behindTrain = nil
-		street = nil
+		stages["city"]:leave()
 
 		graphics.clearCache()
 

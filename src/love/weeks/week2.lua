@@ -17,13 +17,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
-local song, difficulty
+local difficulty
 
 local hauntedHouse
 
 return {
 	enter = function(self, from, songNum, songAppend)
 		weeks:enter()
+		stages["hauntedHouse"]:enter()
 
 		song = songNum
 		difficulty = songAppend
@@ -36,13 +37,6 @@ return {
 			love.audio.newSource("sounds/week2/thunder2.ogg", "static")
 		}
 
-		hauntedHouse = love.filesystem.load("sprites/week2/haunted-house.lua")()
-		enemy = love.filesystem.load("sprites/week2/skid-and-pump.lua")()
-
-		girlfriend.x, girlfriend.y = -200, 50
-		enemy.x, enemy.y = -610, 140
-		boyfriend.x, boyfriend.y = 30, 240
-
 		enemyIcon:animate("skid and pump", false)
 
 		self:load()
@@ -50,6 +44,7 @@ return {
 
 	load = function(self)
 		weeks:load()
+		stages["hauntedHouse"]:load()
 
 		if song == 3 then
 			enemy = love.filesystem.load("sprites/week2/monster.lua")()
@@ -87,19 +82,7 @@ return {
 
 	update = function(self, dt)
 		weeks:update(dt)
-
-		hauntedHouse:update(dt)
-
-		if not hauntedHouse:isAnimated() then
-			hauntedHouse:animate("normal", false)
-		end
-		if song == 1 and musicThres ~= oldMusicThres and math.fmod(absMusicTime, 60000 * (love.math.random(17) + 7) / bpm) < 100 then
-			audio.playSound(sounds["thunder"][love.math.random(2)])
-
-			hauntedHouse:animate("lightning", false)
-			weeks:safeAnimate(girlfriend, "fear", true, 1)
-			weeks:safeAnimate(boyfriend, "shaking", true, 3)
-		end
+		stages["hauntedHouse"]:update(dt)
 
 		if beatHandler.onBeat() then
 			if enemy:getAnimName() == "idle" then
@@ -156,18 +139,7 @@ return {
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
 			love.graphics.scale(camera.sizeX, camera.sizeY)
 
-			love.graphics.push()
-				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
-
-				hauntedHouse:draw()
-				girlfriend:draw()
-			love.graphics.pop()
-			love.graphics.push()
-				love.graphics.translate(camera.x, camera.y)
-
-				enemy:draw()
-				boyfriend:draw()
-			love.graphics.pop()
+			stages["hauntedHouse"]:draw()
 			weeks:drawRating(0.9)
 		love.graphics.pop()
 
@@ -175,7 +147,7 @@ return {
 	end,
 
 	leave = function(self)
-		hauntedHouse = nil
+		stages["hauntedHouse"]:leave()
 
 		graphics.clearCache()
 

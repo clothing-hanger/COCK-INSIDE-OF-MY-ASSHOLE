@@ -296,7 +296,21 @@ function love.load()
 	input = require "input"
 
 	-- Load Debugs
-	debugMenu = require "states.debug-menu"
+	debugMenu = require "states.debug.debugMenu"
+	spriteDebug = require "states.debug.sprite-debug"
+	stageDebug = require "states.debug.stage-debug"
+
+	-- Load stages
+	stages = {
+		["stage"] = require "stages.stage",
+		["hauntedHouse"] = require "stages.hauntedHouse",
+		["city"] = require "stages.city",
+		["sunset"] = require "stages.sunset",
+		["mall"] = require "stages.mall",
+		["school"] = require "stages.school",
+		["evilSchool"] = require "stages.evilSchool",
+		["tank"] = require "stages.tank"
+	}
 
 	-- Load Menus
 	clickStart = require "states.click-start"
