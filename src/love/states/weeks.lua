@@ -56,7 +56,8 @@ return {
 					love.audio.newSource("sounds/miss2.ogg", "static"),
 					love.audio.newSource("sounds/miss3.ogg", "static")
 				},
-				death = love.audio.newSource("sounds/death.ogg", "static")
+				death = love.audio.newSource("sounds/death.ogg", "static"),
+				breakfast = love.audio.newSource("music/breakfast.ogg", "stream")
 			}
 
 			images = {
@@ -91,7 +92,8 @@ return {
 					love.audio.newSource("sounds/pixel/miss2.ogg", "static"),
 					love.audio.newSource("sounds/pixel/miss3.ogg", "static")
 				},
-				death = love.audio.newSource("sounds/pixel/death.ogg", "static")
+				death = love.audio.newSource("sounds/pixel/death.ogg", "static"),
+				breakfast = love.audio.newSource("music/breakfast.ogg", "stream")
 			}
 
 			images = {
@@ -143,12 +145,16 @@ return {
 	load = function(self)
 		botplayY = 0
 		botplayAlpha = {1}
+		paused = false
+		pauseMenuSelection = 1
 		function boyPlayAlphaChange()
 			Timer.tween(1.25, botplayAlpha, {0}, "in-out-cubic", function()
 				Timer.tween(1.25, botplayAlpha, {1}, "in-out-cubic", boyPlayAlphaChange)
 			end)
 		end
 		boyPlayAlphaChange()
+		pauseBG = graphics.newImage(graphics.imagePath("pause/pause_box"))
+		pauseShadow = graphics.newImage(graphics.imagePath("pause/pause_shadow"))
 		for i = 1, 4 do
 			notMissed[i] = true
 		end
@@ -539,6 +545,61 @@ return {
 	end,
 
 	update = function(self, dt)
+		if input:pressed("pause") and not countingDown and not inCutscene and not doingDialogue then
+			if not graphics.isFading() then 
+				paused = not paused
+				pauseTime = musicTime
+				if paused then 
+					if inst then inst:pause() end
+					voices:pause()
+					love.audio.play(sounds.breakfast)
+					sounds.breakfast:setLooping(true)
+				else
+					if inst then inst:play() end
+					voices:play()
+					love.audio.stop(sounds.breakfast)
+				end
+			end
+			return
+		end
+		if paused then 
+			previousFrameTime = love.timer.getTime() * 1000
+			musicTime = pauseTime
+			if input:pressed("gameDown") then
+				if pauseMenuSelection == 3 then
+					pauseMenuSelection = 1
+				else
+					pauseMenuSelection = pauseMenuSelection + 1
+				end
+			end
+
+			if input:pressed("gameUp") and paused then
+				if pauseMenuSelection == 1 then
+					pauseMenuSelection = 3
+				else
+					pauseMenuSelection = pauseMenuSelection - 1
+				end
+			end
+			if input:pressed("confirm") then
+				love.audio.stop(sounds.breakfast) -- since theres only 3 options, we can make the sound stop without an else statement
+				if pauseMenuSelection == 1 then
+					if inst then inst:resume() end
+					voices:resume()
+					paused = false
+				elseif pauseMenuSelection == 2 then
+					pauseRestart = true
+					Gamestate.push(gameOver)
+				elseif pauseMenuSelection == 3 then
+					paused = false
+					if inst then inst:stop() end
+					voices:stop()
+					if inst then inst:stop() end
+					storyMode = false
+					quitPressed = true
+				end
+			end
+			return
+		end
 		if inCutscene then return end
 		beatHandler.update(dt)
 
@@ -642,6 +703,7 @@ return {
 
 	updateUI = function(self, dt)
 		if inCutscene then return end
+		if paused then return end
 		musicPos = musicTime * 0.6 * speed
 
 		for i = 1, 4 do
@@ -957,6 +1019,37 @@ return {
 	end,
 
 	drawUI = function(self)
+		if paused then 
+			love.graphics.push()
+				love.graphics.setFont(pauseFont)
+				love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
+				if paused then
+					graphics.setColor(0, 0, 0, 0.8)
+					love.graphics.rectangle("fill", -10000, -2000, 25000, 10000)
+					graphics.setColor(1, 1, 1)
+					pauseShadow:draw()
+					pauseBG:draw()
+					if pauseMenuSelection ~= 1 then
+						uitextflarge("Resume", -305, -275, 600, "center", false)
+					else
+						uitextflarge("Resume", -305, -275, 600, "center", true)
+					end
+					if pauseMenuSelection ~= 2 then
+						uitextflarge("Restart", -305, -75, 600, "center", false)
+						--  -600, 400+downscrollOffset, 1200, "center"
+					else
+						uitextflarge("Restart", -305, -75, 600, "center", true)
+					end
+					if pauseMenuSelection ~= 3 then
+						uitextflarge("Quit", -305, 125, 600, "center", false)
+					else
+						uitextflarge("Quit", -305, 125, 600, "center", true)
+					end
+				end
+				love.graphics.setFont(font)
+			love.graphics.pop()
+			return 
+		end
 		self:drawHealthbar()
 		love.graphics.push()
 			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)

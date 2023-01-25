@@ -11,6 +11,8 @@ return {
 			["Petals"] = love.filesystem.load("sprites/week6/petals.lua")(), -- petals
 			["Freaks"] = love.filesystem.load("sprites/week6/freaks.lua")() -- freaks
         }
+		girlfriend = love.filesystem.load("sprites/pixel/girlfriend.lua")()
+		boyfriend = love.filesystem.load("sprites/pixel/boyfriend.lua")()
 		enemy = love.filesystem.load("sprites/week6/senpai.lua")()
 		enemy.colours = {255,170,111}
 		fakeBoyfriend = love.filesystem.load("sprites/pixel/boyfriend-dead.lua")() -- Used for game over

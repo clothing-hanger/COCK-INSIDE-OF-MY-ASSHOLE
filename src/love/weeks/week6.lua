@@ -99,7 +99,7 @@ return {
 			stages["evilSchool"]:update(dt)
 		end
 
-		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) then
+		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) and not paused then
 			if storyMode and song < 3 then
 				song = song + 1
 

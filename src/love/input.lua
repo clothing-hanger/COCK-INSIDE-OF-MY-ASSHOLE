@@ -46,6 +46,7 @@ if love.system.getOS() == "NX" then
 			tab = {"button:minus", "key:tab"},
 			debugZoomOut = {"key:["},
 			debugZoomIn = {"key:]"},
+			pause = {"button:plus", "key:return"},
 
 			gameLeft = gameLeft,
 			gameDown = gameDown,
@@ -79,6 +80,7 @@ else
 			tab = {"key:tab", "button:back"},
 			debugZoomOut = {"key:["},
 			debugZoomIn = {"key:]"},
+			pause = {"button:plus", "key:return"},
 
 			gameLeft = gameLeft,
 			gameDown = gameDown,

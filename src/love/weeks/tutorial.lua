@@ -150,7 +150,7 @@ return {
 			weeks:safeAnimate(boyfriend, "hey", false, 3)
 		end
 
-		if not (countingDown or graphics.isFading()) and not voices:isPlaying() then
+		if not (countingDown or graphics.isFading()) and not voices:isPlaying() and not paused then
 			storyMode = false
 
 			graphics.fadeOut(

@@ -167,6 +167,8 @@ function saveSettings()
 end
 
 function love.load()
+	gamePause = false
+	paused = false
 	settings = {}
 	local curOS = love.system.getOS()
 
@@ -512,6 +514,12 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
+	if gamePause then 
+		if inst then inst:pause() end
+		if music then music:pause() end
+		if voices then voices:pause() end
+		return
+	end
 	dt = math.min(dt, 1 / 30)
 
 	if volFade > 0 then
@@ -575,4 +583,8 @@ function love.draw()
 	if settings.showDebug then
 		love.graphics.print(status.getDebugStr(settings.showDebug), 5, 5, nil, 0.5, 0.5)
 	end
+end
+
+function love.focus(t)
+	Gamestate.focus(t)
 end
