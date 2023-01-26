@@ -44,6 +44,7 @@ return {
 	end,
 
 	load = function(self)
+		weeks:load()
 		if song == 3 then
 			school = love.filesystem.load("sprites/week6/evil-school.lua")()
 			enemy = love.filesystem.load("sprites/week6/spirit.lua")()
@@ -59,8 +60,6 @@ return {
 			enemy = love.filesystem.load("sprites/week6/senpai.lua")()
 			stages["school"]:load()
 		end
-
-		weeks:load("pixel")
 
 		if song == 3 then
 			inst = love.audio.newSource("songs/week6/thorns/Inst.ogg", "stream")
