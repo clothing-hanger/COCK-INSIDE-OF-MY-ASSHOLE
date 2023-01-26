@@ -70,4 +70,16 @@ function beatHandler.onBeat()
     return beatHandler.beatTime == 0
 end
 
+function beatHandler.onStep()
+    return beatHandler.beatTime % beatHandler.stepCrochet == 0
+end
+
+function beatHandler.onBeatNumber(beatNumber)
+    return beatHandler.beat % beatNumber == 0 and beatHandler.onBeat()
+end
+
+function beatHandler.onStepNumber(stepNumber)
+    return beatHandler.beatTime % (beatHandler.stepCrochet * stepNumber) == 0 and beatHandler.onStep()
+end
+
 return beatHandler
