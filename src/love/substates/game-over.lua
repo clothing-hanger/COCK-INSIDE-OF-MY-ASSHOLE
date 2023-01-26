@@ -57,7 +57,8 @@ return {
 	update = function(self, dt)
 		local boyfriend = fakeBoyfriend or boyfriend
 
-		if input:pressed("confirm") then
+		if input:pressed("confirm") or pauseRestart then
+			pauseRestart = false
 			if inst then inst:stop() end -- In case inst is nil and "confirm" is pressed before game over music starts
 
 			if not pixel then

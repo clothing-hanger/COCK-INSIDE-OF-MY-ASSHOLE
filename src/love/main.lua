@@ -191,6 +191,8 @@ function love.load()
 	cutscene = require "modules.cutscene"
 	settings = require "settings"
 
+	playMenuMusic = true
+
 	if love.filesystem.getInfo("settings") then 
 		settingdata = love.filesystem.read("settings")
 		settingdata = lume.deserialize(settingdata)
@@ -514,6 +516,7 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
+	previousFrameTime = love.timer.getTime() * 1000
 	if gamePause then 
 		if inst then inst:pause() end
 		if music then music:pause() end
@@ -587,4 +590,12 @@ end
 
 function love.focus(t)
 	Gamestate.focus(t)
+	gamePause = not t
+	if t then
+		if inst and not playMenuMusic then inst:play() end
+		if music and playMenuMusic then
+			music:play()
+		end
+		if voices and not playMenuMusic then voices:play() end
+	end
 end

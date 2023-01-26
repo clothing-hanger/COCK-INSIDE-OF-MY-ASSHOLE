@@ -57,6 +57,7 @@ local judgements = {}
 
 return {
 	enter = function(self, option)
+		playMenuMusic = false
 		beatHandler.reset()
 		option = option or "normal"
 		if option ~= "pixel" then
@@ -542,6 +543,7 @@ return {
 
 										previousFrameTime = love.timer.getTime() * 1000
 										musicTime = 0
+										beatHandler.setBeat(0)
 
 										if inst then inst:play() end
 										voices:play()
@@ -562,19 +564,15 @@ return {
 	end,
 
 	update = function(self, dt)
-		if input:pressed("pause") and not countingDown and not inCutscene and not doingDialogue then
+		if input:pressed("pause") and not countingDown and not inCutscene and not doingDialogue and not paused then
 			if not graphics.isFading() then 
-				paused = not paused
+				paused = true
 				pauseTime = musicTime
 				if paused then 
 					if inst then inst:pause() end
 					voices:pause()
 					love.audio.play(sounds.breakfast)
-					sounds.breakfast:setLooping(true)
-				else
-					if inst then inst:play() end
-					voices:play()
-					love.audio.stop(sounds.breakfast)
+					sounds.breakfast:setLooping(true) 
 				end
 			end
 			return
@@ -600,9 +598,9 @@ return {
 			if input:pressed("confirm") then
 				love.audio.stop(sounds.breakfast) -- since theres only 3 options, we can make the sound stop without an else statement
 				if pauseMenuSelection == 1 then
-					if inst then inst:resume() end
-					voices:resume()
-					paused = false
+					if inst then inst:play() end
+					voices:play()
+					paused = false 
 				elseif pauseMenuSelection == 2 then
 					pauseRestart = true
 					Gamestate.push(gameOver)
@@ -1270,6 +1268,8 @@ return {
 	leave = function(self)
 		if inst then inst:stop() end
 		voices:stop()
+
+		playMenuMusic = true
 
 		camera:removePoint("boyfriend")
 		camera:removePoint("enemy")
