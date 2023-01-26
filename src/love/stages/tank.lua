@@ -55,6 +55,7 @@ return {
     draw = function()
         love.graphics.push()
         love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
+        love.graphics.translate(camera.ex * 0.9, camera.ey * 0.9)
 
         stageImages["Sky"]:draw()
         stageImages["Watch Tower"]:draw()
@@ -69,6 +70,7 @@ return {
         love.graphics.pop()
         love.graphics.push()
             love.graphics.translate(camera.x, camera.y)
+            love.graphics.translate(camera.ex, camera.ey)
 
             if not inCutscene then
                 enemy:draw()
@@ -77,10 +79,6 @@ return {
             for i = 1, 6 do
                 stageImages["Tank " .. i]:draw()
             end
-        love.graphics.pop()
-        love.graphics.push()
-            love.graphics.translate(camera.x * 1.1, camera.y * 1.1)
-
         love.graphics.pop()
     end,
 

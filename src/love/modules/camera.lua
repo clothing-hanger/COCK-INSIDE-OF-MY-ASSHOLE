@@ -34,11 +34,11 @@ function camera:zoomTo(time, x, y)
     camTimer = Timer.tween(time, camera, {esizeX = x, esizeY = y}, "in-bounce")
 end
 
-function camera:moveTo(time, x, y)
-    if camTimer then 
-        Timer.cancel(camTimer)
+function camera:moveToExtra(time, x, y)
+    if camTimerE then 
+        Timer.cancel(camTimerE)
     end
-    camTimer = Timer.tween(time, camera, {ex = x, ey = y}, "out-quad")
+    camTimerE = Timer.tween(time, camera, {ex = x, ey = y}, "out-quad")
 end
 
 function camera:reset()

@@ -29,6 +29,23 @@ local inputList = {
 	"gameUp",
 	"gameRight"
 }
+local noteCamTweens = {
+	function()
+		camera:moveToExtra((60/bpm), 15, 0)
+	end,
+
+	function()
+		camera:moveToExtra((60/bpm), 0, -15)
+	end,
+
+	function()
+		camera:moveToExtra((60/bpm), 0, 15)
+	end,
+
+	function()
+		camera:moveToExtra((60/bpm), -15, 0)
+	end
+}
 
 local ratingTimers = {}
 
@@ -641,9 +658,11 @@ return {
 
 				if camera.mustHit then
 					if events[i].mustHitSection then
+						mustHitSection = true
 						--camTimer = Timer.tween(1.25, camera, {x = -boyfriend.x + 100, y = -boyfriend.y + 75}, "out-quad")
 						camera:moveToPoint(1.25, "boyfriend")
 					else
+						mustHitSection = false
 						--camTimer = Timer.tween(1.25, camera, {x = -enemy.x - 100, y = -enemy.y + 75}, "out-quad")
 						camera:moveToPoint(1.25, "enemy")
 					end
@@ -750,6 +769,10 @@ return {
 
 					enemy.lastHit = musicTime
 
+					if not mustHitSection then 
+						noteCamTweens[i]()
+					end
+
 					table.remove(enemyNote, 1)
 				end
 			end
@@ -839,15 +862,15 @@ return {
 				boyfriendArrow:animate("press", false)
 
 				if #boyfriendNote > 0 then
-					for i = 1, #boyfriendNote do
-						if boyfriendNote[i] and boyfriendNote[i]:getAnimName() == "on" then
-							if (boyfriendNote[i].time - musicTime <= 150) then
+					for j = 1, #boyfriendNote do
+						if boyfriendNote[j] and boyfriendNote[j]:getAnimName() == "on" then
+							if (boyfriendNote[j].time - musicTime <= 150) then
 								local notePos
 								local ratingAnim
 
 								notMissed[noteNum] = true
 
-								notePos = math.abs(boyfriendNote[i].time - musicTime)
+								notePos = math.abs(boyfriendNote[j].time - musicTime)
 
 								voices:setVolume(1)
 
@@ -891,6 +914,10 @@ return {
 									numbers[i].y = girlfriend.y + 50
 								end
 
+								if mustHitSection then 
+									noteCamTweens[i]()
+								end
+
 								Timer.tween(2, judgements[#judgements], {[2] = 0}, "linear")
 								Timer.tween(2, judgements[#judgements], {[3] = girlfriend.y - 100}, "out-elastic")
 
@@ -903,7 +930,7 @@ return {
 
 									self:safeAnimate(boyfriend, curAnim, false, 3)
 
-									if boyfriendNote[i]:getAnimName() ~= "hold" and boyfriendNote[i]:getAnimName() ~= "end" then
+									if boyfriendNote[j]:getAnimName() ~= "hold" and boyfriendNote[j]:getAnimName() ~= "end" then
 										health = health + 0.095
 									else
 										health = health + 0.0125
@@ -912,7 +939,7 @@ return {
 									success = true
 								end
 
-								table.remove(boyfriendNote, i)
+								table.remove(boyfriendNote, j)
 							else
 								break
 							end
@@ -994,8 +1021,10 @@ return {
 		love.graphics.push()
 			if multiplier then
 				love.graphics.translate(camera.x * multiplier, camera.y * multiplier)
+				love.graphics.translate(camera.ex * multiplier, camera.ey * multiplier)
 			else
 				love.graphics.translate(camera.x, camera.y)
+				love.graphics.translate(camera.ex, camera.ey)
 			end
 
 			for i = 1, #judgements do
