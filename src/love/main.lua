@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
-if love.filesystem.isFused() then function print() end end -- print functions tend the make the game lag when in update functions, so we do this just in
+if love.filesystem.isFused() then function print() end end -- print functions tend the make the game lag when in update functions, so we do this to prevent that
 
 function uitextflarge(text,x,y,limit,align,hovered,r,sx,sy,ox,oy,kx,ky)
 	local x = x or 0
@@ -442,7 +442,7 @@ function love.load()
 	-- Variables
 	font = love.graphics.newFont("fonts/vcr.ttf", 24)
 	FNFFont = love.graphics.newFont("fonts/fnFont.ttf", 24)
-	credFont = love.graphics.newFont("fonts/fnFont.ttf", 32)   -- guglio is a bitch
+	credFont = love.graphics.newFont("fonts/fnFont.ttf", 32)   -- guglio is a bitch 
 	uiFont = love.graphics.newFont("fonts/Dosis-SemiBold.ttf", 32)
 	pauseFont = love.graphics.newFont("fonts/Dosis-SemiBold.ttf", 96)
 	weekFont = love.graphics.newFont("fonts/Dosis-SemiBold.ttf", 84)
@@ -460,14 +460,18 @@ function love.load()
 	storyMode = false
 	countingDown = false
 
-	--cam = {x = 0, y = 0, sizeX = 0.9, sizeY = 0.9}
-	--camScale = {x = 0.9, y = 0.9}
 	uiScale = {x = 1, y = 1, sizeX = 1, sizeY = 1}
 
 	musicTime = 0
 	health = 0
 
 	music = love.audio.newSource("music/menu/menu.ogg", "stream")
+	music:setLooping(true)
+
+	fixVol = tonumber(string.format(
+		"%.1f  ",
+		(love.audio.getVolume())
+	))
 
 	if curOS == "Web" then
 		Gamestate.switch(clickStart)
@@ -518,7 +522,7 @@ function love.update(dt)
 	dt = math.min(dt, 1 / 30)
 
 	if volFade > 0 then
-		volFade = volFade - 0.4 * dt
+		volFade = volFade - 1 * dt
 	end
 
 	input:update()
@@ -550,26 +554,28 @@ function love.draw()
 		if status.getLoading() then
 			love.graphics.print("Loading...", lovesize.getWidth() - 175, lovesize.getHeight() - 50)
 		end
-		love.graphics.setColor(1, 1, 1, volFade)
-		fixVol = tonumber(string.format(
-			"%.1f  ",
-			(love.audio.getVolume())
-		))
-		love.graphics.setColor(0.5, 0.5, 0.5, volFade - 0.3)
+		if volFade > 0  then
+			love.graphics.setColor(1, 1, 1, volFade)
+			fixVol = tonumber(string.format(
+				"%.1f  ",
+				(love.audio.getVolume())
+			))
+			love.graphics.setColor(0.5, 0.5, 0.5, volFade - 0.3)
 
-		love.graphics.rectangle("fill", 1110, 0, 170, 50)
+			love.graphics.rectangle("fill", 1110, 0, 170, 50)
 
-		love.graphics.setColor(1, 1, 1, volFade)
+			love.graphics.setColor(1, 1, 1, volFade)
 
-		if volTween then Timer.cancel(volTween) end
-		volTween = Timer.tween(
-			0.2, 
-			volumeWidth, 
-			{width = fixVol * 160}, 
-			"out-quad"
-		)
-		love.graphics.rectangle("fill", 1113, 10, volumeWidth.width, 30)
-		graphics.setColor(1, 1, 1, 1)
+			if volTween then Timer.cancel(volTween) end
+			volTween = Timer.tween(
+				0.2, 
+				volumeWidth, 
+				{width = fixVol * 160},
+				"out-quad"
+			)
+			love.graphics.rectangle("fill", 1113, 10, volumeWidth.width, 30)
+			graphics.setColor(1, 1, 1, 1)
+		end
 	lovesize.finish()
 
 	graphics.screenBase(love.graphics.getWidth(), love.graphics.getHeight())
