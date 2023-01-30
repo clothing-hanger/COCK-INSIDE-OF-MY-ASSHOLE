@@ -1006,13 +1006,6 @@ return {
 			enemyIconTimer = Timer.tween((60 / bpm) / 16, enemyIcon, {sizeX = 1.75, sizeY = 1.75}, "out-quad", function() enemyIconTimer = Timer.tween((60 / bpm), enemyIcon, {sizeX = 1.5, sizeY = 1.5}, "out-quad") end)
 			boyfriendIconTimer = Timer.tween((60 / bpm) / 16, boyfriendIcon, {sizeX = -1.75, sizeY = 1.75}, "out-quad", function() boyfriendIconTimer = Timer.tween((60 / bpm), boyfriendIcon, {sizeX = -1.5, sizeY = 1.5}, "out-quad") end)
 		end
-
-		if not countingDown and input:pressed("gameBack") then
-			if inst then inst:stop() end
-			voices:stop()
-
-			storyMode = false
-		end
 	end,
 
 	drawRating = function(self, multiplier)
