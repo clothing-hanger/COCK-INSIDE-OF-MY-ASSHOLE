@@ -16,4 +16,8 @@ function util.endsWith(str, ending)
     return ending == "" or str:sub(-#ending) == ending
 end
 
+function util.round(x) 
+    return x >= 0 and math.floor(x + .5) or math.ceil(x - .5) 
+end
+
 return util
