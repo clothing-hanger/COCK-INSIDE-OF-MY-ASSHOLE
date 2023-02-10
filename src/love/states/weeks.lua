@@ -773,7 +773,7 @@ return {
 			end
 
 			if #boyfriendNote > 0 then
-				if (boyfriendNote[1].y - musicPos < -500) then
+				if (boyfriendNote[1].y - musicPos < -600) then
 					if inst then voices:setVolume(0) end
 
 					notMissed[noteNum] = false
