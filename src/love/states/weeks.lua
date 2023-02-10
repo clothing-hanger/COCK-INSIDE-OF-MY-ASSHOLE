@@ -781,7 +781,6 @@ return {
 					if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
 						health = health - 0.095
 						misses = misses + 1
-						additionalAccuracy = additionalAccuracy + 1.11
 					else
 						health = health - 0.0125
 					end
@@ -952,7 +951,6 @@ return {
 					score = score - 10
 					combo = 0
 					health = health - 0.135
-					additionalAccuracy = additionalAccuracy + 1.11
 					misses = misses + 1
 				end
 			end
