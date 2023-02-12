@@ -743,7 +743,7 @@ return {
 			end
 
 			if #enemyNote > 0 then
-				if (enemyNote[1].y - musicPos <= -400) then
+				if (enemyNote[1].y - musicPos <= -410) then
 					voices:setVolume(1)
 
 					enemyArrow:animate("confirm", false)
@@ -1089,63 +1089,80 @@ return {
 				love.graphics.push()
 					love.graphics.translate(0, -musicPos)
 
-					for j = #enemyNotes[i], 1, -1 do
-						if enemyNotes[i][j].y - musicPos <= 560 then
-							local animName = enemyNotes[i][j]:getAnimName()
+					love.graphics.push()
+						for j = #enemyNotes[i], 1, -1 do
+							if enemyNotes[i][j].y - musicPos <= 560 then
+								local animName = enemyNotes[i][j]:getAnimName()
 
-							if animName == "hold" or animName == "end" then
-								if settings.middleScroll then
-									graphics.setColor(1, 1, 1, 0.3)
+								if animName == "hold" or animName == "end" then
+									if settings.middleScroll then
+										graphics.setColor(1, 1, 1, 0.3)
+									else
+										graphics.setColor(1, 1, 1, 0.5)
+									end
+
+									-- only apply scissor for y and height
+									love.graphics.setScissor(-400, 0, 4000, 632) -- too lazy to y'know... do it right...
 								else
-									graphics.setColor(1, 1, 1, 0.5)
+									if settings.middleScroll then
+										graphics.setColor(1, 1, 1, 0.5)
+									else
+										graphics.setColor(1, 1, 1, 1)
+									end
 								end
-							else
-								if settings.middleScroll then
-									graphics.setColor(1, 1, 1, 0.5)
+
+								if not pixel then
+									enemyNotes[i][j]:draw()
 								else
-									graphics.setColor(1, 1, 1, 1)
-								end
-							end
-							if not pixel then
-								enemyNotes[i][j]:draw()
-							else
-								if not settings.downscroll then
-									enemyNotes[i][j]:udraw(8, 8)
-								else
-									if enemyNotes[i][j]:getAnimName() == "end" then
+									if not settings.downscroll then
 										enemyNotes[i][j]:udraw(8, 8)
 									else
-										enemyNotes[i][j]:udraw(8, -8)
+										if enemyNotes[i][j]:getAnimName() == "end" then
+											enemyNotes[i][j]:udraw(8, 8)
+										else
+											enemyNotes[i][j]:udraw(8, -8)
+										end
 									end
 								end
+								graphics.setColor(1, 1, 1)
 							end
-							graphics.setColor(1, 1, 1)
-						end
-					end
-					for j = #boyfriendNotes[i], 1, -1 do
-						if boyfriendNotes[i][j].y - musicPos <= 560 then
-							local animName = boyfriendNotes[i][j]:getAnimName()
 
-							if animName == "hold" or animName == "end" then
-								graphics.setColor(1, 1, 1, math.min(0.5, (500 + (boyfriendNotes[i][j].y - musicPos)) / 150))
-							else
-								graphics.setColor(1, 1, 1, math.min(1, (500 + (boyfriendNotes[i][j].y - musicPos)) / 75))
-							end
-							if not pixel then 
-								boyfriendNotes[i][j]:draw()
-							else
-								if not settings.downscroll then
-									boyfriendNotes[i][j]:udraw(8, 8)
+							-- reset the scissor
+							love.graphics.setScissor()
+						end
+					love.graphics.pop()
+					love.graphics.push()
+						for j = #boyfriendNotes[i], 1, -1 do
+							if boyfriendNotes[i][j].y - musicPos <= 560 then
+								local animName = boyfriendNotes[i][j]:getAnimName()
+
+								if animName == "hold" or animName == "end" then
+									graphics.setColor(1, 1, 1, math.min(0.5, (500 + (boyfriendNotes[i][j].y - musicPos)) / 150))
+
+									if input:down(inputList[i]) then 
+										love.graphics.setScissor(-400, 0, 4000, 632) -- too lazy to y'know... do it right...
+									end
 								else
-									if boyfriendNotes[i][j]:getAnimName() == "end" then
+									graphics.setColor(1, 1, 1, math.min(1, (500 + (boyfriendNotes[i][j].y - musicPos)) / 75))
+								end
+								if not pixel then 
+									boyfriendNotes[i][j]:draw()
+								else
+									if not settings.downscroll then
 										boyfriendNotes[i][j]:udraw(8, 8)
 									else
-										boyfriendNotes[i][j]:udraw(8, -8)
+										if boyfriendNotes[i][j]:getAnimName() == "end" then
+											boyfriendNotes[i][j]:udraw(8, 8)
+										else
+											boyfriendNotes[i][j]:udraw(8, -8)
+										end
 									end
 								end
 							end
+							-- reset the scissor
+							love.graphics.setScissor()
 						end
-					end
+					love.graphics.pop()
 					graphics.setColor(1, 1, 1)
 				love.graphics.pop()
 			end
