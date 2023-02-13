@@ -348,7 +348,7 @@ return {
 				 
 						  	enemyNotes[id][c]:animate("end", false)
 					    end
-					else
+					elseif noteType < 4 and noteType >= 0 then
 					   	local id = noteType + 1
 					   	local c = #boyfriendNotes[id] + 1
 					   	local x = boyfriendArrows[id].x
@@ -418,7 +418,7 @@ return {
 				 
 						  	boyfriendNotes[id][c]:animate("end", false)
 					   	end
-					else
+					elseif noteType < 4 and noteType >= 0 then
 					   	local id = noteType + 1
 					   	local c = #enemyNotes[id] + 1
 					   	local x = enemyArrows[id].x
@@ -824,6 +824,10 @@ return {
 							rating.y = girlfriend.y - 50
 							for i = 1, 3 do
 								numbers[i].y = girlfriend.y + 50
+							end
+
+							if mustHitSection then 
+								noteCamTweens[i]()
 							end
 
 							ratingTimers[1] = Timer.tween(2, ratingVisibility, {0}, "linear")

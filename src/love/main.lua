@@ -165,6 +165,12 @@ function saveSettings()
         )
     end
 end
+--[[
+
+function love.load() -- Todo, add custom framerate support
+
+end
+]]
 
 function love.load()
 	paused = false
