@@ -188,6 +188,7 @@ function love.load()
 	beatHandler = require "modules.beatHandler"
 	util = require "modules.util"
 	cutscene = require "modules.cutscene"
+	dialogue = require "modules.dialogue"
 	settings = require "settings"
 
 	playMenuMusic = true

@@ -40,7 +40,11 @@ return {
 		boyfriendIcon:animate("boyfriend (pixel)", false)
 		enemyIcon:animate("senpai", false)
 
+		pixelFont = love.graphics.newFont("fonts/pixel.fnt")
+
 		self:load()
+
+		musicPos = 0
 	end,
 
 	load = function(self)
@@ -74,8 +78,6 @@ return {
 		enemy.x, enemy.y = -340, -20
 
 		self:initUI()
-
-		weeks:setupCountdown()
 	end,
 
 	initUI = function(self)
@@ -83,10 +85,67 @@ return {
 
 		if song == 3 then
 			weeks:generateNotes("data/week6/thorns/thorns" .. difficulty .. ".json")
+			dialogue.set("data/week6/thorns/thornsDialogue.txt", true)
+
+			if storyMode and not died then
+				dialogue.addSpeaker("dad", graphics.newImage(graphics.imagePath("week6/spiritFaceForward")), 400, 250, 6, 6, false)
+				dialogue.setSpeakerBox("dad", love.filesystem.load("sprites/week6/scaryDialogueBox.lua")(), 650, 375, 6, 6, true, false)
+
+				dialogue.removeSpeaker("bf")
+				dialogue.removeSpeakerBox("bf")
+
+				dialogue.setMusic(love.audio.newSource("music/pixel/LunchboxScary.ogg", "stream"))
+
+				dialogue.setCallback(
+					function()
+						weeks:setupCountdown()
+					end
+				)
+			else
+				weeks:setupCountdown()
+			end
 		elseif song == 2 then
 			weeks:generateNotes("data/week6/roses/roses" .. difficulty .. ".json")
+			dialogue.set("data/week6/roses/rosesDialogue.txt", true)
+
+			if storyMode and not died then
+				dialogue.addSpeaker("dad", love.filesystem.load("sprites/week6/angrySenpaiBox.lua")(), 650, 375, 6, 6, true, false)
+				dialogue.removeSpeakerBox("dad")
+
+				dialogue.removeMusic()
+
+				ANGRY_TEXT_BOX = love.audio.newSource("sounds/pixel/ANGRY_TEXT_BOX.ogg", "stream")
+				ANGRY_TEXT_BOX:play()
+
+				dialogue.setCallback(
+					function()
+						weeks:setupCountdown()
+					end
+				)
+			else
+				weeks:setupCountdown()
+			end
 		else
 			weeks:generateNotes("data/week6/senpai/senpai" .. difficulty .. ".json")
+			dialogue.set("data/week6/senpai/senpaiDialogue.txt", true)
+
+			if storyMode and not died then
+				dialogue.addSpeaker("dad", love.filesystem.load("sprites/week6/senpaiPortrait.lua")(), 650, 375, 6, 6, true)
+				dialogue.setSpeakerBox("dad", love.filesystem.load("sprites/week6/dialogueBox.lua")(), 650, 375, 6, 6, true)
+
+				dialogue.addSpeaker("bf", love.filesystem.load("sprites/week6/bfPortrait.lua")(), 650, 375, 6, 6, true)
+				dialogue.setSpeakerBox("bf", love.filesystem.load("sprites/week6/dialogueBox.lua")(), 650, 375, 6, 6, true)
+
+				dialogue.setMusic(love.audio.newSource("music/pixel/Lunchbox.ogg", "stream"))
+
+				dialogue.setCallback(
+					function()
+						weeks:setupCountdown()
+					end
+				)
+			else
+				weeks:setupCountdown()
+			end
 		end
 	end,
 
@@ -98,7 +157,12 @@ return {
 			stages["evilSchool"]:update(dt)
 		end
 
-		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) and not paused then
+		if not countingDown and not inCutscene then
+		else
+			previousFrameTime = love.timer.getTime() * 1000
+		end
+
+		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) and not paused and not inCutscene then
 			if storyMode and song < 3 then
 				song = song + 1
 
@@ -117,6 +181,14 @@ return {
 			end
 		end
 
+		if inCutscene then
+			dialogue.doDialogue(dt)
+		end
+
+		if input:pressed("confirm") and inCutscene then
+			dialogue.next()
+		end
+
 		weeks:updateUI(dt)
 	end,
 
@@ -133,7 +205,11 @@ return {
 			weeks:drawRating()
 		love.graphics.pop()
 
-		weeks:drawUI()
+		if inCutscene then 
+			dialogue.draw()
+		else
+			weeks:drawUI()
+		end
 	end,
 
 	leave = function(self)
