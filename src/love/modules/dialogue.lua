@@ -48,15 +48,23 @@ dialogue.fullDialogue = ""
 
 dialogue.callback = function() end
 
-function dialogue.set(dia, isFile)
-    dialogue.list = not isFile and dia or {}
+function dialogue.set(dia)
+    -- dialogue can be given as a file or a table like 
+    --[[
+    {
+        {"speaker", "text"},
+        {"speaker", "text"}
+    }
+    ]]
+    dialogue.isFile = type(dia) == "string" and true or false
+    dialogue.list = dialogue.isFile and {} or dia
     dialogue.cur = 1
     dialogue.timer = 0
     dialogue.progress = 1
     dialogue.output = ""
     dialogue.isDone = false
 
-    if isFile then
+    if dialogue.isFile then
         for line in love.filesystem.lines(dia) do
             -- remove the first :
             line = line:sub(2)

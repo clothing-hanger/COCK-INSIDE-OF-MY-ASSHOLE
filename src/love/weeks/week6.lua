@@ -85,7 +85,7 @@ return {
 
 		if song == 3 then
 			weeks:generateNotes("data/week6/thorns/thorns" .. difficulty .. ".json")
-			dialogue.set("data/week6/thorns/thornsDialogue.txt", true)
+			dialogue.set("data/week6/thorns/thornsDialogue.txt")
 
 			if storyMode and not died then
 				dialogue.addSpeaker("dad", graphics.newImage(graphics.imagePath("week6/spiritFaceForward")), 400, 250, 6, 6, false)
@@ -106,7 +106,7 @@ return {
 			end
 		elseif song == 2 then
 			weeks:generateNotes("data/week6/roses/roses" .. difficulty .. ".json")
-			dialogue.set("data/week6/roses/rosesDialogue.txt", true)
+			dialogue.set("data/week6/roses/rosesDialogue.txt")
 
 			if storyMode and not died then
 				dialogue.addSpeaker("dad", love.filesystem.load("sprites/week6/angrySenpaiBox.lua")(), 650, 375, 6, 6, true, false)
@@ -127,7 +127,7 @@ return {
 			end
 		else
 			weeks:generateNotes("data/week6/senpai/senpai" .. difficulty .. ".json")
-			dialogue.set("data/week6/senpai/senpaiDialogue.txt", true)
+			dialogue.set("data/week6/senpai/senpaiDialogue.txt")
 
 			if storyMode and not died then
 				dialogue.addSpeaker("dad", love.filesystem.load("sprites/week6/senpaiPortrait.lua")(), 650, 375, 6, 6, true)
