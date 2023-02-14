@@ -73,7 +73,6 @@ return graphics.newSprite(
 		["singRIGHT"] = {start = 9, stop = 27, speed = 24, offsetX = -21, offsetY = 13},
 		["singUP"] = {start = 28, stop = 32, speed = 24, offsetX = 1, offsetY = 24},
 		["idle"] = {start = 33, stop = 45, speed = 24, offsetX = 0, offsetY = 0},
-		["idlecock"] = {indiced = true, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
 	false,

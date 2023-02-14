@@ -1,30 +1,3 @@
---[[
-function setDialogue(strList)
-	dialogueList = strList
-	curDialogue = 1
-	timer = 0
-	progress = 1
-	output = ""
-	isDone = false
-end
-
-function setDialogueFromTxt(path)
-	dialogueList = {}
-	curDialogue = 1
-	timer = 0
-	progress = 1
-	output = ""
-	isDone = false
-
-	for line in love.filesystem.lines(path) do
-		-- remove the first :
-		line = line:sub(2)
-		local speaker, text = line:match("([^:]+):(.+)")
-		table.insert(dialogueList, {speaker, text})
-	end
-end
---]]
-
 local dialogue = {}
 
 dialogue.sounds = {
@@ -199,8 +172,8 @@ end
 
 function dialogue.draw()
     if pixel then love.graphics.setFont(pixelFont) else love.graphics.setFont(font) end
-    if dialogue.speakerBoxes[dialogue.charSpeaking] then dialogue.speakerBoxes[dialogue.charSpeaking]:draw() end
     if dialogue.speakers[dialogue.charSpeaking] then dialogue.speakers[dialogue.charSpeaking]:draw() end
+    if dialogue.speakerBoxes[dialogue.charSpeaking] then dialogue.speakerBoxes[dialogue.charSpeaking]:draw() end
 
     love.graphics.printf(dialogue.output, 150, 435, 200, "left", 0, (pixel and 4.7 or 1), (pixel and 4.7 or 1))
     love.graphics.setFont(font)

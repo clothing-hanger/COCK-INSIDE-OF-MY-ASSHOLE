@@ -383,7 +383,7 @@ return {
 						  	boyfriendNotes[id][c]:animate("end", false)
 					   	end
 					end
-				 else
+				else
 					if noteType >= 4 then
 					   	local id = noteType - 3
 					   	local c = #boyfriendNotes[id] + 1
@@ -457,7 +457,7 @@ return {
 						  	enemyNotes[id][c]:animate("end", false)
 					   	end
 					end
-				 end
+				end
 			end
 		end
 
