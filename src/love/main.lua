@@ -177,6 +177,8 @@ function love.load()
 	settings = {}
 	local curOS = love.system.getOS()
 
+	scissorScale = 1 -- SCISSOR DOESN'T WORK WITH SCALE SO WE HAVE TO SCALE IT OURSELVES
+
 	-- Load libraries
 	baton = require "lib.baton"
 	ini = require "lib.ini"
@@ -489,6 +491,8 @@ end
 
 function love.resize(width, height)
 	lovesize.resize(width, height)
+
+	scissorScale = height / 720
 end
 
 function love.keypressed(key)
