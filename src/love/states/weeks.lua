@@ -1253,6 +1253,7 @@ return {
 			if settings.botPlay then
 				botplayY = botplayY + math.sin(love.timer.getTime()) * 0.15
 				uitext("BOTPLAY", -85, botplayY, 0, 2, 2, 0, 0, 0, 0, botplayAlpha[1])
+				graphics.setColor(1, 1, 1)
 			end
 		love.graphics.pop()
 	end,
