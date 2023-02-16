@@ -75,8 +75,8 @@ return {
 		elseif input:pressed("gameBack") then
 			status.setLoading(true)
 
-			graphics.fadeOut(
-				0.5,
+			graphics:fadeOutWipe(
+				0.7,
 				function()
 					Gamestate.pop()
 

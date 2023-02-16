@@ -19,8 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 function love.conf(t)
 	t.identity = "ve-rewrite"
-	t.version = "11.3"
-	--t.console = true
+	t.version = "11.4"
+	t.console = not love.filesystem.isFused() -- lmao i just found out you can use this function in love.conf
 
-	t.window.title = "Friday Night Funkin' Vanilla Engine (Rewrite)"
+	t.window.title = "Friday Night Funkin' Vanilla Engine v1.0.0"
 end

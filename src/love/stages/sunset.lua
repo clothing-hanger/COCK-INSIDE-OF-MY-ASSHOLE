@@ -9,9 +9,9 @@ return {
         girlfriend = love.filesystem.load("sprites/week4/girlfriend.lua")()
         enemy = love.filesystem.load("sprites/week4/mommy-mearest.lua")()
         boyfriend = love.filesystem.load("sprites/week4/boyfriend.lua")()
-        --fakeBoyfriend = love.filesystem.load("sprites/boyfriend.lua")() -- Used for game over
+        fakeBoyfriend = love.filesystem.load("sprites/boyfriend.lua")() -- Used for game over
 
-        --fakeBoyfriend.x, fakeBoyfriend.y = 350, -100
+        fakeBoyfriend.x, fakeBoyfriend.y = 350, -100
         stageImages["BG Limo"].y = 250
         stageImages["Limo Dancer"].y = -130
         stageImages["Limo"].y = 375

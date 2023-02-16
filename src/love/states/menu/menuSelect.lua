@@ -70,8 +70,8 @@ return {
         function confirmFunc()
             if menuButton == 1 then
                 status.setLoading(true)
-                graphics.fadeOut(
-                    0.3,
+                graphics:fadeOutWipe(
+                    0.7,
                     function()
                         Gamestate.switch(menuWeek)
                         status.setLoading(false)
@@ -83,8 +83,8 @@ return {
                 Timer.tween(0.9, credits, {y = 700}, "out-expo")
             elseif menuButton == 2 then
                 status.setLoading(true)
-                graphics.fadeOut(
-                    0.3,
+                graphics:fadeOutWipe(
+                    0.7,
                     function()
                         Gamestate.switch(menuFreeplay)
                         status.setLoading(false)
@@ -96,13 +96,11 @@ return {
                 Timer.tween(0.9, credits, {y = 700}, "out-expo")
             elseif menuButton == 3 then
                 status.setLoading(true)
-                graphics.fadeOut(
-                    0.3,
+                graphics:fadeOutWipe(
+                    0.7,
                     function()
                         Gamestate.push(menuSettings)
-                        --love.window.showMessageBox("lol", "Not implemented yet :P", "error")
                         status.setLoading(false)
-                        --Gamestate.switch(menuSelect)
                     end
                 )
                 Timer.tween(0.9, freeplay, {y = -700}, "out-expo")
@@ -111,8 +109,8 @@ return {
                 Timer.tween(0.9, credits, {y = 700}, "out-expo")
             elseif menuButton == 4 then
                 status.setLoading(true)
-                graphics.fadeOut(
-                    0.3,
+                graphics:fadeOutWipe(
+                    0.7,
                     function()
                         Gamestate.switch(menuCredits)
                         status.setLoading(false)
@@ -128,8 +126,7 @@ return {
 
 		switchMenu(1)
 
-		graphics.setFade(0)
-		graphics.fadeIn(0.5)
+		graphics:fadeInWipe(0.6)
 
 	end,
 

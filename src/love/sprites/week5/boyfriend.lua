@@ -320,13 +320,13 @@ return graphics.newSprite(
     {
 		["hey"] = {start = 1, stop = 26, speed = 24, offsetX = 0, offsetY = 0},
         ["singDOWN"] = {start = 27, stop = 56, speed = 24, offsetX = -4, offsetY = -24},
-        ["miss down"] = {start = 57, stop = 85, speed = 24, offsetX = 6, offsetY = -11},
+        ["miss singDOWN"] = {start = 57, stop = 85, speed = 24, offsetX = 6, offsetY = -11},
         ["singLEFT"] = {start = 86, stop = 100, speed = 24, offsetX = 20, offsetY = -4},
-        ["miss left"] = {start = 101, stop = 134, speed = 24, offsetX = 20, offsetY = 8},
+        ["miss singLEFT"] = {start = 101, stop = 134, speed = 24, offsetX = 20, offsetY = 8},
         ["singRIGHT"] = {start = 135, stop = 196, speed = 24, offsetX = -41, offsetY = -3},
-        ["miss right"] = {start = 197, stop = 242, speed = 24, offsetX = -41, offsetY = 10},
+        ["miss singRIGHT"] = {start = 197, stop = 242, speed = 24, offsetX = -41, offsetY = 10},
         ["singUP"] = {start = 243, stop = 257, speed = 24, offsetX = -21, offsetY = 13},
-        ["miss up"] = {start = 258, stop = 281, speed = 24, offsetX = -18, offsetY = 11},
+        ["miss singUP"] = {start = 258, stop = 281, speed = 24, offsetX = -18, offsetY = 11},
         ["idle"] = {start = 282, stop = 295, speed = 24, offsetX = 0, offsetY = 0}
     },
 	"idle",

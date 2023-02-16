@@ -24,7 +24,7 @@ return {
         weekStats = graphics.newImage(graphics.imagePath("menu/fp_weekStats"))
         backButton = graphics.newImage(graphics.imagePath("menu/backBtn"))
 
-        graphics.fadeIn(0.3)
+        graphics:fadeInWipe(0.6)
 
         difficultyStrs = {
             "-easy",
@@ -275,8 +275,8 @@ return {
             if menuNum == 2 then
                 status.setLoading(true)
     
-                graphics.fadeOut(
-                    0.5,
+                graphics:fadeOutWipe(
+                    0.7,
                     function()
                         songAppend = difficultyStrs[songDifficulty]
     
@@ -301,7 +301,7 @@ return {
             if menuNum ~= 1 then
                 menuNum = menuNum - 1
             else
-                graphics.fadeOut(0.3, function()
+                graphics:fadeOutWipe(0.7, function()
                     Gamestate.switch(menuSelect)
                 end)
             end

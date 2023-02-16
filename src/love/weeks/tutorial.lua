@@ -153,14 +153,14 @@ return {
 		if not (countingDown or graphics.isFading()) and not voices:isPlaying() and not paused then
 			storyMode = false
 
-			graphics.fadeOut(
-					0.5,
-					function()
-						Gamestate.switch(menu)
+			graphics:fadeOutWipe(
+				0.7,
+				function()
+					Gamestate.switch(menu)
 
-						status.setLoading(false)
-					end
-				)
+					status.setLoading(false)
+				end
+			)
 		end
 
 		weeks:updateUI(dt)

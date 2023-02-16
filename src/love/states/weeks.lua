@@ -198,7 +198,7 @@ return {
 		if not camera.points["boyfriend"] then camera:addPoint("boyfriend", -boyfriend.x + 100, -boyfriend.y + 75) end
 		if not camera.points["enemy"] then camera:addPoint("enemy", -enemy.x - 100, -enemy.y + 75) end
 
-		graphics.fadeIn(0.5)
+		graphics:fadeInWipe(0.6)
 	end,
 
 	initUI = function(self, option)

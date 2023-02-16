@@ -85,14 +85,18 @@ return {
 		elseif input:pressed("gameBack") then
 			status.setLoading(true)
 
-			graphics.fadeOut(
-				0.5,
+			graphics:fadeOutWipe(
+				0.7,
 				function()
 					Gamestate.pop()
 
-					Gamestate.switch(menu)
+					Gamestate.switch(menuWeek)
 
 					status.setLoading(false)
+
+					if not music:isPlaying() then
+						music:play()
+					end
 				end
 			)
 		end
@@ -117,5 +121,10 @@ return {
 				end
 			love.graphics.pop()
 		love.graphics.pop()
+	end,
+
+	leave = function(self)
+		Timer.clear()
+		graphics.setFade(1)
 	end
 }

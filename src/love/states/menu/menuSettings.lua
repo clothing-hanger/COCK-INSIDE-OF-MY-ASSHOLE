@@ -82,8 +82,7 @@ return {
 
 		switchMenu(1)
 
-		graphics.setFade(0)
-		graphics.fadeIn(0.5)
+		graphics:fadeInWipe(0.6)
 	end,
 
 	update = function(self, dt)
@@ -98,7 +97,7 @@ return {
                             settingSelect = 1
                             settingsMenuState = 2
                         elseif settingSelect == 3 then
-                            graphics.fadeOut(0.3,
+                            graphics:fadeOutWipe(0.7,
                             function()
                                 --Gamestate.switch(settingsKeybinds)
                                 love.window.showMessageBox("lol", "Not implemented yet :P", "error")

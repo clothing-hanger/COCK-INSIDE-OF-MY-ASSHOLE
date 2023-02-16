@@ -58,8 +58,12 @@ return {
 
 		songNum = 0
 
-		graphics.setFade(0)
-		graphics.fadeIn(0.5)
+		if firstStartup then
+			graphics.setFade(0) 
+			graphics.fadeIn(0.5) 
+		else graphics:fadeInWipe(0.6) end
+
+		firstStartup = false
 	end,
 
 	update = function(self, dt)
@@ -78,7 +82,7 @@ return {
 				if not changingMenu then
 					audio.playSound(confirmSound)
 					changingMenu = true
-					graphics.fadeOut(0.2, function()
+					graphics:fadeOutWipe(0.7, function()
 						Gamestate.switch(menuSelect)
 						status.setLoading(false)							
 					end)

@@ -156,8 +156,8 @@ function saveSettings()
         }
         serialized = lume.serialize(settingdata)
         love.filesystem.write("settings", serialized)
-        graphics.fadeOut(
-            0.3,
+        graphics:fadeOutWipe(
+            0.7,
             function()
                 Gamestate.switch(menuSelect)
                 status.setLoading(false)
@@ -332,6 +332,8 @@ function love.load()
 	menuSettings = require "states.menu.menuSettings"
 	menuCredits = require "states.menu.menuCredits"
 	menuSelect = require "states.menu.menuSelect"
+
+	firstStartup = true
 
 	-- Load weeks
 	weeks = require "states.weeks"
@@ -586,6 +588,9 @@ function love.draw()
 			)
 			love.graphics.rectangle("fill", 1113, 10, volumeWidth.width, 30)
 			graphics.setColor(1, 1, 1, 1)
+		end
+		if fade.mesh then 
+			love.graphics.draw(fade.mesh, 0, fade.y, 0, lovesize.getWidth(), fade.height)
 		end
 	lovesize.finish()
 

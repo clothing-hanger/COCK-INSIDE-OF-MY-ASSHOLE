@@ -24,12 +24,12 @@ return {
         girlfriend = love.filesystem.load("sprites/week5/girlfriend.lua")()
 		enemy = love.filesystem.load("sprites/week5/dearest-duo.lua")()
 		boyfriend = love.filesystem.load("sprites/week5/boyfriend.lua")()
-		--fakeBoyfriend = love.filesystem.load("sprites/boyfriend.lua")() -- Used for game over
+		fakeBoyfriend = love.filesystem.load("sprites/boyfriend.lua")() -- Used for game over
 
 		girlfriend.x, girlfriend.y = -50, 410
 		enemy.x, enemy.y = -780, 410
 		boyfriend.x, boyfriend.y = 300, 620
-		--fakeBoyfriend.x, fakeBoyfriend.y = 300, 620
+		fakeBoyfriend.x, fakeBoyfriend.y = 300, 620
     end,
 
     load = function(self)

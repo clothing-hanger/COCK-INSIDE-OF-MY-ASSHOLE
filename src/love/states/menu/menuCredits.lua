@@ -79,7 +79,7 @@ return {
             250
         }
         selectSound = love.audio.newSource("sounds/menu/select.ogg", "static")
-        graphics.fadeIn(0.5)
+        graphics:fadeInWipe(0.6)
         bg = graphics.newImage(graphics.imagePath("menu/menuBG"))
     end,
     update = function(self, dt)
@@ -90,9 +90,9 @@ return {
             Timer.cancel(credTween)
         end
         if input:pressed("gameBack") then
-            graphics.fadeOut(0.5,
+            graphics:fadeOutWipe(0.5,
             function()
-                Gamestate.switch(menu)
+                Gamestate.switch(menuSelect)
             end)
         end
         if input:down("down") then

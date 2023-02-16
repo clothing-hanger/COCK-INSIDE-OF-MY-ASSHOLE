@@ -13,12 +13,17 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
+You should have received a copy of1 the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
 
 local imageType = "png"
-local fade = {1}
+fade = {
+	1,
+	height = lovesize.getHeight(),
+	mesh = nil,
+	y = 0,
+}
 local isFading = false
 
 local fadeTimer
@@ -280,7 +285,7 @@ return {
 
 				if self.specialAnim then 
 					self.heyTimer = self.heyTimer - dt 
-					if self.heyTimer <= 0 and not self:isAnimated() then 
+					if self.heyTimer <= 0 and not self:isAnimated() and not (self:getAnimName() == "dies" or self:getAnimName() == "dead" or self:getAnimName() == "dead confirm") then 
 						self.heyTimer = 0 
 						self.specialAnim = false
 						self:animate("idle", false) 
@@ -441,6 +446,25 @@ return {
 		return object
 	end,
 
+	newGradient = function(...)
+		local colourLen, data = select("#", ...), {}
+
+		for i = 1, colourLen do
+			local colour = select(i, ...)
+			local y = (i - 1) / (colourLen - 1)
+
+			data[#data + 1] = {
+				1, y, 1, y, colour[1], colour[2], colour[3], colour[4] or 1
+			}
+			data[#data + 1] = {
+				0, y, 0, y, colour[1], colour[2], colour[3], colour[4] or 1
+			}
+
+		end
+
+		return love.graphics.newMesh(data, "strip", "static")
+	end,
+
 	setFade = function(value)
 		if fadeTimer then
 			Timer.cancel(fadeTimer)
@@ -491,6 +515,60 @@ return {
 			end
 		)
 	end,
+	
+	fadeOutWipe = function(self, duration, func)
+		if fadeTimer then
+			Timer.cancel(fadeTimer)
+		end
+
+		fade.height = lovesize.getHeight() * 2
+		fade.mesh = self.newGradient({0,0,0}, {0,0,0}, {0,0,0,0})
+
+		isFading = true
+
+		fade.y = -fade.height
+		fadeTimer = Timer.tween(
+			duration,
+			fade,
+			{
+				y = 0
+			},
+			"linear",
+			function()
+				isFading = false
+
+				fade.mesh = nil
+				if func then func() end
+			end
+		)
+	end,
+	fadeInWipe = function(self, duration, func)
+		if fadeTimer then
+			Timer.cancel(fadeTimer)
+		end
+
+		fade.height = lovesize.getHeight() * 2
+		fade.mesh = self.newGradient({0,0,0,0}, {0,0,0}, {0,0,0})
+
+		isFading = false
+
+		fade.y = -fade.height/2
+		fadeTimer = Timer.tween(
+			duration*2,
+			fade,
+			{
+				y = fade.height
+			},
+			"linear",
+			function()
+				isFading = false
+
+				fade.mesh = nil
+				if func then func() end
+			end
+		)
+	end,
+
 	isFading = function()
 		return isFading
 	end,

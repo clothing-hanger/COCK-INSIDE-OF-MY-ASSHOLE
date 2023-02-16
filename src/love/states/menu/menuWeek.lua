@@ -16,10 +16,6 @@ local difficultyStrs = {
 local selectSound = love.audio.newSource("sounds/menu/select.ogg", "static")
 local confirmSound = love.audio.newSource("sounds/menu/confirm.ogg", "static")
 
-local function switchMenu(menu)
-
-end
-
 return {
 	enter = function(self, previous)
 		songNum = 0
@@ -141,10 +137,7 @@ return {
 		gfDanceLines:animate("girlfriend", true)
 		enemyDanceLines:animate("week1", true)
 
-		switchMenu(1)
-
-		graphics.setFade(0)
-		graphics.fadeIn(0.5)
+		graphics:fadeInWipe(0.6)
 
 		function confirmFunc()
 			music:stop()
@@ -152,8 +145,8 @@ return {
 
 			status.setLoading(true)
 
-			graphics.fadeOut(
-				0.5,
+			graphics:fadeOutWipe(
+				0.7,
 				function()
 					
 					songAppend = difficultyStrs[songDifficulty]
