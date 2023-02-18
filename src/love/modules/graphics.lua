@@ -198,6 +198,9 @@ return {
 			heyTimer = 0,
 			specialAnim = false,
 
+			clipRect = nil,
+			stencilInfo = nil,
+
 			singDuration = optionsTable and optionsTable.singDuration or 4,
 			isCharacter = optionsTable and optionsTable.isCharacter or false,
 			danceSpeed = optionsTable and optionsTable.danceSpeed or 2,
@@ -293,6 +296,16 @@ return {
 				end
 			end,
 
+			getFrameWidth = function(self)
+				local flooredFrame = math.floor(frame)
+				return frameData[flooredFrame].width
+			end,
+
+			getFrameHeight = function(self)
+				local flooredFrame = math.floor(frame)
+				return frameData[flooredFrame].height
+			end,
+
 			beat = function(self, beat)
 				if self.isCharacter then
 					if beatHandler.onBeat() then
@@ -354,6 +367,24 @@ return {
 						end
 					end
 
+					if self.clipRect then 
+						self.stencilInfo = {
+							x = self.clipRect.x,	
+							y = self.clipRect.y,
+							width = self.clipRect.width,
+							height = self.clipRect.height
+						}
+						love.graphics.stencil(function()
+							love.graphics.push()
+							love.graphics.translate(self.stencilInfo.x, self.stencilInfo.y)
+							love.graphics.translate(-self.stencilInfo.width / 2, -self.stencilInfo.height / 2)
+							love.graphics.rotate(self.orientation)
+							love.graphics.rectangle("fill", 0, 0, self.stencilInfo.width, self.stencilInfo.height)
+							love.graphics.pop()
+						end, "replace", 1)
+						love.graphics.setStencilTest("greater", 0)
+					end
+
 					love.graphics.draw(
 						sheet,
 						frames[flooredFrame],
@@ -367,6 +398,11 @@ return {
 						self.shearX,
 						self.shearY
 					)
+
+					if self.clipRect then 
+						self.stencilInfo = nil
+						love.graphics.setStencilTest()
+					end
 				end
 			end,
 
