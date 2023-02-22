@@ -7,7 +7,6 @@ CREDITS
 Vanilla Engine:
 
 GuglioIsStupid - Programming
-c l o t h i n g h a n g e r - Programming
 Getsaa - Menu Designer
 
 
