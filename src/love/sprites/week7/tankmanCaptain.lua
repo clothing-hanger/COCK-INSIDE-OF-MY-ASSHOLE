@@ -162,10 +162,10 @@ return graphics.newSprite(
        	["idle"] = {start = 94, stop = 107, speed = 24, offsetX = 0, offsetY = 0},
         ["singDOWN"] = {start = 84, stop = 93, speed = 24, offsetX = -10, offsetY = -50},
         ["singDOWN alt"] = {start = 84, stop = 93, speed = 24, offsetX = -10, offsetY = -50},
-        ["singLEFT"] = {start = 116, stop = 125, speed = 24, offsetX = -53, offsetY = -3},
-        ["singLEFT alt"] = {start = 116, stop = 125, speed = 24, offsetX = -53, offsetY = -3},
-        ["singRIGHT"] = {start = 108, stop = 115, speed = 24, offsetX = 48, offsetY = -11},
-        ["singRIGHT alt"] = {start = 108, stop = 115, speed = 24, offsetX = 48, offsetY = -11},
+        ["singRIGHT"] = {start = 116, stop = 125, speed = 24, offsetX = -53, offsetY = -3},
+        ["singRIGHT alt"] = {start = 116, stop = 125, speed = 24, offsetX = -53, offsetY = -3},
+        ["singLEFT"] = {start = 108, stop = 115, speed = 24, offsetX = 48, offsetY = -11},
+        ["singLEFT alt"] = {start = 108, stop = 115, speed = 24, offsetX = 48, offsetY = -11},
         ["singUP"] = {start = 126, stop = 135, speed = 24, offsetX = -5, offsetY = 28},
         ["singUP alt"] = {start = 68, stop = 83, speed = 24, offsetX = 0, offsetY = -5},
 		["good"] = {start = 1, stop = 67, speed = 24, offsetX = 50, offsetY = 8}, -- fuck you
@@ -175,6 +175,7 @@ return graphics.newSprite(
 	false,
 	{
 		sing_duration = 4,
-		isCharacter = true
+		isCharacter = true,
+		flipX = true,
 	}
 )

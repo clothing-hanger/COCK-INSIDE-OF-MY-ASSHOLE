@@ -32,8 +32,6 @@ return {
 		camera.sizeX, camera.sizeY = 1, 1
 		camera.scaleX, camera.scaleY = 1, 1
 
-		
-
 		enemyIcon:animate("pico", false)
 
 		self:load()

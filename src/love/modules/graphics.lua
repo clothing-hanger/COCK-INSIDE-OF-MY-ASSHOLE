@@ -201,6 +201,8 @@ return {
 			clipRect = nil,
 			stencilInfo = nil,
 
+			flipX = optionsTable and optionsTable.flipX or false,
+
 			singDuration = optionsTable and optionsTable.singDuration or 4,
 			isCharacter = optionsTable and optionsTable.isCharacter or false,
 			danceSpeed = optionsTable and optionsTable.danceSpeed or 2,
@@ -223,6 +225,13 @@ return {
 				self.holdTimer = 0
 				if not self:isAnimName(animName) then
 					return
+				end
+				if self.flipX and self.isCharacter then 
+					if animName == "singLEFT" then 
+						animName = "singRIGHT"
+					elseif animName == "singRIGHT" then
+						animName = "singLEFT"
+					end
 				end
 				anim.name = animName
 				anim.start = anims[animName].start
@@ -391,7 +400,7 @@ return {
 						x,
 						y,
 						self.orientation,
-						self.sizeX,
+						self.sizeX * (self.flipX and -1 or 1),
 						self.sizeY,
 						width + anim.offsetX + self.offsetX,
 						height + anim.offsetY + self.offsetY,

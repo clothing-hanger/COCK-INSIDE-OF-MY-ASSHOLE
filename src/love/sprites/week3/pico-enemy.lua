@@ -99,14 +99,15 @@ return graphics.newSprite(
 	{
 		["singDOWN"] = {start = 1, stop = 11, speed = 24, offsetX = -38, offsetY = -43},
 		["idle"] = {start = 12, stop = 25, speed = 24, offsetX = 0, offsetY = 0},
-		["singRIGHT"] = {start = 26, stop = 42, speed = 24, offsetX = 83, offsetY = -5}, -- Swapped
-		["singLEFT"] = {start = 43, stop = 59, speed = 24, offsetX = -50, offsetY = 0}, -- Swapped
+		["singLEFT"] = {start = 26, stop = 42, speed = 24, offsetX = 83, offsetY = -5},
+		["singRIGHT"] = {start = 43, stop = 59, speed = 24, offsetX = -50, offsetY = 0},
 		["singUP"] = {start = 60, stop = 73, speed = 24, offsetX = 27, offsetY = 10}
 	},
 	"idle",
 	false,
 	{
 		sing_duration = 4,
-		isCharacter = true
+		isCharacter = true,
+		flipX = true,
 	}
 )

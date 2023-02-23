@@ -27,7 +27,6 @@ return {
 
 		girlfriend.x, girlfriend.y = -70, -140
 		enemy.x, enemy.y = -480, 50
-		enemy.sizeX = -1 -- Reverse, reverse!
 		boyfriend.x, boyfriend.y = 165, 50
 		
 		daGoofyColours = {
@@ -85,6 +84,7 @@ return {
 		love.graphics.pop()
 		love.graphics.push()
 			love.graphics.translate(camera.x, camera.y)
+			love.graphics.translate(camera.ex, camera.ey)
 
 			enemy:draw()
 			boyfriend:draw()
