@@ -340,7 +340,7 @@ function love.load()
 
 	-- Load substates
 	gameOver = require "substates.game-over"
-	gameOverPixel = require "substates.game-over-pixel"
+	settingsKeybinds = require "substates.settings-keybinds"
 
 	-- Load week data
 	weekData = {
@@ -525,6 +525,10 @@ function love.keypressed(key)
     else
 		Gamestate.keypressed(key)
 	end
+end
+
+function love.textinput(t)
+	Gamestate.textinput(t)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)

@@ -99,9 +99,7 @@ return {
                         elseif settingSelect == 3 then
                             graphics:fadeOutWipe(0.7,
                             function()
-                                --Gamestate.switch(settingsKeybinds)
-                                love.window.showMessageBox("lol", "Not implemented yet :P", "error")
-                                Gamestate.switch(menuSettings)
+                                Gamestate.switch(settingsKeybinds)
                             end)
                         elseif settingSelect == 4 then
                             settingSelect = 1
