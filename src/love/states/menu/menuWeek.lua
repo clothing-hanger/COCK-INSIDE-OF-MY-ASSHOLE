@@ -57,8 +57,7 @@ return {
 			)
 		end
 
-		camera.sizeX, camera.sizeY = 0.9, 0.9
-		camera.scaleX, camera.scaleY = 0.9, 0.9
+		camera.zoom = 0.9
 
 		freeColour = {
 			255,255,255
@@ -293,7 +292,7 @@ return {
 			love.graphics.push()
 
 				graphics.setColor(freeColour[1]/255, freeColour[2]/255, freeColour[3]/255)
-				love.graphics.scale(camera.sizeX, camera.sizeY)
+				love.graphics.scale(camera.zoom, camera.zoom)
 				for i = 1, #weekDesc do
 					weekImages[i]:draw()
 				end

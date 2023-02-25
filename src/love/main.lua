@@ -471,7 +471,7 @@ function love.load()
 	storyMode = false
 	countingDown = false
 
-	uiScale = {x = 1, y = 1, sizeX = 1, sizeY = 1}
+	uiScale = {zoom = 1, x = 1, y = 1, sizeX = 1, sizeY = 1}
 
 	musicTime = 0
 	health = 0

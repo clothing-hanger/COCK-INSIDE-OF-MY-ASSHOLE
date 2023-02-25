@@ -29,8 +29,8 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		camera.sizeX, camera.sizeY = 1, 1
-		camera.scaleX, camera.scaleY = 1, 1
+		camera.zoom = 1
+		camera.defaultZoom = 1
 
 		enemyIcon:animate("pico", false)
 
@@ -110,7 +110,7 @@ return {
 
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(camera.sizeX, camera.sizeY)
+			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["city"]:draw()
 			weeks:drawRating(0.9)

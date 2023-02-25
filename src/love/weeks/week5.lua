@@ -30,8 +30,8 @@ return {
 		weeks:enter()
 		stages["mall"]:enter()
 
-		camera.sizeX, camera.sizeY = 0.7, 0.7
-		camera.scaleX, camera.scaleY = 0.7, 0.7
+		camera.zoom = 0.7
+		camera.defaultZoom = 0.7
 
 		sounds.lightsOff = love.audio.newSource("sounds/week5/lights-off.ogg", "static")
 		sounds.lightsOn = love.audio.newSource("sounds/week5/lights-on.ogg", "static")
@@ -49,15 +49,15 @@ return {
 		stages["mall"]:load()
 
 		if song == 3 then
-			camera.scaleX, camera.scaleY = 0.9, 0.9
+			camera.defaultZoom = 0.9
 
 			if scaryIntro then
 				camera.x, camera.y = -150, 750
-				camera.sizeX, camera.sizeY = 2.5, 2.5
+				camera.zoom = 2.5
 
 				graphics.setFade(1)
 			else
-				camera.sizeX, camera.sizeY = 0.9, 0.9
+				camera.zoom = 0.9
 			end
 
 			enemy = love.filesystem.load("sprites/week5/monster.lua")()
@@ -172,7 +172,7 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(camera.sizeX, camera.sizeY)
+			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["mall"]:draw()
 			weeks:drawRating(0.9)

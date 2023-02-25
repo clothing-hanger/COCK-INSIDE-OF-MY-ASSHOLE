@@ -34,15 +34,15 @@ return {
 
     load = function(self)
         if song == 3 then
-            camera.scaleX, camera.scaleY = 0.9, 0.9
+            camera.defaultZoom = 0.9
     
             if scaryIntro then
                 camera.x, camera.y = -150, 750
-                camera.sizeX, camera.sizeY = 2.5, 2.5
+                camera.zoom = 2.5
     
                 graphics.setFade(1)
             else
-                camera.sizeX, camera.sizeY = 0.9, 0.9
+                camera.zoom = 0.9 
             end
     
             stageImages["Walls"] = graphics.newImage(graphics.imagePath("week5/evil-bg")) -- evil-bg

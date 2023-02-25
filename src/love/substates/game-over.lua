@@ -38,7 +38,7 @@ return {
 		Timer.tween(
 			2,
 			camera,
-			{x = -boyfriend.x, y = -boyfriend.y, sizeX = camera.scaleX, sizeY = camera.scaleY},
+			{x = -boyfriend.x, y = -boyfriend.y, zoom = camera.defaultZoom},
 			"out-quad",
 			function()
 				if not pixel then
@@ -111,7 +111,7 @@ return {
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
 
 			love.graphics.push()
-				love.graphics.scale(camera.sizeX, camera.sizeY)
+				love.graphics.scale(camera.zoom, camera.zoom)
 				love.graphics.translate(camera.x, camera.y)
 
 				if not pixel then

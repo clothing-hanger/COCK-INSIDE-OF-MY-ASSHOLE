@@ -168,10 +168,10 @@ return {
 			graphics.fadeOut(0.5, love.event.quit)
 		end
 		if input:pressed("debugZoomOut") then
-			camera.sizeX, camera.sizeY = camera.sizeX - 0.05, camera.sizeY - 0.05
+			camera.zoom = camera.zoom - 0.05
 		end
 		if input:pressed("debugZoomIn") then
-			camera.sizeX, camera.sizeY = camera.sizeX + 0.05, camera.sizeY + 0.05
+			camera.zoom = camera.zoom + 0.05
 		end
 	end,
 
@@ -182,7 +182,7 @@ return {
 
 				love.graphics.push()
 					love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
-					love.graphics.scale(camera.sizeX, camera.sizeY)
+					love.graphics.scale(camera.zoom, camera.zoom)
 
 					sprite:draw()
 					graphics.setColor(1, 1, 1, 0.5)

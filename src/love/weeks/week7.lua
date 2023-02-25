@@ -8,8 +8,8 @@ return {
 
 		if storyMode and not died then
 			musicPos = 0
-			camera.sizeX, camera.sizeY = 1.1, 1.1
-			camera.scaleX, camera.scaleY = 1.1, 1.1
+			camera.zoom = 1.1
+			camera.defaultZoom = 1.1
 		end
 
 		song = songNum
@@ -167,7 +167,7 @@ return {
         end
         love.graphics.push()
             love.graphics.translate(graphics.getWidth()/2, graphics.getHeight()/2)
-            love.graphics.scale(camera.sizeX, camera.sizeY)
+            love.graphics.scale(camera.zoom, camera.zoom)
             stages["tank"]:draw()
         love.graphics.pop()
 

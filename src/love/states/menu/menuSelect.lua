@@ -121,7 +121,6 @@ return {
                 Timer.tween(0.9, freeplay, {y = -700}, "out-expo")
                 Timer.tween(0.9, story, {y = -700}, "out-expo")
             end
-            Timer.tween(1.1, camera, {sizeX = 4, sizeY = 4}, "linear")
         end
 
 		switchMenu(1)

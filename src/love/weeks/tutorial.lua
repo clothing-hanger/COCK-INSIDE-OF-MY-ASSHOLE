@@ -116,12 +116,16 @@ return {
 			end
 		end
 
-		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
-			if camScaleTimer then Timer.cancel(camScaleTimer) end
-
-			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
+		if (beatHandler.onBeat() and beatHandler.getBeat() % camera.camBopInterval == 0) and (camera.zooming and camera.zoom < 1.35 and not camera.locked) then 
+			camera.zoom = camera.zoom + 0.015 * camera.camBopIntensity
+			uiScale.zoom = uiScale.zoom + 0.03 * camera.camBopIntensity
 		end
 
+		if camera.zooming and not camera.locked then 
+			camera.zoom = util.lerp(camera.defaultZoom, camera.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
+			uiScale.zoom = util.lerp(1, uiScale.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
+		end
+		
 		girlfriend:update(dt)
 		boyfriend:update(dt)
 
@@ -169,7 +173,7 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(camera.sizeX * zoom[1], camera.sizeY * zoom[1])
+			love.graphics.scale(camera.zoom * zoom[1], camera.zoom * zoom[1])
 
 			love.graphics.push()
 				love.graphics.translate(camera.x * 0.9, camera.y * 0.9)

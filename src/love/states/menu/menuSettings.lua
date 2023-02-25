@@ -77,8 +77,7 @@ return {
         settingSelect = 1
         settingsMenuState = 0
 
-		camera.sizeX, camera.sizeY = 0.9, 0.9
-		camera.scaleX, camera.scaleY = 0.9, 0.9
+		camera.zoom = 0.9
 
 		switchMenu(1)
 
@@ -267,7 +266,7 @@ return {
                     end
                 end
 
-				love.graphics.scale(camera.sizeX, camera.sizeY)
+				love.graphics.scale(camera.zoom, camera.zoom)
 
 				love.graphics.pop()
 		love.graphics.pop()

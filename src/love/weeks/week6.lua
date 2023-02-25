@@ -30,8 +30,8 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		camera.sizeX, camera.sizeY = 0.85, 0.85
-		camera.scaleX, camera.scaleY = 0.85, 0.85
+		camera.zoom = 0.85
+		camera.zoom = 0.85
 
 		fakeBoyfriend = love.filesystem.load("sprites/pixel/boyfriend-dead.lua")()
 
@@ -195,7 +195,7 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth()/2, graphics.getHeight()/2)
-			love.graphics.scale(camera.sizeX, camera.sizeY)
+			love.graphics.scale(camera.zoom, camera.zoom)
 
 			if song ~= 3 then
 				stages["school"]:draw()

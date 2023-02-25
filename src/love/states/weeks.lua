@@ -675,23 +675,15 @@ return {
 			end
 		end
 
-		if beatHandler.onBeat() and beatHandler.getBeat() % 4 == 0 then
-			if camScaleTimer then Timer.cancel(camScaleTimer) end
-			if uiScaleTimer then Timer.cancel(uiScaleTimer) end
+		if (beatHandler.onBeat() and beatHandler.getBeat() % camera.camBopInterval == 0 and camera.zooming and camera.zoom < 1.35 and not camera.locked) then 
+			camera.zoom = camera.zoom + 0.015 * camera.camBopIntensity
+			uiScale.zoom = uiScale.zoom + 0.03 * camera.camBopIntensity
+		end
 
-			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
-			if beatHandler.getBeat() % 8 == 0  then
-				uiScaleTimer = Timer.tween((60 / bpm) / 16, uiScale, {x = uiScale.x * 1.03, y = uiScale.y * 1.03}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), uiScale, {x = uiScale.sizeX, y = uiScale.sizeY}, "out-quad") end)
-			end
+		if camera.zooming and not camera.locked then 
+			camera.zoom = util.lerp(camera.defaultZoom, camera.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
+			uiScale.zoom = util.lerp(1, uiScale.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
 		end
-		--[[
-		if beatHandler.onBeat() then 
-			print("beat")
-			if not util.startsWith(boyfriend:getAnimName(), "sing") then
-				--boyfriend:animate("idle")
-			end
-		end
-		--]]
 
 		girlfriend:update(dt)
 		enemy:update(dt)
@@ -1060,7 +1052,7 @@ return {
 			else
 				love.graphics.scale(0.7, -0.7)
 			end
-			love.graphics.scale(uiScale.x, uiScale.y)
+			love.graphics.scale(uiScale.zoom, uiScale.zoom)
 
 			for i = 1, 4 do
 				if enemyArrows[i]:getAnimName() == "off" then
@@ -1211,7 +1203,7 @@ return {
 			love.graphics.pop()
 			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
 			love.graphics.scale(0.7, 0.7)
-			love.graphics.scale(uiScale.x, uiScale.y)
+			love.graphics.scale(uiScale.zoom, uiScale.zoom)
 
 			graphics.setColor(1, 1, 1, visibility)
 			graphics.setColor(1, 0, 0)

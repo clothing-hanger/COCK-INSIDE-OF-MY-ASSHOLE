@@ -77,11 +77,18 @@ return {
 			if camScaleTimer then Timer.cancel(camScaleTimer) end
 			if uiScaleTimer then Timer.cancel(uiScaleTimer) end
 
-			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {sizeX = camera.scaleX * 1.05, sizeY = camera.scaleY * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {sizeX = camera.scaleX, sizeY = camera.scaleY}, "out-quad") end)
+			camScaleTimer = Timer.tween((60 / bpm) / 16, camera, {zoom = camera.zoom * 1.05}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), camera, {zoom = camera.defaultZoom}, "out-quad") end)
 
-			uiScaleTimer = Timer.tween((60 / bpm) / 16, uiScale, {x = uiScale.x * 1.03, y = uiScale.y * 1.03}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), uiScale, {x = uiScale.sizeX, y = uiScale.sizeY}, "out-quad") end)
-			
+			uiScaleTimer = Timer.tween((60 / bpm) / 16, uiScale, {zoom = uiScale.zoom * 1.03}, "out-quad", function() camScaleTimer = Timer.tween((60 / bpm), uiScale, {x = 1, y = 1}, "out-quad") end)
+			camera.zooming = false
+		elseif song == 3 and musicTime > 67000 then 
+			camera.zooming = true
 		end
+
+		if not camera.zooming then 
+			camera.zoom = util.lerp(camera.defaultZoom, camera.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
+			uiScale.zoom = util.lerp(1, uiScale.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
+		end -- so the camera actually unzooms
 
 		if health >= 80 then
 			if enemyIcon:getAnimName() == "mommy mearest" then
@@ -118,7 +125,7 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(camera.sizeX, camera.sizeY)
+			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["sunset"]:draw()
 			weeks:drawRating(1)

@@ -109,7 +109,7 @@ return {
 	draw = function(self)
 		love.graphics.push()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			love.graphics.scale(camera.sizeX, camera.sizeY)
+			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["stage"]:draw()
 			weeks:drawRating(0.9)
