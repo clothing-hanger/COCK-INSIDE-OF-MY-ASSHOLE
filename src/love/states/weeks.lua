@@ -201,6 +201,15 @@ return {
 		graphics:fadeInWipe(0.6)
 	end,
 
+	calculateRating = function(self)
+		ratingPercent = score / ((noteCounter + misses) * 350)
+		if ratingPercent == nil or ratingPercent < 0 then 
+			ratingPercent = 0
+		elseif ratingPercent > 1 then
+			ratingPercent = 1
+		end
+	end,
+
 	initUI = function(self, option)
 		events = {}
 		enemyNotes = {}
@@ -208,7 +217,7 @@ return {
 		health = 1
 		score = 0
 		misses = 0
-		additionalAccuracy = 0
+		ratingPercent = 0.0
 		noteCounter = 0
 
 		if not pixel then
@@ -615,11 +624,6 @@ return {
 		if inCutscene then return end
 		beatHandler.update(dt)
 
-		convertedAcc = string.format(
-			"%.2f%%",
-			(additionalAccuracy / (noteCounter + misses))
-		)
-
 		oldMusicThres = musicThres
 		if countingDown or love.system.getOS() == "Web" then -- Source:tell() can't be trusted on love.js!
 			musicTime = musicTime + 1000 * dt
@@ -801,7 +805,6 @@ return {
 						boyfriend.lastHit = musicTime
 
 						if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
-							additionalAccuracy = additionalAccuracy + 100.0
 							noteCounter = noteCounter + 1
 							combo = combo + 1
 
@@ -830,6 +833,8 @@ return {
 							ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
 							health = health + 0.095
 							score = score + 350
+
+							self:calculateRating()
 						else
 							health = health + 0.0125
 						end
@@ -868,21 +873,15 @@ return {
 								if notePos <= 55 then -- "Sick"
 									score = score + 350
 									ratingAnim = "sick"
-									additionalAccuracy = additionalAccuracy + 100.0
 								elseif notePos <= 90 then -- "Good"
 									score = score + 200
 									ratingAnim = "good"
-									additionalAccuracy = additionalAccuracy + 75.55
 								elseif notePos <= 120 then -- "Bad"
 									score = score + 100
 									ratingAnim = "bad"
-									additionalAccuracy = additionalAccuracy + 50.55
 								else -- "Shit"
 									if settings.ghostTapping then
 										success = false
-									else
-										score = score + 50
-										additionalAccuracy = additionalAccuracy + 25.55
 									end
 									ratingAnim = "shit"
 								end
@@ -928,6 +927,8 @@ return {
 								end
 
 								table.remove(boyfriendNote, j)
+
+								self:calculateRating()
 							else
 								break
 							end
@@ -951,7 +952,7 @@ return {
 				end
 			end
 
-			if notMissed[noteNum] and #boyfriendNote > 0 and input:down(curInput) and ((boyfriendNote[1].y - musicPos <= -400)) and (boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end") then
+			if #boyfriendNote > 0 and input:down(curInput) and ((boyfriendNote[1].y - musicPos <= -400)) and (boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end") then
 				voices:setVolume(1)
 
 				boyfriendArrow:animate("confirm", false)
@@ -1218,19 +1219,9 @@ return {
 
 			boyfriendIcon:draw()
 			enemyIcon:draw()
-			
-			if (additionalAccuracy / (noteCounter + misses)) >= 100 and noteCounter + misses <= 0 then 
-				convertedAcc = "0%"
-			elseif (additionalAccuracy / (noteCounter + misses)) >= 100 and not (noteCounter + misses <= 0) then
-				convertedAcc = "100%"
-			end
-			if convertedAcc == "nan%" then
-				convertedAcc = "0%"
-			end
-			if not convertedAcc then
-				convertedAcc = math.floor(additionalAccuracy / (noteCounter + misses)) .. "%"
-			end
-			self:healthbarText("Score: " .. score .. " | Misses: " .. misses .. " | Accuracy: " .. convertedAcc)
+
+			self:healthbarText("Score: " .. score .. " | Misses: " .. misses .. " | Accuracy: " .. ((math.floor(ratingPercent * 10000) / 100)) .. "%")
+
 			if settings.botPlay then
 				botplayY = botplayY + math.sin(love.timer.getTime()) * 0.15
 				uitext("BOTPLAY", -85, botplayY, 0, 2, 2, 0, 0, 0, 0, botplayAlpha[1])

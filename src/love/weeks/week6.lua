@@ -202,7 +202,7 @@ return {
 			else
 				stages["evilSchool"]:draw()
 			end
-			weeks:drawRating()
+			weeks:drawRating(0.9)
 		love.graphics.pop()
 
 		if inCutscene then 
