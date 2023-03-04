@@ -21,6 +21,7 @@ function util.round(x)
 end
 
 -- God like coding
+--[[
 function util.🍰(🥰, 🥵)
     🥰 = 🥰 or 🥵
     🥵 = 🥵 or 🥰
@@ -43,4 +44,19 @@ function util.😍(☠️)
     return math.floor(☠️)
 end
 
+function util.❓⌚()
+    local ⌚️= os.time()
+
+    local 🆕📅 = os.date("*t", ⌚️)
+
+    return 🆕📅
+end
+
+function util.📅()
+    local 🆕📅 = util.❓⌚()
+    return 🆕📅.year .. "-" .. 🆕📅.month .. "-" .. 🆕📅.day
+end
+
+print(util.📅())
+--]]
 return util
