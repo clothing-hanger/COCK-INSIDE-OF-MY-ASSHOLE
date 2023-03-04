@@ -20,4 +20,27 @@ function util.round(x)
     return x >= 0 and math.floor(x + .5) or math.ceil(x - .5) 
 end
 
+-- God like coding
+function util.🍰(🥰, 🥵)
+    🥰 = 🥰 or 🥵
+    🥵 = 🥵 or 🥰
+    return 🥰 + 🥵
+end
+
+function util.🍩(🥰, 🥵)
+    🥰 = 🥰 or 🥵
+    🥵 = 🥵 or 🥰
+    return 🥰 * 🥵
+end
+
+function util.☠️(🥰, 🥵)
+    🥰 = 🥰 or 🥵
+    🥵 = 🥵 or 🥰
+    return 🥰 / 🥵
+end
+
+function util.😍(☠️)
+    return math.floor(☠️)
+end
+
 return util
