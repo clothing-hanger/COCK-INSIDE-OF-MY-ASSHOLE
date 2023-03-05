@@ -549,7 +549,7 @@ return {
 
 										previousFrameTime = love.timer.getTime() * 1000
 										musicTime = 0
-										beatHandler.setBeat(0)
+										beatHandler.reset(0)
 
 										if inst then inst:play() end
 										voices:play()
