@@ -59,12 +59,24 @@ end
 
 function beatHandler.update(dt)
     beatHandler.isBeatHit = false
-    beatHandler.curBeat = math.floor((musicTime / 1000) * (beatHandler.bpm / 60))
+    beatHandler.curBeat = math.abs(math.floor((musicTime / 1000) * (beatHandler.bpm / 60)))
 
-    if math.abs(beatHandler.curBeat) > math.abs(beatHandler.lastBeat) then
-        beatHandler.isBeatHit = true
-        beatHandler.beat = beatHandler.beat + 1
-        beatHandler.lastBeat = beatHandler.curBeat
+    
+
+    if math.floor((musicTime / 1000) * (beatHandler.bpm / 60)) > 0 then
+        print(beatHandler.curBeat, beatHandler.lastBeat)
+        if beatHandler.curBeat > beatHandler.lastBeat then
+            beatHandler.isBeatHit = true
+            beatHandler.beat = beatHandler.beat + 1
+            beatHandler.lastBeat = beatHandler.curBeat
+        end
+    else
+        print(beatHandler.curBeat, beatHandler.lastBeat)
+        if beatHandler.curBeat < beatHandler.lastBeat then
+            beatHandler.isBeatHit = true
+            beatHandler.beat = beatHandler.beat + 1
+            beatHandler.lastBeat = beatHandler.curBeat
+        end
     end
 end
 
@@ -73,6 +85,7 @@ function beatHandler.reset()
     beatHandler.beatTime = 0
     beatHandler.lastBeat = 0
     beatHandler.curBeat = 0
+    beatHandler.isBeatHit = false
 end
 
 function beatHandler.onBeat()
