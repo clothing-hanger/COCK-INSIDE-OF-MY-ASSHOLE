@@ -16,7 +16,16 @@ return {
         
 		menuButton = 1
 		songNum = 0
-        selectBG = graphics.newImage(graphics.imagePath("menu/selectBG"))
+        selectBGRandom = love.math.random(0, 100)
+
+        if selectBGRandom < 1 then
+            selectBG = graphics.newImage(graphics.imagePath("menu/quagmire_car"))
+            selectBG.x = 430
+            selectBG.y = 300
+        else
+            selectBG = graphics.newImage(graphics.imagePath("menu/selectBG"))
+        end
+
         selectBGOverlay = graphics.newImage(graphics.imagePath("menu/selectBGOverlay"))
 
         options = love.filesystem.load("sprites/menu/menuButtons.lua")()

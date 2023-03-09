@@ -297,8 +297,6 @@ return {
 					weekImages[i]:draw()
 				end
 
-				
-
 				titleBG:draw()
 
 				graphics.setColor(1, 1, 1)
