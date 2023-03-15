@@ -107,6 +107,7 @@ function saveSettings()
             hitsoundVol = settings.hitsoundVol,
             noteSkins = settings.noteSkins,
             flashinglights = settings.flashinglights,
+			colourByQuantization = settings.colourByQuantization,
             window = settings.window,
             customBindDown = customBindDown,
             customBindUp = customBindUp,
@@ -146,7 +147,7 @@ function saveSettings()
             hitsoundVol = settings.hitsoundVol,
             noteSkins = settings.noteSkins,
             flashinglights = settings.flashinglights,
-            multiplayer = settings.multiplayer,
+			colourByQuantization = settings.colourByQuantization,
 
             customBindDown = customBindDown,
             customBindUp = customBindUp,
@@ -218,6 +219,7 @@ function love.load()
 		settings.customScrollSpeed = settingdata.saveSettingsMoment.customScrollSpeed
 		settings.scrollUnderlayTrans = settingdata.saveSettingsMoment.scrollUnderlayTrans
 		settings.noteSkins = settingdata.saveSettingsMoment.noteSkins
+		settings.colourByQuantization = settingdata.saveSettingsMoment.colourByQuantization
 		customBindDown = settingdata.saveSettingsMoment.customBindDown
 		customBindUp = settingdata.saveSettingsMoment.customBindUp
 		customBindLeft = settingdata.saveSettingsMoment.customBindLeft
@@ -243,16 +245,17 @@ function love.load()
 			customBindUp = customBindUp,
 			customBindLeft = customBindLeft,
 			customBindRight = customBindRight,
+			colourByQuantization = settings.colourByQuantization,
 			settingsVer = settingsVer
 		}
 		serialized = lume.serialize(settingdata)
 		love.filesystem.write("settings", serialized)
 	end
-	if settingsVer ~= 7 then
+	if settingsVer ~= 8 then
 		love.window.showMessageBox("Uh Oh!", "Settings have been reset.", "warning")
 		love.filesystem.remove("settings")
 	end
-	if not love.filesystem.getInfo("settings") or settingsVer ~= 7 then
+	if not love.filesystem.getInfo("settings") or settingsVer ~= 8 then
 		settings.hardwareCompression = true
 		graphics.setImageType("dds")
 		settings.downscroll = false
@@ -266,6 +269,7 @@ function love.load()
 		settings.customScrollSpeed = 1
 		settings.keystrokes = false
 		settings.scrollUnderlayTrans = 0
+		settings.colourByQuantization = false
 		--settings.noteSkins = 1
 		customBindLeft = "a"
 		customBindRight = "d"
@@ -273,7 +277,7 @@ function love.load()
 		customBindDown = "s"
 	
 		settings.flashinglights = false
-		settingsVer = 7
+		settingsVer = 8
 		settingdata = {}
 		settingdata.saveSettingsMoment = {
 			hardwareCompression = settings.hardwareCompression,
@@ -289,6 +293,7 @@ function love.load()
 			customScrollSpeed = settings.customScrollSpeed,
 			keystrokes = settings.keystrokes,
 			scrollUnderlayTrans = settings.scrollUnderlayTrans,
+			colourByQuantization = settings.colourByQuantization,
 			customBindLeft = customBindLeft,
 			customBindRight = customBindRight,
 			customBindUp = customBindUp,

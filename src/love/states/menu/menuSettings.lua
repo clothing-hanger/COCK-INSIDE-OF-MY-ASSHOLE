@@ -45,6 +45,9 @@ settingsDescriptions1 = { -- The big spaces are so it lines up lol
     "Scroll Underlay" ..
     "\n       \"Scroll Underlay\" set a opacity for a scroll underlay\n       0 = Default",
 
+    "Colour By Quantization" .. 
+    "\n       \"Colour By Quantization\" Changes the colour of the arrows\n       based on their quantization",
+
     --"Noteskins" ..
     --"\n       \"Noteskins\" ", -- this one is a maybe
 }
@@ -126,7 +129,9 @@ return {
                             settings.botPlay = not settings.botPlay
                         -- 6 is scroll speed
                         -- 7 is scroll underlay transparency
-                        -- 8 is noteskins -- this one is a maybe
+                        elseif settingSelect == 8 then
+                            settings.colourByQuantization = not settings.colourByQuantization
+                        -- 9 is noteskins -- this one is a maybe
                         end
                     elseif settingsMenuState == 3 then
                         if settingSelect == 1 then
@@ -245,6 +250,7 @@ return {
                     love.graphics.print("\n\n\n\n\n\n\n\nBot Play = " .. tostring(settings.botPlay), -628, -300)
                     love.graphics.print("\n\n\n\n\n\n\n\n\n\nCustom Scroll Speed = " .. tostring(settings.customScrollSpeed), -628, -300)
                     love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\nScroll Underlay Transparency = " .. tostring(settings.scrollUnderlayTrans), -628, -300)
+                    love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\nColour By Quantization = " .. tostring(settings.colourByQuantization), -628, -300)
                     --love.graphics.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteskin = " .. tostring(noteskins[settings.noteSkins]), -628, -300)
                 elseif settingsMenuState == 3 then
                     love.graphics.print("Hardware Compression = " .. tostring(settings.hardwareCompression) .. " " .. isRestartNeeded, -628, -300) 

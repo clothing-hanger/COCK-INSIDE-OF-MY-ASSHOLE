@@ -29,6 +29,7 @@ local inputList = {
 	"gameUp",
 	"gameRight"
 }
+local arrowAngles = {math.rad(180), math.rad(90), math.rad(270), math.rad(0)}
 local noteCamTweens = {
 	function()
 		camera:moveToExtra((60/bpm), 15, 0)
@@ -93,6 +94,9 @@ return {
 
 			girlfriend = love.filesystem.load("sprites/girlfriend.lua")()
 			boyfriend = love.filesystem.load("sprites/boyfriend.lua")()
+			bfghost = love.filesystem.load("sprites/boyfriend.lua")()
+			bfghost.color = {255,255,255}
+			bfghost.alpha = 0
 		else
 			pixel = true
 			love.graphics.setDefaultFilter("nearest", "nearest")
@@ -232,17 +236,19 @@ return {
 			sprites.rightArrow = love.filesystem.load("sprites/pixel/right-arrow.lua")
 		end
 
+		sprites.receptors = love.filesystem.load("sprites/receptor.lua")
+
 		enemyArrows = {
-			sprites.leftArrow(),
-			sprites.downArrow(),
-			sprites.upArrow(),
-			sprites.rightArrow()
+			sprites.receptors(),
+			sprites.receptors(),
+			sprites.receptors(),
+			sprites.receptors()
 		}
 		boyfriendArrows= {
-			sprites.leftArrow(),
-			sprites.downArrow(),
-			sprites.upArrow(),
-			sprites.rightArrow()
+			sprites.receptors(),
+			sprites.receptors(),
+			sprites.receptors(),
+			sprites.receptors()
 		}
 
 		for i = 1, 4 do
@@ -260,6 +266,11 @@ return {
 
 			enemyArrows[i].y = -400
 			boyfriendArrows[i].y = -400
+
+			enemyArrows[i]:animate(tostring(i))
+			boyfriendArrows[i]:animate(tostring(i))
+			boyfriendArrows[i].orientation = 0
+			enemyArrows[i].orientation = 0
 
 			if settings.downscroll then 
 				enemyArrows[i].sizeY = -1
@@ -310,7 +321,7 @@ return {
 				local noteTime = sectionNotes[j][1]
 
 				if j == 1 then
-					table.insert(events, {eventTime = sectionNotes[1][1], mustHitSection = mustHitSection, bpm = eventBpm, altAnim = altAnim})
+					table.insert(events, {eventTime = sectionNotes[1][1], mustHitSection = mustHitSection, bpm = bpm, altAnim = altAnim})
 				end
 
 				if noteType == 0 or noteType == 4 then
@@ -328,10 +339,40 @@ return {
 					   	local id = noteType - 3
 					   	local c = #enemyNotes[id] + 1
 					   	local x = enemyArrows[id].x
+
+						local beatRow = util.round(((noteTime / 1000) * (bpm / 60)) * 48)
 				 
+						if settings.colourByQuantization then
+							if (beatRow % (192 / 4) == 0) then 
+								col = 1
+								sprite = sprites.leftArrow
+							elseif (beatRow % (192 / 8) == 0) then
+								col = 2
+								sprite = sprites.downArrow
+							elseif (beatRow % (192 / 12) ==  0) then 
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 16) == 0) then
+								col = 4
+								sprite = sprites.rightArrow
+							elseif (beatRow % (192 / 24) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 32) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							end
+						else
+							col = id
+						end
+
 					   	table.insert(enemyNotes[id], sprite())
+						enemyNotes[id][c].col = col
 					   	enemyNotes[id][c].x = x
 					   	enemyNotes[id][c].y = -400 + noteTime * 0.6 * speed
+						enemyNotes[id][c].orientation = enemyNotes[id][c].orientation - arrowAngles[enemyNotes[id][c].col]
+						enemyNotes[id][c].orientation = enemyNotes[id][c].orientation + arrowAngles[id]
+
 						if settings.downscroll then
 							enemyNotes[id][c].sizeY = -1
 						end
@@ -347,6 +388,7 @@ return {
 							 	table.insert(enemyNotes[id], sprite())
 							 	enemyNotes[id][c].x = x
 							 	enemyNotes[id][c].y = -400 + (noteTime + k) * 0.6 * speed
+								enemyNotes[id][c].col = col
 				 
 								enemyNotes[id][c]:animate("hold", false)
 							end
@@ -361,11 +403,41 @@ return {
 					   	local id = noteType + 1
 					   	local c = #boyfriendNotes[id] + 1
 					   	local x = boyfriendArrows[id].x
+
+						local beatRow = util.round(((noteTime / 1000) * (bpm / 60)) * 48)
 				 
+						if settings.colourByQuantization then
+							if (beatRow % (192 / 4) == 0) then 
+								col = 1
+								sprite = sprites.leftArrow
+							elseif (beatRow % (192 / 8) == 0) then
+								col = 2
+								sprite = sprites.downArrow
+							elseif (beatRow % (192 / 12) ==  0) then 
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 16) == 0) then
+								col = 4
+								sprite = sprites.rightArrow
+							elseif (beatRow % (192 / 24) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 32) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							end
+						else
+							col = id
+						end
+
 					   	table.insert(boyfriendNotes[id], sprite())
+						boyfriendNotes[id][c].col = col
 					   	boyfriendNotes[id][c].x = x
 					   	boyfriendNotes[id][c].y = -400 + noteTime * 0.6 * speed
 						boyfriendNotes[id][c].time = noteTime
+						boyfriendNotes[id][c].orientation = boyfriendNotes[id][c].orientation - arrowAngles[boyfriendNotes[id][c].col]
+						boyfriendNotes[id][c].orientation = boyfriendNotes[id][c].orientation + arrowAngles[id]
+						
 						if settings.downscroll then
 							boyfriendNotes[id][c].sizeY = -1
 						end
@@ -381,6 +453,7 @@ return {
 							 	table.insert(boyfriendNotes[id], sprite())
 							 	boyfriendNotes[id][c].x = x
 							 	boyfriendNotes[id][c].y = -400 + (noteTime + k) * 0.6 * speed
+								boyfriendNotes[id][c].col = col
 				 
 							 	boyfriendNotes[id][c]:animate("hold", false)
 						  	end
@@ -397,11 +470,41 @@ return {
 					   	local id = noteType - 3
 					   	local c = #boyfriendNotes[id] + 1
 					   	local x = boyfriendArrows[id].x
+
+						local beatRow = util.round(((noteTime / 1000) * (bpm / 60)) * 48)
+				 
+						if settings.colourByQuantization then
+							if (beatRow % (192 / 4) == 0) then 
+								col = 1
+								sprite = sprites.leftArrow
+							elseif (beatRow % (192 / 8) == 0) then
+								col = 2
+								sprite = sprites.downArrow
+							elseif (beatRow % (192 / 12) ==  0) then 
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 16) == 0) then
+								col = 4
+								sprite = sprites.rightArrow
+							elseif (beatRow % (192 / 24) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 32) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							end
+						else
+							col = id
+						end
 				 
 					   	table.insert(boyfriendNotes[id], sprite())
+						boyfriendNotes[id][c].col = col
 					   	boyfriendNotes[id][c].x = x
 					   	boyfriendNotes[id][c].y = -400 + noteTime * 0.6 * speed
 						boyfriendNotes[id][c].time = noteTime
+						boyfriendNotes[id][c].orientation = boyfriendNotes[id][c].orientation - arrowAngles[boyfriendNotes[id][c].col]
+						boyfriendNotes[id][c].orientation = boyfriendNotes[id][c].orientation + arrowAngles[id]
+						
 						if settings.downscroll then
 							boyfriendNotes[id][c].sizeY = -1
 						end
@@ -417,6 +520,7 @@ return {
 							 	table.insert(boyfriendNotes[id], sprite())
 							 	boyfriendNotes[id][c].x = x
 							 	boyfriendNotes[id][c].y = -400 + (noteTime + k) * 0.6 * speed
+								boyfriendNotes[id][c].col = col
 				 
 							 	boyfriendNotes[id][c]:animate("hold", false)
 						  	end
@@ -431,10 +535,39 @@ return {
 					   	local id = noteType + 1
 					   	local c = #enemyNotes[id] + 1
 					   	local x = enemyArrows[id].x
+
+						local beatRow = util.round(((noteTime / 1000) * (bpm / 60)) * 48)
+				 
+						if settings.colourByQuantization then
+							if (beatRow % (192 / 4) == 0) then 
+								col = 1
+								sprite = sprites.leftArrow
+							elseif (beatRow % (192 / 8) == 0) then
+								col = 2
+								sprite = sprites.downArrow
+							elseif (beatRow % (192 / 12) ==  0) then 
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 16) == 0) then
+								col = 4
+								sprite = sprites.rightArrow
+							elseif (beatRow % (192 / 24) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							elseif (beatRow % (192 / 32) == 0) then
+								col = 3
+								sprite = sprites.upArrow
+							end
+						else
+							col = id
+						end
 				 
 					   	table.insert(enemyNotes[id], sprite())
+						enemyNotes[id][c].col = col
 					   	enemyNotes[id][c].x = x
 					   	enemyNotes[id][c].y = -400 + noteTime * 0.6 * speed
+						enemyNotes[id][c].orientation = enemyNotes[id][c].orientation - arrowAngles[enemyNotes[id][c].col]
+						enemyNotes[id][c].orientation = enemyNotes[id][c].orientation + arrowAngles[id]
 						if settings.downscroll then
 							enemyNotes[id][c].sizeY = -1
 						end
@@ -450,6 +583,7 @@ return {
 							 	table.insert(enemyNotes[id], sprite())
 							 	enemyNotes[id][c].x = x
 							 	enemyNotes[id][c].y = -400 + (noteTime + k) * 0.6 * speed
+								enemyNotes[id][c].col = col
 							 	if k > sectionNotes[j][3] - 71 / speed then
 									enemyNotes[id][c].offsetY = not pixel and 10 or 2
 				 
@@ -651,7 +785,6 @@ return {
 				if events[i].bpm then
 					bpm = events[i].bpm
 					if not bpm then bpm = oldBpm end
-					print(bpm)
 					beatHandler.setBPM(bpm)
 				end
 
@@ -730,11 +863,13 @@ return {
 			boyfriendArrow:update(dt)
 
 			if not enemyArrow:isAnimated() then
-				enemyArrow:animate("off", false)
+				enemyArrow:animate(tostring(i), false)
+				enemyArrow.orientation = 0
 			end
 			if settings.botPlay then
 				if not boyfriendArrow:isAnimated() then
-					boyfriendArrow:animate("off", false)
+					boyfriendArrow:animate(tostring(i), false)
+					boyfriendArrow.orientation = 0
 				end
 			end
 
@@ -742,7 +877,11 @@ return {
 				if (enemyNote[1].y - musicPos <= -410) then
 					voices:setVolume(1)
 
-					enemyArrow:animate("confirm", false)
+					enemyArrow:animate(tostring(enemyNote[1].col) .. " confirm", false)
+					if enemyNote[1]:getAnimName() ~= "hold" and enemyNote[1]:getAnimName() ~= "end" then
+						enemyArrow.orientation = enemyArrow.orientation - arrowAngles[enemyNote[1].col]
+						enemyArrow.orientation = enemyArrow.orientation + arrowAngles[i]
+					end
 
 					if enemyNote[1]:getAnimName() == "hold" or enemyNote[1]:getAnimName() == "end" then
 						if useAltAnims then
@@ -756,7 +895,7 @@ return {
 						else
 							self:safeAnimate(enemy, curAnim, false, 2)
 						end
-					end
+											end
 
 					enemy.lastHit = musicTime
 
@@ -794,7 +933,9 @@ return {
 					if (boyfriendNote[1].y - musicPos <= -400) then
 						voices:setVolume(1)
 
-						boyfriendArrow:animate("confirm", false)
+						boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
+						boyfriendArrow.orientation = boyfriendArrow.orientation - arrowAngles[boyfriendNote[1].col]
+						boyfriendArrow.orientation = boyfriendArrow.orientation + arrowAngles[i]
 
 						if boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end" then
 							if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 2) end
@@ -853,7 +994,8 @@ return {
 					success = true
 				end
 
-				boyfriendArrow:animate("press", false)
+				boyfriendArrow:animate(tostring(i) .. " press", false)
+				boyfriendArrow.orientation = 0
 
 				if #boyfriendNote > 0 then
 					for j = 1, #boyfriendNote do
@@ -913,7 +1055,9 @@ return {
 								ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
 
 								if not settings.ghostTapping or success then
-									boyfriendArrow:animate("confirm", false)
+									boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
+									boyfriendArrow.orientation = boyfriendArrow.orientation - arrowAngles[boyfriendNote[1].col]
+									boyfriendArrow.orientation = boyfriendArrow.orientation + arrowAngles[i]
 
 									self:safeAnimate(boyfriend, curAnim, false, 3)
 
@@ -955,7 +1099,7 @@ return {
 			if #boyfriendNote > 0 and input:down(curInput) and ((boyfriendNote[1].y - musicPos <= -400)) and (boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end") then
 				voices:setVolume(1)
 
-				boyfriendArrow:animate("confirm", false)
+				boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
 
 				health = health + 0.0125
 
@@ -965,7 +1109,8 @@ return {
 			end
 
 			if input:released(curInput) then
-				boyfriendArrow:animate("off", false)
+				boyfriendArrow:animate(tostring(i), false)
+				boyfriendArrow.orientation = 0
 			end
 		end
 

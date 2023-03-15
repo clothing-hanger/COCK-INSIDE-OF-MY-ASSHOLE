@@ -201,6 +201,8 @@ return {
 			clipRect = nil,
 			stencilInfo = nil,
 
+			colorSwap = nil,
+
 			flipX = optionsTable and optionsTable.flipX or false,
 
 			singDuration = optionsTable and optionsTable.singDuration or 4,
@@ -394,6 +396,13 @@ return {
 						love.graphics.setStencilTest("greater", 0)
 					end
 
+					-- really only the notes will use colorSwap
+					if self.colorSwap then
+						-- since colorSwap is a shader, send the colour and apply shader
+						self.colorSwap:send("color", self.colorSwapColor)
+						love.graphics.setShader(self.colorSwap)
+					end
+
 					love.graphics.draw(
 						sheet,
 						frames[flooredFrame],
@@ -407,6 +416,10 @@ return {
 						self.shearX,
 						self.shearY
 					)
+
+					if self.colorSwap then
+						love.graphics.setShader()
+					end
 
 					if self.clipRect then 
 						self.stencilInfo = nil

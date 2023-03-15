@@ -64,14 +64,12 @@ function beatHandler.update(dt)
     
 
     if math.floor((musicTime / 1000) * (beatHandler.bpm / 60)) > 0 then
-        print(beatHandler.curBeat, beatHandler.lastBeat)
         if beatHandler.curBeat > beatHandler.lastBeat then
             beatHandler.isBeatHit = true
             beatHandler.beat = beatHandler.beat + 1
             beatHandler.lastBeat = beatHandler.curBeat
         end
     else
-        print(beatHandler.curBeat, beatHandler.lastBeat)
         if beatHandler.curBeat < beatHandler.lastBeat then
             beatHandler.isBeatHit = true
             beatHandler.beat = beatHandler.beat + 1
