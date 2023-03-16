@@ -91,12 +91,14 @@ return {
 			images = {
 				icons = love.graphics.newImage(graphics.imagePath("icons")),
 				notes = love.graphics.newImage(graphics.imagePath("notes")),
-				numbers = love.graphics.newImage(graphics.imagePath("numbers"))
+				numbers = love.graphics.newImage(graphics.imagePath("numbers")),
+				notesplashes = love.graphics.newImage(graphics.imagePath("noteSplashes"))
 			}
 
 			sprites = {
 				icons = love.filesystem.load("sprites/icons.lua"),
-				numbers = love.filesystem.load("sprites/numbers.lua")
+				numbers = love.filesystem.load("sprites/numbers.lua"),
+				noteSplash = love.filesystem.load("sprites/noteSplashes.lua")
 			}
 
 			rating = love.filesystem.load("sprites/rating.lua")()
@@ -130,12 +132,14 @@ return {
 			images = {
 				icons = love.graphics.newImage(graphics.imagePath("icons")),
 				notes = love.graphics.newImage(graphics.imagePath("pixel/notes")),
-				numbers = love.graphics.newImage(graphics.imagePath("pixel/numbers"))
+				numbers = love.graphics.newImage(graphics.imagePath("pixel/numbers")),
+				notesplashes = love.graphics.newImage(graphics.imagePath("pixel/pixelSplashes"))
 			}
 
 			sprites = {
 				icons = love.filesystem.load("sprites/icons.lua"),
-				numbers = love.filesystem.load("sprites/pixel/numbers.lua")
+				numbers = love.filesystem.load("sprites/pixel/numbers.lua"),
+				noteSplash = love.filesystem.load("sprites/pixel/pixelSplashes.lua")
 			}
 
 			rating = love.filesystem.load("sprites/pixel/rating.lua")()
@@ -264,9 +268,17 @@ return {
 			sprites.receptors()
 		}
 
+		boyfriendSplashes = {
+			sprites.noteSplash(),
+			sprites.noteSplash(),
+			sprites.noteSplash(),
+			sprites.noteSplash()
+		}
+
 		for i = 1, 4 do
 			if settings.middleScroll then 
 				boyfriendArrows[i].x = -410 + 165 * i
+				boyfriendSplashes[i].x = -410 + 165 * i
 				-- ew stuff
 				enemyArrows[1].x = -925 + 165 * 1 
 				enemyArrows[2].x = -925 + 165 * 2
@@ -275,10 +287,12 @@ return {
 			else
 				enemyArrows[i].x = -925 + 165 * i
 				boyfriendArrows[i].x = 100 + 165 * i
+				boyfriendSplashes[i].x = 100 + 165 * i
 			end
 
 			enemyArrows[i].y = -400
 			boyfriendArrows[i].y = -400
+			boyfriendSplashes[i].y = -400
 
 			enemyArrows[i]:animate(tostring(i))
 			boyfriendArrows[i]:animate(tostring(i))
@@ -869,11 +883,13 @@ return {
 			local boyfriendNote = boyfriendNotes[i]
 			local curAnim = animList[i]
 			local curInput = inputList[i]
+			local boyfriendSplash = boyfriendSplashes[i]
 
 			local noteNum = i
 
 			enemyArrow:update(dt)
 			boyfriendArrow:update(dt)
+			boyfriendSplash:update(dt)
 
 			if not enemyArrow:isAnimated() then
 				enemyArrow:animate(tostring(i), false)
@@ -989,6 +1005,8 @@ return {
 							health = health + 0.095
 							score = score + 350
 
+							boyfriendSplash:animate(tostring(boyfriendNote[1].col) .. love.math.random(1,2), false)
+
 							self:calculateRating()
 						else
 							health = health + 0.0125
@@ -1029,6 +1047,8 @@ return {
 								if notePos <= 55 then -- "Sick"
 									score = score + 350
 									ratingAnim = "sick"
+
+									boyfriendSplash:animate(tostring(boyfriendNote[j].col) .. love.math.random(1,2), false)
 								elseif notePos <= 90 then -- "Good"
 									score = score + 200
 									ratingAnim = "good"
@@ -1167,10 +1187,17 @@ return {
 		love.graphics.push()
 			love.graphics.origin()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			graphics.setColor(1, 1, 1, 1)
-			rating:draw()
-			for i = 1, 3 do
-				numbers[i]:draw()
+			graphics.setColor(1, 1, 1, ratingVisibility[1])
+			if pixel then
+				rating:udraw(5.75, 5.75)
+				for i = 1, 3 do
+					numbers[i]:udraw(5.75, 5.75)
+				end
+			else
+				rating:draw()
+				for i = 1, 3 do
+					numbers[i]:draw()
+				end
 			end
 			graphics.setColor(1, 1, 1)
 		love.graphics.pop()
@@ -1238,13 +1265,26 @@ return {
 				graphics.setColor(1, 1, 1)
 				if not pixel then 
 					boyfriendArrows[i]:draw()
+					if boyfriendSplashes[i]:isAnimated() then
+						graphics.setColor(1,1,1,0.5)
+						boyfriendSplashes[i]:draw()
+					end
 				else
 					if not settings.downscroll then
 						boyfriendArrows[i]:udraw(8, 8)
+						if boyfriendSplashes[i]:isAnimated() then
+							graphics.setColor(1,1,1,0.5)
+							boyfriendSplashes[i]:udraw(8, 8)
+						end
 					else
 						boyfriendArrows[i]:udraw(8, -8)
+						if boyfriendSplashes[i]:isAnimated() then
+							graphics.setColor(1,1,1,0.5)
+							boyfriendSplashes[i]:udraw(8, -8)
+						end
 					end
 				end
+				graphics.setColor(1, 1, 1)
 
 				love.graphics.push()
 					love.graphics.translate(0, -musicPos)
