@@ -192,7 +192,6 @@ return {
 
 				curtains:draw()
 			love.graphics.pop()
-			weeks:drawRating(0.9)
 		love.graphics.pop()
 
 		weeks:drawUI()

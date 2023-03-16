@@ -175,7 +175,6 @@ return {
 			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["mall"]:draw()
-			weeks:drawRating(0.9)
 		love.graphics.pop()
 
 		if not scaryIntro then

@@ -112,7 +112,6 @@ return {
 			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["stage"]:draw()
-			weeks:drawRating(0.9)
 		love.graphics.pop()
 
 		weeks:drawUI()

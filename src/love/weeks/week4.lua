@@ -128,7 +128,6 @@ return {
 			love.graphics.scale(camera.zoom, camera.zoom)
 
 			stages["sunset"]:draw()
-			weeks:drawRating(1)
 		love.graphics.pop()
 
 		weeks:drawUI()

@@ -85,9 +85,8 @@ return {
 
 		if song == 3 then
 			weeks:generateNotes("data/week6/thorns/thorns" .. difficulty .. ".json")
-			dialogue.set("data/week6/thorns/thornsDialogue.txt")
-
 			if storyMode and not died then
+				dialogue.set("data/week6/thorns/thornsDialogue.txt")
 				dialogue.addSpeaker("dad", graphics.newImage(graphics.imagePath("week6/spiritFaceForward")), 400, 250, 6, 6, false)
 				dialogue.setSpeakerBox("dad", love.filesystem.load("sprites/week6/scaryDialogueBox.lua")(), 650, 375, 6, 6, true, false)
 
@@ -106,9 +105,8 @@ return {
 			end
 		elseif song == 2 then
 			weeks:generateNotes("data/week6/roses/roses" .. difficulty .. ".json")
-			dialogue.set("data/week6/roses/rosesDialogue.txt")
-
 			if storyMode and not died then
+				dialogue.set("data/week6/roses/rosesDialogue.txt")
 				dialogue.addSpeaker("dad", love.filesystem.load("sprites/week6/angrySenpaiBox.lua")(), 650, 375, 6, 6, true, false)
 				dialogue.removeSpeakerBox("dad")
 
@@ -127,9 +125,9 @@ return {
 			end
 		else
 			weeks:generateNotes("data/week6/senpai/senpai" .. difficulty .. ".json")
-			dialogue.set("data/week6/senpai/senpaiDialogue.txt")
-
 			if storyMode and not died then
+				dialogue.set("data/week6/senpai/senpaiDialogue.txt")
+
 				dialogue.addSpeaker("dad", love.filesystem.load("sprites/week6/senpaiPortrait.lua")(), 650, 375, 6, 6, true)
 				dialogue.setSpeakerBox("dad", love.filesystem.load("sprites/week6/dialogueBox.lua")(), 650, 375, 6, 6, true)
 
@@ -183,10 +181,10 @@ return {
 
 		if inCutscene then
 			dialogue.doDialogue(dt)
-		end
 
-		if input:pressed("confirm") and inCutscene then
-			dialogue.next()
+			if input:pressed("confirm") then
+				dialogue.next()
+			end
 		end
 
 		weeks:updateUI(dt)
@@ -202,7 +200,6 @@ return {
 			else
 				stages["evilSchool"]:draw()
 			end
-			weeks:drawRating(0.9)
 		love.graphics.pop()
 
 		if inCutscene then 

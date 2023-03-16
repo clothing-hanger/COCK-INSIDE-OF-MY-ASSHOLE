@@ -182,14 +182,14 @@ return {
 
 		camera.x, camera.y = -boyfriend.x + 100, -boyfriend.y + 75
 
-		rating.x = girlfriend.x
+		rating.x = 20
 		if not pixel then
 			for i = 1, 3 do
-				numbers[i].x = girlfriend.x - 100 + 50 * i
+				numbers[i].x = 0 - 100 + 50 * i
 			end
 		else
 			for i = 1, 3 do
-				numbers[i].x = girlfriend.x - 100 + 58 * i
+				numbers[i].x = 0 - 100 + 58 * i
 			end
 		end
 
@@ -229,14 +229,16 @@ return {
 			sprites.downArrow = love.filesystem.load("sprites/down-arrow.lua")
 			sprites.upArrow = love.filesystem.load("sprites/up-arrow.lua")
 			sprites.rightArrow = love.filesystem.load("sprites/right-arrow.lua")
+
+			sprites.receptors = love.filesystem.load("sprites/receptor.lua")
 		else
 			sprites.leftArrow = love.filesystem.load("sprites/pixel/left-arrow.lua")
 			sprites.downArrow = love.filesystem.load("sprites/pixel/down-arrow.lua")
 			sprites.upArrow = love.filesystem.load("sprites/pixel/up-arrow.lua")
 			sprites.rightArrow = love.filesystem.load("sprites/pixel/right-arrow.lua")
-		end
 
-		sprites.receptors = love.filesystem.load("sprites/receptor.lua")
+			sprites.receptors = love.filesystem.load("sprites/pixel/receptor.lua")
+		end
 
 		enemyArrows = {
 			sprites.receptors(),
@@ -957,21 +959,22 @@ return {
 								if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
 							end
 
-							rating.y = girlfriend.y - 50
+							rating.y = -190 - 50
 							for i = 1, 3 do
-								numbers[i].y = girlfriend.y + 50
+								numbers[i].y = -190 + 50
 							end
 
 							if mustHitSection then 
 								noteCamTweens[i]()
 							end
 
+							ratingVisibility[1] = 1
 							ratingTimers[1] = Timer.tween(2, ratingVisibility, {0}, "linear")
-							ratingTimers[2] = Timer.tween(2, rating, {y = girlfriend.y - 100}, "out-elastic")
+							ratingTimers[2] = Timer.tween(2, rating, {y = -190 - 100}, "out-elastic")
 
-							ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-							ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-							ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[3] = Timer.tween(2, numbers[1], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[4] = Timer.tween(2, numbers[2], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[5] = Timer.tween(2, numbers[3], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
 							health = health + 0.095
 							score = score + 350
 
@@ -1038,21 +1041,22 @@ return {
 									if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
 								end
 
-								rating.y = girlfriend.y - 50
+								rating.y = -190 - 50
 								for i = 1, 3 do
-									numbers[i].y = girlfriend.y + 50
+									numbers[i].y = -190 + 50
 								end
 
 								if mustHitSection then 
 									noteCamTweens[i]()
 								end
 
+								ratingVisibility[1] = 1
 								ratingTimers[1] = Timer.tween(2, ratingVisibility, {0}, "linear")
-								ratingTimers[2] = Timer.tween(2, rating, {y = girlfriend.y - 100}, "out-elastic")
+								ratingTimers[2] = Timer.tween(2, rating, {y = -190 - 100}, "out-elastic")
 
-								ratingTimers[3] = Timer.tween(2, numbers[1], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								ratingTimers[4] = Timer.tween(2, numbers[2], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
-								ratingTimers[5] = Timer.tween(2, numbers[3], {y = girlfriend.y + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[3] = Timer.tween(2, numbers[1], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[4] = Timer.tween(2, numbers[2], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[5] = Timer.tween(2, numbers[3], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
 
 								if not settings.ghostTapping or success then
 									boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
@@ -1101,6 +1105,11 @@ return {
 
 				boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
 
+				if boyfriendArrow.orientation == 0 then 
+					boyfriendArrow.orientation = boyfriendArrow.orientation - arrowAngles[boyfriendNote[1].col]
+					boyfriendArrow.orientation = boyfriendArrow.orientation + arrowAngles[i]
+				end
+
 				health = health + 0.0125
 
 				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 3) end
@@ -1143,12 +1152,10 @@ return {
 		end
 	end,
 
-	drawRating = function(self, multiplier)
-		local multiplier = multiplier or 1
+	drawRating = function(self)
 		love.graphics.push()
-			love.graphics.translate(camera.x * multiplier, camera.y * multiplier)
-			love.graphics.translate(camera.ex * multiplier, camera.ey * multiplier)
-
+			love.graphics.origin()
+			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
 			graphics.setColor(1, 1, 1, ratingVisibility[1])
 			rating:draw()
 			for i = 1, 3 do
@@ -1333,6 +1340,7 @@ return {
 		graphics.setColor(colourInline[1], colourInline[2], colourInline[3], colourInline[4])
 		love.graphics.printf(text, -600, 400+downscrollOffset, 1200, "center")
 
+		self:drawRating()
 	end,
 
 	drawHealthbar = function(self, visibility)
