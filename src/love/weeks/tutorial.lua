@@ -87,6 +87,8 @@ return {
 		absMusicTime = math.abs(musicTime)
 		musicThres = math.floor(absMusicTime / 100) -- Since "musicTime" isn't precise, this is needed
 
+		beatHandler.update(dt)
+
 		for i = 1, #events do
 			if events[i].eventTime <= musicTime then
 				local oldBpm = bpm
@@ -116,7 +118,7 @@ return {
 			end
 		end
 
-		if (beatHandler.onBeat() and beatHandler.getBeat() % camera.camBopInterval == 0) and (camera.zooming and camera.zoom < 1.35 and not camera.locked) then 
+		if (beatHandler.onBeat() and beatHandler.getBeat() % camera.camBopInterval == 0 and camera.zooming and camera.zoom < 1.35 and not camera.locked) then 
 			camera.zoom = camera.zoom + 0.015 * camera.camBopIntensity
 			uiScale.zoom = uiScale.zoom + 0.03 * camera.camBopIntensity
 		end
@@ -129,29 +131,12 @@ return {
 		girlfriend:update(dt)
 		boyfriend:update(dt)
 
-		if musicThres ~= oldMusicThres and math.fmod(absMusicTime, 120000 / bpm) < 100 then
-			spriteTimers[1] = math.max(spriteTimers[1], spriteTimers[2]) -- Gross hack, but whatever
-
-			if spriteTimers[1] == 0 then
-				girlfriend:animate("idle", false)
-			end
-			if spriteTimers[3] == 0 then
-				weeks:safeAnimate(boyfriend, "idle", false, 3)
-			end
-			girlfriend:setAnimSpeed(14.4 / (60 / bpm))
-		end
-
-		for i = 1, 3 do
-			local spriteTimer = spriteTimers[i]
-
-			if spriteTimer > 0 then
-				spriteTimers[i] = spriteTimer - 1
-			end
-		end
+		girlfriend:beat(beatHandler.getBeat())
+		boyfriend:beat(beatHandler.getBeat())
 
 		if musicThres ~= oldMusicThres and (musicThres == 185 or musicThres == 280) then
-			weeks:safeAnimate(girlfriend, "cheer", false, 1)
-			weeks:safeAnimate(boyfriend, "hey", false, 3)
+			girlfriend:animate("cheer", false)
+			boyfriend:animate("hey", false)
 		end
 
 		if not (countingDown or graphics.isFading()) and not voices:isPlaying() and not paused then

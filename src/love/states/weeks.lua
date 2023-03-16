@@ -724,12 +724,6 @@ return {
 		)
 	end,
 
-	safeAnimate = function(self, sprite, animName, loopAnim, timerID)
-		sprite:animate(animName, loopAnim)
-
-		spriteTimers[timerID] = 12
-	end,
-
 	update = function(self, dt)
 		if input:pressed("pause") and not countingDown and not inCutscene and not doingDialogue and not paused then
 			if not graphics.isFading() then 
@@ -853,21 +847,9 @@ return {
 		enemy:update(dt)
 		boyfriend:update(dt)
 
-		if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
-			if spriteTimers[1] == 0 then
-			end
-		end
 		boyfriend:beat(beatHandler.getBeat())
 		enemy:beat(beatHandler.getBeat())
 		girlfriend:beat(beatHandler.getBeat())
-
-		for i = 1, 3 do
-			local spriteTimer = spriteTimers[i]
-
-			if spriteTimer > 0 then
-				spriteTimers[i] = spriteTimer - 1
-			end
-		end
 	end,
 
 	updateUI = function(self, dt)
@@ -913,17 +895,17 @@ return {
 
 					if enemyNote[1]:getAnimName() == "hold" or enemyNote[1]:getAnimName() == "end" then
 						if useAltAnims then
-							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then self:safeAnimate(enemy, curAnim .. " alt", false, 2) end
+							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then enemy:animate(curAnim .. " alt", false) end
 						else
-							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then self:safeAnimate(enemy, curAnim, false, 2) end
+							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then enemy:animate(curAnim, false) end
 						end
 					else
 						if useAltAnims then
-							self:safeAnimate(enemy, curAnim .. " alt", false, 2)
+							enemy:animate(curAnim .. " alt", false)
 						else
-							self:safeAnimate(enemy, curAnim, false, 2)
+							enemy:animate(curAnim, false)
 						end
-											end
+					end
 
 					enemy.lastHit = musicTime
 
@@ -950,7 +932,7 @@ return {
 
 					table.remove(boyfriendNote, 1)
 
-					if combo >= 5 then self:safeAnimate(girlfriend, "sad", false, 1) end
+					if combo >= 5 then girlfriend:animate("sad", false) end
 
 					combo = 0
 				end
@@ -966,9 +948,9 @@ return {
 						boyfriendArrow.orientation = boyfriendArrow.orientation + arrowAngles[i]
 
 						if boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end" then
-							if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 2) end
+							if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then boyfriend:animate(curAnim, false) end
 						else
-							self:safeAnimate(boyfriend, curAnim, false, 2)
+							boyfriend:animate(curAnim, false)
 						end
 
 						boyfriend.lastHit = musicTime
@@ -1093,7 +1075,7 @@ return {
 									boyfriendArrow.orientation = boyfriendArrow.orientation - arrowAngles[boyfriendNote[1].col]
 									boyfriendArrow.orientation = boyfriendArrow.orientation + arrowAngles[i]
 
-									self:safeAnimate(boyfriend, curAnim, false, 3)
+									boyfriend:animate(curAnim, false)
 
 									if boyfriendNote[j]:getAnimName() ~= "hold" and boyfriendNote[j]:getAnimName() ~= "end" then
 										health = health + 0.095
@@ -1119,9 +1101,9 @@ return {
 
 					notMissed[noteNum] = false
 
-					if combo >= 5 then self:safeAnimate(girlfriend, "sad", false, 1) end
+					if combo >= 5 then girlfriend:aniamte("sad", false) end
 
-					self:safeAnimate(boyfriend, "miss " .. curAnim, false, 3)
+					boyfriend:aniamte("miss " .. curAnim, false)
 
 					score = score - 10
 					combo = 0
@@ -1142,7 +1124,7 @@ return {
 
 				health = health + 0.0125
 
-				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then self:safeAnimate(boyfriend, curAnim, false, 3) end
+				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then boyfriend:animate(curAnim, false) end
 
 				table.remove(boyfriendNote, 1)
 			end

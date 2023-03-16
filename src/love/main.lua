@@ -467,12 +467,6 @@ function love.load()
 	weekNum = 1
 	songDifficulty = 2
 
-	spriteTimers = {
-		0, -- Girlfriend
-		0, -- Enemy
-		0 -- Boyfriend
-	}
-
 	storyMode = false
 	countingDown = false
 
