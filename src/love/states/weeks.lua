@@ -1101,9 +1101,9 @@ return {
 
 					notMissed[noteNum] = false
 
-					if combo >= 5 then girlfriend:aniamte("sad", false) end
+					if combo >= 5 then girlfriend:animate("sad", false) end
 
-					boyfriend:aniamte("miss " .. curAnim, false)
+					boyfriend:animate("miss " .. curAnim, false)
 
 					score = score - 10
 					combo = 0
