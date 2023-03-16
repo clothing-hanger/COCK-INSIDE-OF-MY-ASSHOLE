@@ -1170,9 +1170,10 @@ return {
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
 			graphics.setColor(1, 1, 1, ratingVisibility[1])
 			if pixel then
-				rating:udraw(5.75, 5.75)
+				love.graphics.translate(-16, 0)
+				rating:udraw(5.25, 5.25)
 				for i = 1, 3 do
-					numbers[i]:udraw(5.75, 5.75)
+					numbers[i]:udraw(5, 5)
 				end
 			else
 				rating:draw()
