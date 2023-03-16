@@ -593,6 +593,7 @@ function love.draw()
 			graphics.setColor(1, 1, 1, 1)
 		end
 		if fade.mesh then 
+			graphics.setColor(1,1,1)
 			love.graphics.draw(fade.mesh, 0, fade.y, 0, lovesize.getWidth(), fade.height)
 		end
 	lovesize.finish()

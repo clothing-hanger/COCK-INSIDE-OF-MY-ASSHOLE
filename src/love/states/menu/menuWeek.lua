@@ -73,7 +73,7 @@ return {
 			{231,139,8} -- Week 7
 		}
 		Timer.tween(
-			0.8,
+			0.1,
 			freeColour, 
 			{
 				[1] = freeplayColours[1][1],
@@ -178,8 +178,6 @@ return {
 					theTracks = weekMeta[weekNum][2][trackLength]
 				end
 			end
-
-
 			enemyDanceLines:animate("week" .. weekNum, true)
 		end
 		
@@ -291,7 +289,7 @@ return {
 
 			love.graphics.push()
 
-				graphics.setColor(freeColour[1]/255, freeColour[2]/255, freeColour[3]/255)
+				love.graphics.setColor(freeColour[1]/255, freeColour[2]/255, freeColour[3]/255)
 				love.graphics.scale(camera.zoom, camera.zoom)
 				for i = 1, #weekDesc do
 					weekImages[i]:draw()
@@ -299,7 +297,7 @@ return {
 
 				titleBG:draw()
 
-				graphics.setColor(1, 1, 1)
+				love.graphics.setColor(1, 1, 1)
 
 				difficultyAnim:draw()
 				if weekNum ~= 1 then
@@ -309,15 +307,13 @@ return {
 				gfDanceLines:draw()
 
 				--weekImages[currentWeek + 1]:draw()
-				graphics.setColor(freeColour[1]/255, freeColour[2]/255, freeColour[3]/255)
+				love.graphics.setColor(freeColour[1]/255, freeColour[2]/255, freeColour[3]/255)
 
 				if weekImages[currentWeek+1]then weekImages[currentWeek+1]:draw() end
 
 				love.graphics.printf({{freeColour[1], freeColour[2], freeColour[3]}, weekDesc[weekNum]}, -639, -395, 853, "center", nil, 1.5, 1.5)
 
 				love.graphics.printf({{freeColour[1], freeColour[2], freeColour[3]}, theTracks}, -639, 350, 853, "center", nil, 1.5, 1.5)
-
-				love.graphics.setColor(0, 0, 0, 0.4)
 
 				love.graphics.setColor(1, 1, 1)
 				arrowUp:draw()
