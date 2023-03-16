@@ -64,7 +64,7 @@ return {
 		beatHandler.reset()
 		option = option or "normal"
 
-		local arrowAngles = {math.rad(180), math.rad(90), math.rad(270), math.rad(0)}
+		arrowAngles = {math.rad(180), math.rad(90), math.rad(270), math.rad(0)}
 		if settings.downscroll then
 			-- ezezezezezezezezezezezezez workaround lol
 			arrowAngles = {math.rad(180), math.rad(270), math.rad(90), math.rad(0)}
