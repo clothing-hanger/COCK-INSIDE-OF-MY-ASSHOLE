@@ -78,6 +78,25 @@ function uitext(text,x,y,r,sx,sy,ox,oy,kx,ky,alpha)
     love.graphics.print(text,x,y,r,sx,sy,a,ox,oy,kx,ky)
 end
 
+function borderedText(text,x,y,r,sx,sy,ox,oy,kx,ky,alpha)
+	local x = x or 0
+	local y = y or 0
+	local r = r or 0
+	local sx = sx or 1
+	local sy = sy or 1
+	local ox = ox or 0
+	local oy = oy or 0
+	local kx = kx or 0
+	local ky = ky or 0
+	graphics.setColor(0,0,0, alpha or 1)
+	love.graphics.print(text,x-1,y,r,sx,sy,a,ox,oy,kx,ky)
+	love.graphics.print(text,x+1,y,r,sx,sy,a,ox,oy,kx,ky)
+	love.graphics.print(text,x,y-1,r,sx,sy,a,ox,oy,kx,ky)
+	love.graphics.print(text,x,y+1,r,sx,sy,a,ox,oy,kx,ky)
+	graphics.setColor(1,1,1, alpha or 1)
+	love.graphics.print(text,x,y,r,sx,sy,a,ox,oy,kx,ky)
+end
+
 function saveSettings()
     if settings.hardwareCompression ~= settingdata.saveSettingsMoment.hardwareCompression then
         settingdata = {}
@@ -602,7 +621,7 @@ function love.draw()
 
 	-- Debug output
 	if settings.showDebug then
-		love.graphics.print(status.getDebugStr(settings.showDebug), 5, 5, nil, 0.5, 0.5)
+		borderedText(status.getDebugStr(settings.showDebug), 5, 5, nil, 0.6, 0.6)
 	end
 end
 
