@@ -855,12 +855,11 @@ return {
 
 		if beatHandler.onBeat() and beatHandler.getBeat() % 2 == 0 then
 			if spriteTimers[1] == 0 then
-				self:safeAnimate(girlfriend, "idle", true, 1)
-				girlfriend:setAnimSpeed(14.4 / (60 / bpm))
 			end
 		end
 		boyfriend:beat(beatHandler.getBeat())
 		enemy:beat(beatHandler.getBeat())
+		girlfriend:beat(beatHandler.getBeat())
 
 		for i = 1, 3 do
 			local spriteTimer = spriteTimers[i]
@@ -951,7 +950,7 @@ return {
 
 					table.remove(boyfriendNote, 1)
 
-					if combo >= 5 then self:safeAnimate(girlfriend, "sad", true, 1) end
+					if combo >= 5 then self:safeAnimate(girlfriend, "sad", false, 1) end
 
 					combo = 0
 				end
@@ -1120,7 +1119,7 @@ return {
 
 					notMissed[noteNum] = false
 
-					if combo >= 5 then self:safeAnimate(girlfriend, "sad", true, 1) end
+					if combo >= 5 then self:safeAnimate(girlfriend, "sad", false, 1) end
 
 					self:safeAnimate(boyfriend, "miss " .. curAnim, false, 3)
 
