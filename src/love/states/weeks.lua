@@ -30,6 +30,10 @@ local inputList = {
 	"gameRight"
 }
 local arrowAngles = {math.rad(180), math.rad(90), math.rad(270), math.rad(0)}
+if settings.downscroll then
+	-- ezezezezezezezezezezezezez workaround lol
+	arrowAngles = {math.rad(180), math.rad(270), math.rad(90), math.rad(0)}
+end
 local noteCamTweens = {
 	function()
 		camera:moveToExtra((60/bpm), 15, 0)
@@ -59,6 +63,13 @@ return {
 		playMenuMusic = false
 		beatHandler.reset()
 		option = option or "normal"
+
+		local arrowAngles = {math.rad(180), math.rad(90), math.rad(270), math.rad(0)}
+		if settings.downscroll then
+			-- ezezezezezezezezezezezezez workaround lol
+			arrowAngles = {math.rad(180), math.rad(270), math.rad(90), math.rad(0)}
+		end
+
 		if option ~= "pixel" then
 			pixel = false
 			sounds = {
@@ -185,11 +196,11 @@ return {
 		rating.x = 20
 		if not pixel then
 			for i = 1, 3 do
-				numbers[i].x = 0 - 100 + 50 * i
+				numbers[i].x = -100 + 50 * i
 			end
 		else
 			for i = 1, 3 do
-				numbers[i].x = 0 - 100 + 58 * i
+				numbers[i].x = -100 + 58 * i
 			end
 		end
 
@@ -959,9 +970,9 @@ return {
 								if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
 							end
 
-							rating.y = -190 - 50
+							rating.y = 300 - 50 + (settings.downscroll and 0 or -490)
 							for i = 1, 3 do
-								numbers[i].y = -190 + 50
+								numbers[i].y = 300 + 50 + (settings.downscroll and 0 or -490)
 							end
 
 							if mustHitSection then 
@@ -970,11 +981,11 @@ return {
 
 							ratingVisibility[1] = 1
 							ratingTimers[1] = Timer.tween(2, ratingVisibility, {0}, "linear")
-							ratingTimers[2] = Timer.tween(2, rating, {y = -190 - 100}, "out-elastic")
+							ratingTimers[2] = Timer.tween(2, rating, {y = 300 + (settings.downscroll and 0 or -490) - 100}, "out-elastic")
 
-							ratingTimers[3] = Timer.tween(2, numbers[1], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
-							ratingTimers[4] = Timer.tween(2, numbers[2], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
-							ratingTimers[5] = Timer.tween(2, numbers[3], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[3] = Timer.tween(2, numbers[1], {y = 300 + (settings.downscroll and 0 or -490) + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[4] = Timer.tween(2, numbers[2], {y = 300 + (settings.downscroll and 0 or -490) + love.math.random(-10, 10)}, "out-elastic")
+							ratingTimers[5] = Timer.tween(2, numbers[3], {y = 300 + (settings.downscroll and 0 or -490) + love.math.random(-10, 10)}, "out-elastic")
 							health = health + 0.095
 							score = score + 350
 
@@ -1041,9 +1052,9 @@ return {
 									if ratingTimers[i] then Timer.cancel(ratingTimers[i]) end
 								end
 
-								rating.y = -190 - 50
+								rating.y = 300 - 50 + (settings.downscroll and 0 or -490)
 								for i = 1, 3 do
-									numbers[i].y = -190 + 50
+									numbers[i].y = 300 + 50 + (settings.downscroll and 0 or -490)
 								end
 
 								if mustHitSection then 
@@ -1052,11 +1063,11 @@ return {
 
 								ratingVisibility[1] = 1
 								ratingTimers[1] = Timer.tween(2, ratingVisibility, {0}, "linear")
-								ratingTimers[2] = Timer.tween(2, rating, {y = -190 - 100}, "out-elastic")
+								ratingTimers[2] = Timer.tween(2, rating, {y = 300 + (settings.downscroll and 0 or -490) - 100}, "out-elastic")
 
-								ratingTimers[3] = Timer.tween(2, numbers[1], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
-								ratingTimers[4] = Timer.tween(2, numbers[2], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
-								ratingTimers[5] = Timer.tween(2, numbers[3], {y = -190 + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[3] = Timer.tween(2, numbers[1], {y = 300 + (settings.downscroll and 0 or -490) + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[4] = Timer.tween(2, numbers[2], {y = 300 + (settings.downscroll and 0 or -490) + love.math.random(-10, 10)}, "out-elastic")
+								ratingTimers[5] = Timer.tween(2, numbers[3], {y = 300 + (settings.downscroll and 0 or -490) + love.math.random(-10, 10)}, "out-elastic")
 
 								if not settings.ghostTapping or success then
 									boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
@@ -1156,7 +1167,7 @@ return {
 		love.graphics.push()
 			love.graphics.origin()
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
-			graphics.setColor(1, 1, 1, ratingVisibility[1])
+			graphics.setColor(1, 1, 1, 1)
 			rating:draw()
 			for i = 1, 3 do
 				numbers[i]:draw()
