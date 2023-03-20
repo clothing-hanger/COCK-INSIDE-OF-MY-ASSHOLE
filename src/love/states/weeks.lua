@@ -107,9 +107,6 @@ return {
 
 			girlfriend = love.filesystem.load("sprites/girlfriend.lua")()
 			boyfriend = love.filesystem.load("sprites/boyfriend.lua")()
-			bfghost = love.filesystem.load("sprites/boyfriend.lua")()
-			bfghost.color = {255,255,255}
-			bfghost.alpha = 0
 		else
 			pixel = true
 			love.graphics.setDefaultFilter("nearest", "nearest")
