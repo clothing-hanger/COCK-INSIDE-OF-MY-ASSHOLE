@@ -45,5 +45,7 @@ return {
         for i, v in pairs(stageImages) do
 			v = nil
 		end
+
+		graphics.clearCache()
     end
 }

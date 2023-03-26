@@ -50,8 +50,10 @@ return {
     end,
 
     leave = function()
-        stageImages[1] = nil
-        stageImages[2] = nil
-        stageImages[3] = nil
+        for i, v in pairs(stageImages) do
+            v = nil
+		end
+
+        graphics.clearCache()
     end
 }
