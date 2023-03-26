@@ -92,6 +92,8 @@ return {
 			scrollX = 1,
 			scrollY = 1,
 
+			visible = true,
+
 			setImage = function(self, image)
 				image = image
 				width = image:getWidth()
@@ -111,18 +113,20 @@ return {
 					y = math.floor(y)
 				end
 
-				love.graphics.draw(
-					image,
-					self.x,
-					self.y,
-					self.orientation,
-					self.sizeX,
-					self.sizeY,
-					math.floor(width / 2) + self.offsetX,
-					math.floor(height / 2) + self.offsetY,
-					self.shearX,
-					self.shearY
-				)
+				if self.visible then
+					love.graphics.draw(
+						image,
+						self.x,
+						self.y,
+						self.orientation,
+						self.sizeX,
+						self.sizeY,
+						math.floor(width / 2) + self.offsetX,
+						math.floor(height / 2) + self.offsetY,
+						self.shearX,
+						self.shearY
+					)
+				end
 			end,
 
 			udraw = function(self, sx, sy)
@@ -201,14 +205,14 @@ return {
 			clipRect = nil,
 			stencilInfo = nil,
 
-			colorSwap = nil,
-
 			flipX = optionsTable and optionsTable.flipX or false,
 
 			singDuration = optionsTable and optionsTable.singDuration or 4,
 			isCharacter = optionsTable and optionsTable.isCharacter or false,
 			danceSpeed = optionsTable and optionsTable.danceSpeed or 2,
 			danceIdle = optionsTable and optionsTable.danceIdle or false,
+
+			visible = true,
 
 			danced = false,
 
@@ -413,29 +417,20 @@ return {
 						love.graphics.setStencilTest("greater", 0)
 					end
 
-					-- really only the notes will use colorSwap
-					if self.colorSwap then
-						-- since colorSwap is a shader, send the colour and apply shader
-						self.colorSwap:send("color", self.colorSwapColor)
-						love.graphics.setShader(self.colorSwap)
-					end
-
-					love.graphics.draw(
-						sheet,
-						frames[flooredFrame],
-						x,
-						y,
-						self.orientation,
-						self.sizeX * (self.flipX and -1 or 1),
-						self.sizeY,
-						width + anim.offsetX + self.offsetX,
-						height + anim.offsetY + self.offsetY,
-						self.shearX,
-						self.shearY
-					)
-
-					if self.colorSwap then
-						love.graphics.setShader()
+					if self.visible then
+						love.graphics.draw(
+							sheet,
+							frames[flooredFrame],
+							x,
+							y,
+							self.orientation,
+							self.sizeX * (self.flipX and -1 or 1),
+							self.sizeY,
+							width + anim.offsetX + self.offsetX,
+							height + anim.offsetY + self.offsetY,
+							self.shearX,
+							self.shearY
+						)
 					end
 
 					if self.clipRect then 
@@ -481,19 +476,21 @@ return {
 						end
 					end
 
-					love.graphics.draw(
-						sheet,
-						frames[flooredFrame],
-						self.x,
-						self.y,
-						self.orientation,
-						sx,
-						sy,
-						width + anim.offsetX + self.offsetX,
-						height + anim.offsetY + self.offsetY,
-						self.shearX,
-						self.shearY
-					)
+					if self.visible then
+						love.graphics.draw(
+							sheet,
+							frames[flooredFrame],
+							self.x,
+							self.y,
+							self.orientation,
+							sx,
+							sy,
+							width + anim.offsetX + self.offsetX,
+							height + anim.offsetY + self.offsetY,
+							self.shearX,
+							self.shearY
+						)
+					end
 				end
 			end
 		}
