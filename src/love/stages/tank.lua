@@ -5,7 +5,8 @@ return {
 		    ["Ground"] = graphics.newImage(graphics.imagePath("week7/tankGround")), -- tankGround
             ["Watch Tower"] = love.filesystem.load("sprites/week7/tankWatchtower.lua")(), -- tankWatchtower
             ["Smoke Left"] = love.filesystem.load("sprites/week7/smokeLeft.lua")(), -- smokeLeft
-		    ["Smoke Right"] = love.filesystem.load("sprites/week7/smokeRight.lua")() -- smokeRight
+		    ["Smoke Right"] = love.filesystem.load("sprites/week7/smokeRight.lua")(), -- smokeRight
+            ["Tank Rolling"] = love.filesystem.load("sprites/week7/tankRolling.lua")() -- tankRolling
         }
         for i = 0, 5 do
             stageImages["Tank " .. i+1] = love.filesystem.load("sprites/week7/tank" .. i .. ".lua")() -- all the tank viewers
@@ -42,6 +43,7 @@ return {
         stageImages["Watch Tower"]:update(dt)
         stageImages["Smoke Left"]:update(dt)
         stageImages["Smoke Right"]:update(dt)
+        stageImages["Tank Rolling"]:update(dt)
         for i = 0, 5 do
             stageImages["Tank " .. i+1]:update(dt)
         end
@@ -50,6 +52,14 @@ return {
                 stageImages["Tank " .. i+1]:animate("anim", false)
             end
         end
+
+        if not inCutscene then
+			tankAngle = (tankAngle or 10) + (tankSpeed or 7) * dt
+			stageImages["Tank Rolling"].x = 0 + 1500 * math.cos(math.pi / 180 * (1 * tankAngle + 180))
+            stageImages["Tank Rolling"].y = 1200 + 1100 * math.sin(math.pi / 180 * (1 * tankAngle + 180))
+
+            stageImages["Tank Rolling"].orientation = math.rad(tankAngle - 90 + 15)
+		end
     end,
 
     draw = function()
@@ -61,6 +71,7 @@ return {
         stageImages["Watch Tower"]:draw()
         stageImages["Smoke Left"]:draw()
         stageImages["Smoke Right"]:draw()
+        stageImages["Tank Rolling"]:draw()
         stageImages["Ground"]:draw()
         girlfriend:draw()
         love.graphics.pop()

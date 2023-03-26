@@ -18,6 +18,10 @@ return {
 		enemyIcon:animate("tankman")
     
 		self:load()
+
+		tankX = 400
+		tankSpeed = love.math.randomFloat(5, 7)
+		tankAngle = love.math.randomFloat(-90, 45)
 	end,
 
 	load = function(self)
@@ -124,6 +128,7 @@ return {
 				end
 			end
 		end
+
 
 		if health >= 1.595 then
             if enemyIcon:getAnimName() == "tankman" then
