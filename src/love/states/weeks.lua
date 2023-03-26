@@ -1100,7 +1100,7 @@ return {
 
 					if combo >= 5 then girlfriend:animate("sad", false) end
 
-					boyfriend:animate("miss " .. curAnim, false)
+					boyfriend:animate(curAnim .. " miss", false)
 
 					score = score - 10
 					combo = 0

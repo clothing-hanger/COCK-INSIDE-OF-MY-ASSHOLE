@@ -330,13 +330,13 @@ return graphics.newSprite(
 	},
 	{
 		["singDOWN"] = {start = 1, stop = 30, speed = 24, offsetX = 7, offsetY = -14},
-		["miss singDOWN"] = {start = 31, stop = 59, speed = 24, offsetX = 7, offsetY = -13},
+		["singDOWN miss"] = {start = 31, stop = 59, speed = 24, offsetX = 7, offsetY = -13},
 		["singLEFT"] = {start = 60, stop = 74, speed = 24, offsetX = 25, offsetY = 0},
-		["miss singLEFT"] = {start = 75, stop = 108, speed = 24, offsetX = 24, offsetY = 1},
+		["singLEFT miss"] = {start = 75, stop = 108, speed = 24, offsetX = 24, offsetY = 1},
 		["singRIGHT"] = {start = 109, stop = 170, speed = 24, offsetX = -20, offsetY = 9},
-		["miss singRIGHT"] = {start = 171, stop = 216, speed = 24, offsetX = -22, offsetY = 18},
+		["singRIGHT miss"] = {start = 171, stop = 216, speed = 24, offsetX = -22, offsetY = 18},
 		["singUP"] = {start = 217, stop = 231, speed = 24, offsetX = -37, offsetY = 3},
-		["miss singUP"] = {start = 232, stop = 255, speed = 24, offsetX = -34, offsetY = -4},
+		["singUP miss"] = {start = 232, stop = 255, speed = 24, offsetX = -34, offsetY = -4},
 		["idle"] = {start = 292, stop = 305, speed = 24, offsetX = 0, offsetY = 0}
 	},
 	"idle",
