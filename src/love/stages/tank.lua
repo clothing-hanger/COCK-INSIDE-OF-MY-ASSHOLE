@@ -31,7 +31,7 @@ return {
 		stageImages["Smoke Right"].x, stageImages["Smoke Right"].y = 1000, 250
 		stageImages["Watch Tower"].x, stageImages["Watch Tower"].y = -670, 250
 
-        enemy.sizeX = -1
+        enemy.flipX = true
     end,
 
     load = function()
@@ -62,11 +62,7 @@ return {
         stageImages["Smoke Left"]:draw()
         stageImages["Smoke Right"]:draw()
         stageImages["Ground"]:draw()
-        if song ~= 3 then
-            girlfriend:draw()
-        else
-            picoSpeaker:draw()
-        end
+        girlfriend:draw()
         love.graphics.pop()
         love.graphics.push()
             love.graphics.translate(camera.x, camera.y)

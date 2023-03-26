@@ -16,9 +16,7 @@ return {
 		difficulty = songAppend
 
 		enemyIcon:animate("tankman")
-        
-        enemy.sizeX = -1
-
+    
 		self:load()
 	end,
 
@@ -27,8 +25,8 @@ return {
 		stages["tank"]:load()
 
 		if song == 3 then
-			picoSpeaker = love.filesystem.load("sprites/week7/picoSpeaker.lua")()
-			picoSpeaker.x, picoSpeaker.y = 105, 110
+			girlfriend = love.filesystem.load("sprites/week7/picoSpeaker.lua")()
+			girlfriend.x, girlfriend.y = 105, 110
 			boyfriend = love.filesystem.load("sprites/week7/bfAndGF.lua")()
 			boyfriend.x, boyfriend.y = 460, 423
 			fakeBoyfriend = love.filesystem.load("sprites/week7/gfdead.lua")()
@@ -68,7 +66,7 @@ return {
 
 		if song == 3 then
 			weeks:generateNotes("data/week7/stress/stress" .. difficulty .. ".json")
-            --weeks:generatePicoNotes("data/week7/stress/picospeaker.json")
+            weeks:generateGFNotes("data/week7/stress/picospeaker.json")
 		elseif song == 2 then
 			weeks:generateNotes("data/week7/guns/guns" .. difficulty .. ".json")
 		else

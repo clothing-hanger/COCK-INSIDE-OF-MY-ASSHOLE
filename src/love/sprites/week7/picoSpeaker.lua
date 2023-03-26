@@ -217,11 +217,16 @@ return graphics.newSprite(
 	--still thicc lmfao
 	{
 		["idle"] = {start = 1, stop = 26, speed = 24, offsetX = 0, offsetY = 0},
-		["right"] = {start = 27, stop = 86, speed = 24, offsetX = -48, offsetY = -64},
-		["left"] = {start = 87, stop = 139, speed = 24, offsetX = 444, offsetY = -32},
-		["down"] = {start = 140, stop = 192, speed = 24, offsetX = 0, offsetY = 0},
-		["up"] = {start = 140, stop = 192, speed = 24, offsetX = 0, offsetY = 0}	
+		["singRIGHT"] = {start = 27, stop = 86, speed = 24, offsetX = -48, offsetY = -64},
+		["singLEFT"] = {start = 87, stop = 139, speed = 24, offsetX = 444, offsetY = -32},
+		["singDOWN"] = {start = 140, stop = 192, speed = 24, offsetX = 0, offsetY = 0},
+		["singUP"] = {start = 140, stop = 192, speed = 24, offsetX = 0, offsetY = 0}	
 	},
 	"idle",
-	false
+	false,
+	{
+		isCharacter = true,
+		sing_duration = 4,
+		danceSpeed = 2,
+	}
 )

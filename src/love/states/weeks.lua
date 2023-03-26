@@ -230,6 +230,7 @@ return {
 		events = {}
 		enemyNotes = {}
 		boyfriendNotes = {}
+		gfNotes = {}
 		health = 1
 		score = 0
 		misses = 0
@@ -303,6 +304,7 @@ return {
 
 			enemyNotes[i] = {}
 			boyfriendNotes[i] = {}
+			gfNotes[i] = {}
 		end
 	end,
 
@@ -662,6 +664,22 @@ return {
 		end
 	end,
 
+	generateGFNotes = function(self, chartG)
+		-- very bare-bones chart generation
+		-- Does not handle sprites and all that, just note timings and type
+		local chartG = json.decode(love.filesystem.read(chartG)).song
+
+		for i = 1, #chartG.notes do
+			for j = 1, #chartG.notes[i].sectionNotes do
+				local sn = chartG.notes[i].sectionNotes
+				local noteType = sn[j][2] % 4 + 1
+				local noteTime = sn[j][1]
+
+				table.insert(gfNotes[noteType], {time = noteTime})
+			end
+		end
+	end,
+
 	-- Gross countdown script
 	setupCountdown = function(self)
 		lastReportedPlaytime = 0
@@ -862,6 +880,7 @@ return {
 			local curAnim = animList[i]
 			local curInput = inputList[i]
 			local boyfriendSplash = boyfriendSplashes[i]
+			local gfNote = gfNotes[i]
 
 			local noteNum = i
 
@@ -911,6 +930,15 @@ return {
 					end
 
 					table.remove(enemyNote, 1)
+				end
+			end
+
+			if #gfNote > 0 then
+				if gfNote[1].time - musicTime <= 0 then
+					print("gf note")
+					girlfriend:animate(curAnim, false)
+
+					table.remove(gfNote, 1)
 				end
 			end
 
