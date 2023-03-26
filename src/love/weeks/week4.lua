@@ -90,7 +90,7 @@ return {
 			uiScale.zoom = util.lerp(1, uiScale.zoom, util.clamp(1 - (dt * 3.125), 0, 1))
 		end -- so the camera actually unzooms
 
-		if health >= 80 then
+		if health >= 1.595 then
 			if enemyIcon:getAnimName() == "mommy mearest" then
 				enemyIcon:animate("mommy mearest losing", false)
 			end

@@ -127,7 +127,7 @@ return {
 			end
 		end
 
-		if health >= 80 then
+		if health >= 1.595 then
             if enemyIcon:getAnimName() == "tankman" then
                 enemyIcon:animate("tankman losing", false)
             end

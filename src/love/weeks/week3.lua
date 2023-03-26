@@ -73,7 +73,7 @@ return {
 		weeks:update(dt)
 		stages["city"]:update(dt)
 
-		if health >= 80 then
+		if health >= 1.595 then
 			if enemyIcon:getAnimName() == "pico" then
 				enemyIcon:animate("pico losing", false)
 			end

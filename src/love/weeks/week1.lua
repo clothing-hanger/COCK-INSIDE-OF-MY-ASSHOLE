@@ -71,10 +71,10 @@ return {
 		stages["stage"]:update(dt)
 
 		if song == 1 and musicThres ~= oldMusicThres and math.fmod(absMusicTime + 500, 480000 / bpm) < 100 then
-			weeks:safeAnimate(boyfriend, "hey", false, 3)
+			boyfriend:animate("hey", false)
 		end
 
-		if health >= 80 then
+		if health >= 1.595 then
 			if enemyIcon:getAnimName() == "daddy dearest" then
 				enemyIcon:animate("daddy dearest losing", false)
 			end
