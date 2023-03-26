@@ -30,7 +30,7 @@ return {
 		song = songNum
 		difficulty = songAppend
 
-		camera.zoom = 0.85
+		camera.defaultZoom = 0.85
 		camera.zoom = 0.85
 
 		fakeBoyfriend = love.filesystem.load("sprites/pixel/boyfriend-dead.lua")()
