@@ -26,6 +26,8 @@ return {
 		boyfriend = love.filesystem.load("sprites/week5/boyfriend.lua")()
 		fakeBoyfriend = love.filesystem.load("sprites/boyfriend.lua")() -- Used for game over
 
+		camera.defaultZoom = 0.9
+
 		girlfriend.x, girlfriend.y = -50, 410
 		enemy.x, enemy.y = -780, 410
 		boyfriend.x, boyfriend.y = 300, 620
