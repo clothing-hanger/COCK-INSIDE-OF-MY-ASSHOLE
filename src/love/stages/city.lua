@@ -121,10 +121,6 @@ return {
             winAlpha = winAlpha - ((bpm/260) * dt)
         end
 
-		if input:pressed("left") then
-			trainStart()
-		end
-
 		updateTrainPos(dt)
     end,
 
