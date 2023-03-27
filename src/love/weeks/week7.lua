@@ -71,6 +71,23 @@ return {
 		if song == 3 then
 			weeks:generateNotes("data/week7/stress/stress" .. difficulty .. ".json")
             weeks:generateGFNotes("data/week7/stress/picospeaker.json")
+
+			tankmanRunImg = love.graphics.newImage(graphics.imagePath("week7/tankmanKilled1"))
+
+			tankmanRun = {}
+
+			for i = 1, #gfNotes do
+				for j = 1, #gfNotes[i] do
+					local tankBih = love.filesystem.load("sprites/week7/tankmanRun.lua")()
+					tankBih.time = gfNotes[i][j].time
+					tankBih.flipX = i < 3
+					tankBih.y = 100 + love.math.random(50, 100)
+					tankBih.endingOffset = love.math.randomFloat(50, 200)
+					tankBih.killed = false
+
+					table.insert(tankmanRun, tankBih)
+				end
+			end
 		elseif song == 2 then
 			weeks:generateNotes("data/week7/guns/guns" .. difficulty .. ".json")
 		else
@@ -127,8 +144,34 @@ return {
 					enemy:animate("good", false)
 				end
 			end
-		end
 
+			for i = 1, #tankmanRun do
+				if tankmanRun[i] then
+					tankmanRun[i].visible = (tankmanRun[i].x > -600 and tankmanRun[i].x < 600)
+					local speed = (musicTime - tankmanRun[i].time) * tankSpeed
+					if tankmanRun[i]:getAnimName() == "run" then
+						if tankmanRun[i].flipX then
+							tankmanRun[i].x = (-600 - tankmanRun[i].endingOffset) + speed
+						else
+							tankmanRun[i].x = (600 + tankmanRun[i].endingOffset) - speed
+						end
+					end
+
+					tankmanRun[i]:update(dt)
+						
+					if not tankmanRun[i]:isAnimated() and util.startsWith(tankmanRun[i]:getAnimName(), "shot") and tankmanRun[i].killed and tankmanRun[i].visible then
+						table.remove(tankmanRun, 1)
+						print("L + Ratio")
+					end
+
+					if musicTime > tankmanRun[i].time and not util.startsWith(tankmanRun[i]:getAnimName(), "shot") and not tankmanRun[i].killed and tankmanRun[i].visible then
+						print("Shot")
+						tankmanRun[i]:animate("shot" .. love.math.random(1, 2))
+						tankmanRun[i].killed = true
+					end
+				end
+			end
+		end
 
 		if health >= 1.595 then
             if enemyIcon:getAnimName() == "tankman" then

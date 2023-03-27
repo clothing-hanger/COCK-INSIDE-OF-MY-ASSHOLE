@@ -33,6 +33,7 @@ return {
 		stageImages["Watch Tower"].x, stageImages["Watch Tower"].y = -670, 250
 
         enemy.flipX = true
+
     end,
 
     load = function()
@@ -72,6 +73,9 @@ return {
         stageImages["Smoke Left"]:draw()
         stageImages["Smoke Right"]:draw()
         stageImages["Tank Rolling"]:draw()
+        for i = 1, #tankmanRun do
+            tankmanRun[i]:udraw(0.8, 0.8)
+        end
         stageImages["Ground"]:draw()
         girlfriend:draw()
         love.graphics.pop()

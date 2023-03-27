@@ -678,6 +678,22 @@ return {
 				table.insert(gfNotes[noteType], {time = noteTime})
 			end
 		end
+
+		for i = 1, 4 do
+			local offset = 0
+
+			for j = 2, #gfNotes[i] do
+				local index = j - offset
+
+				if gfNotes[i][index].time == gfNotes[i][index - 1].time then
+					table.remove(gfNotes[i], index)
+
+					offset = offset + 1
+				end
+			end
+
+			table.sort(gfNotes[i], function(a, b) return a.time < b.time end)
+		end
 	end,
 
 	-- Gross countdown script
@@ -935,7 +951,6 @@ return {
 
 			if #gfNote > 0 then
 				if gfNote[1].time - musicTime <= 0 then
-					print("gf note")
 					girlfriend:animate(curAnim, false)
 
 					table.remove(gfNote, 1)
