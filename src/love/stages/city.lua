@@ -15,7 +15,8 @@ return {
             ["City"] = graphics.newImage(graphics.imagePath("week3/city")), -- city
             ["City Windows"] = graphics.newImage(graphics.imagePath("week3/city-windows")), -- city-windows
             ["Behind Train"] = graphics.newImage(graphics.imagePath("week3/behind-train")), -- behind-train
-            ["Street"] = graphics.newImage(graphics.imagePath("week3/street")) -- street
+            ["Street"] = graphics.newImage(graphics.imagePath("week3/street")), -- street
+			["Train"] = graphics.newImage(graphics.imagePath("week3/train")), -- train
         }
 
         stageImages["Behind Train"].y = -100
@@ -23,7 +24,11 @@ return {
 		stageImages["Street"].y = -100
 		stageImages["Street"].sizeX, stageImages["Street"].sizeY = 1.25, 1.25
 
+		stageImages["Train"].x, stageImages["Train"].y = 3000, -25
+
 		enemy = love.filesystem.load("sprites/week3/pico-enemy.lua")()
+
+		sounds.trainPassing = love.audio.newSource("sounds/week3/train.ogg", "static")
 
 		girlfriend.x, girlfriend.y = -70, -140
 		enemy.x, enemy.y = -480, 50
@@ -32,7 +37,61 @@ return {
 		daGoofyColours = {
 			1, 1, 1, 1
 		}
-        
+
+		stageImages["Train"].doShit = true
+
+		function trainReset()
+			stageImages["Train"].x = 3000
+			stageImages["Train"].moving = false
+			trainCars = 8
+			stageImages["Train"].finishing = false
+			stageImages["Train"].startedMoving = false
+		end
+
+		function trainStart()
+			stageImages["Train"].moving = true
+			audio.playSound(sounds.trainPassing)
+		end
+
+		function updateTrainPos(dt)
+			if sounds.trainPassing:tell("seconds") > 4.7 and sounds.trainPassing:isPlaying() then
+				stageImages["Train"].startedMoving = true
+			end
+			if stageImages["Train"].startedMoving then
+				stageImages["Train"].x = stageImages["Train"].x - 6750 * dt
+
+				if stageImages["Train"].x < -3000 and stageImages["Train"].finishing then
+					--trainReset() -- bruh this shit is trying to troll me rn
+					-- 				why does it reset the train then still do it 1 more time
+					stageImages["Train"].doShit = false
+					stageImages["Train"].moving	= false
+					stageImages["Train"].startedMoving = false
+					stageImages["Train"].finishing = false
+					girlfriend:animate("hair landing", false, function() girlfriend:animate("danceLeft") ; girlfriend.danced = false end)
+					print("Train reset")
+				end
+
+				if stageImages["Train"].x < -200 and not stageImages["Train"].finishing and stageImages["Train"].doShit then
+					if not girlfriend:isAnimated() or util.startsWith(girlfriend:getAnimName(), "dance") and girlfriend:getAnimName() ~= "hair landing" then
+						girlfriend:animate("hair blowing")
+					end
+					stageImages["Train"].x = 375
+					trainCars = trainCars - 1
+
+					if trainCars <= 0 then
+						stageImages["Train"].finishing = true
+						stageImages["Train"].doShit = false
+					end
+				end
+			end
+
+			if not stageImages["Train"].moving then
+				trainCooldown = trainCooldown + 1
+			end
+		end
+
+		trainCooldown = 0
+		trainCars = 8
     end,
 
     load = function()
@@ -50,9 +109,23 @@ return {
 			winAlpha = 1
 		end
 
+		if beatHandler.onBeat() and beatHandler.getBeat() % 8 == 4 and not stageImages["Train"].moving and trainCooldown > 8 and love.math.random(10) == 1 then
+			trainCooldown = love.math.random(-4, 0)
+			stageImages["Train"].doShit = true
+			trainReset()
+			print("Train start")
+			trainStart()
+		end
+
         if winAlpha > 0 then
             winAlpha = winAlpha - ((bpm/260) * dt)
         end
+
+		if input:pressed("left") then
+			trainStart()
+		end
+
+		updateTrainPos(dt)
     end,
 
     draw = function()
@@ -76,8 +149,8 @@ return {
 		love.graphics.push()
 			love.graphics.translate(camera.x * 0.9, camera.y * 0.9)
 			love.graphics.translate(camera.ex * 0.9, camera.ey * 0.9)
-			
 			stageImages["Behind Train"]:draw()
+			stageImages["Train"]:draw()
 			stageImages["Street"]:draw()
 
 			girlfriend:draw()
