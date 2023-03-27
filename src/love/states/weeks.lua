@@ -1206,8 +1206,8 @@ return {
 
 	drawRating = function(self)
 		love.graphics.push()
-			love.graphics.origin()
-			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
+			--love.graphics.origin()
+			love.graphics.translate(0, -35)
 			graphics.setColor(1, 1, 1, ratingVisibility[1])
 			if pixel then
 				love.graphics.translate(-16, 0)
