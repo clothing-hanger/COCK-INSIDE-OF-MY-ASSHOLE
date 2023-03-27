@@ -148,20 +148,20 @@ return {
 			if #tankmanRun > 0 then
 				for i = 1, #tankmanRun do
 					if tankmanRun[i] then
-						tankmanRun[i].visible = (tankmanRun[i].x > -600 and tankmanRun[i].x < 600)
-						local speed = (musicTime - tankmanRun[i].time) * tankSpeed
+						tankmanRun[i].visible = (musicTime > tankmanRun[i].time - 575 and musicTime < tankmanRun[i].time + 575)
+						local speed = (musicTime - tankmanRun[i].time) * (tankSpeed * 0.1)
 						if tankmanRun[i]:getAnimName() == "run" then
 							if tankmanRun[i].flipX then
-								tankmanRun[i].x = (-600 - tankmanRun[i].endingOffset) + speed
+								tankmanRun[i].x = (-450 - tankmanRun[i].endingOffset) + speed
 							else
-								tankmanRun[i].x = (600 + tankmanRun[i].endingOffset) - speed
+								tankmanRun[i].x = (275 + tankmanRun[i].endingOffset) - speed
 							end
 						end
 
 						tankmanRun[i]:update(dt)
 							
 						if not tankmanRun[i]:isAnimated() and util.startsWith(tankmanRun[i]:getAnimName(), "shot") and tankmanRun[i].killed and tankmanRun[i].visible then
-							table.remove(tankmanRun, 1)
+							table.remove(tankmanRun, i)
 							print("L + Ratio")
 						end
 
