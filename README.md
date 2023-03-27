@@ -59,9 +59,8 @@ The settings file can be found in the following places on the following systems:
 
 **Game Engine** - 99% Complete
 
-**Weeks** - ~7/8 Complete
-* Tutorial + Weeks 1-6 are implemented.
-* Week 7's running tankman are a bit broken.
+**Weeks** - 8/8 Complete
+* Tutorial + Weeks 1-7 are implemented.
 
 # License
 *Friday Night Funkin' Rewritten* is licensed under the terms of the GNU General Public License v3, with the exception of most of the images, music, and sounds, which are proprietary. While FNF Rewritten's code is FOSS, use its assets at your own risk.
