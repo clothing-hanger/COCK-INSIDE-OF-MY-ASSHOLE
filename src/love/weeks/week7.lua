@@ -145,29 +145,31 @@ return {
 				end
 			end
 
-			for i = 1, #tankmanRun do
-				if tankmanRun[i] then
-					tankmanRun[i].visible = (tankmanRun[i].x > -600 and tankmanRun[i].x < 600)
-					local speed = (musicTime - tankmanRun[i].time) * tankSpeed
-					if tankmanRun[i]:getAnimName() == "run" then
-						if tankmanRun[i].flipX then
-							tankmanRun[i].x = (-600 - tankmanRun[i].endingOffset) + speed
-						else
-							tankmanRun[i].x = (600 + tankmanRun[i].endingOffset) - speed
+			if #tankmanRun > 0 then
+				for i = 1, #tankmanRun do
+					if tankmanRun[i] then
+						tankmanRun[i].visible = (tankmanRun[i].x > -600 and tankmanRun[i].x < 600)
+						local speed = (musicTime - tankmanRun[i].time) * tankSpeed
+						if tankmanRun[i]:getAnimName() == "run" then
+							if tankmanRun[i].flipX then
+								tankmanRun[i].x = (-600 - tankmanRun[i].endingOffset) + speed
+							else
+								tankmanRun[i].x = (600 + tankmanRun[i].endingOffset) - speed
+							end
 						end
-					end
 
-					tankmanRun[i]:update(dt)
-						
-					if not tankmanRun[i]:isAnimated() and util.startsWith(tankmanRun[i]:getAnimName(), "shot") and tankmanRun[i].killed and tankmanRun[i].visible then
-						table.remove(tankmanRun, 1)
-						print("L + Ratio")
-					end
+						tankmanRun[i]:update(dt)
+							
+						if not tankmanRun[i]:isAnimated() and util.startsWith(tankmanRun[i]:getAnimName(), "shot") and tankmanRun[i].killed and tankmanRun[i].visible then
+							table.remove(tankmanRun, 1)
+							print("L + Ratio")
+						end
 
-					if musicTime > tankmanRun[i].time and not util.startsWith(tankmanRun[i]:getAnimName(), "shot") and not tankmanRun[i].killed and tankmanRun[i].visible then
-						print("Shot")
-						tankmanRun[i]:animate("shot" .. love.math.random(1, 2))
-						tankmanRun[i].killed = true
+						if tankmanRun[i] and (musicTime > tankmanRun[i].time and not util.startsWith(tankmanRun[i]:getAnimName(), "shot") and not tankmanRun[i].killed and tankmanRun[i].visible) then
+							print("Shot")
+							tankmanRun[i]:animate("shot" .. love.math.random(1, 2))
+							tankmanRun[i].killed = true
+						end
 					end
 				end
 			end
