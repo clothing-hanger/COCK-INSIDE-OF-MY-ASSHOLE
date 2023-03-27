@@ -413,8 +413,7 @@ function love.load()
 			{
 				"Bopeebo",
 				"Fresh",
-				"Dadbattle",
-				"Balls"
+				"Dadbattle"
 			}
 		},
 		{
