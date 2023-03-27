@@ -73,8 +73,10 @@ return {
         stageImages["Smoke Left"]:draw()
         stageImages["Smoke Right"]:draw()
         stageImages["Tank Rolling"]:draw()
-        for i = 1, #tankmanRun do
-            tankmanRun[i]:udraw(0.8, 0.8)
+        if song == 3 then
+            for i = 1, #tankmanRun do
+                tankmanRun[i]:udraw(0.8, 0.8)
+            end
         end
         stageImages["Ground"]:draw()
         girlfriend:draw()
@@ -97,6 +99,8 @@ return {
         for i, v in pairs(stageImages) do
 			v = nil
 		end
+
+        tankmanRun = {}
 
 		graphics.clearCache()
     end

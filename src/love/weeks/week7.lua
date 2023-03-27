@@ -85,7 +85,9 @@ return {
 					tankBih.endingOffset = love.math.randomFloat(50, 200)
 					tankBih.killed = false
 
-					table.insert(tankmanRun, tankBih)
+					if love.math.random(1, 10) == 10 then
+						table.insert(tankmanRun, tankBih)
+					end
 				end
 			end
 		elseif song == 2 then
