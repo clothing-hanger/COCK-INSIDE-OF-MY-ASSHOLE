@@ -196,7 +196,7 @@ return {
 			scrollX = 1,
 			scrollY = 1,
 
-			holdTimer = 0,
+			holdTimer = 2,
 			lastHit = 0,
 
 			heyTimer = 0,
@@ -211,6 +211,7 @@ return {
 			isCharacter = optionsTable and optionsTable.isCharacter or false,
 			danceSpeed = optionsTable and optionsTable.danceSpeed or 2,
 			danceIdle = optionsTable and optionsTable.danceIdle or false,
+			maxHoldTimer = optionsTable and optionsTable.maxHoldTimer or 0.1,
 
 			visible = true,
 
@@ -303,6 +304,8 @@ return {
 						isAnimated = false
 					end
 				end
+
+				self.holdTimer = self.holdTimer + dt
 
 				if self.specialAnim then 
 					self.heyTimer = self.heyTimer - dt 

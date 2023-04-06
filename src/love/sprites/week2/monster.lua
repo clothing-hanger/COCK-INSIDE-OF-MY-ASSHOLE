@@ -127,8 +127,8 @@ return graphics.newSprite(
 		{x = 428, y = 2757, width = 418, height = 711, offsetX = 0, offsetY = -9, offsetWidth = 418, offsetHeight = 720} -- 104: monster up note0023
 	},
 	{
-		["singRIGHT"] = {start = 1, stop = 15, speed = 24, offsetX = -10, offsetY = 5},
-		["singLEFT"] = {start = 16, stop = 35, speed = 24, offsetX = -30, offsetY = 11},
+		["singLEFT"] = {start = 1, stop = 15, speed = 24, offsetX = -10, offsetY = 5},
+		["singRIGHT"] = {start = 16, stop = 35, speed = 24, offsetX = -30, offsetY = 11},
 		["singDOWN"] = {start = 36, stop = 65, speed = 24, offsetX = -34, offsetY = -47},
 		["idle"] = {start = 66, stop = 80, speed = 24, offsetX = 0, offsetY = 0},
 		["singUP"] = {start = 81, stop = 104, speed = 24, offsetX = 4, offsetY = 32}
@@ -138,6 +138,5 @@ return graphics.newSprite(
 	{
 		sing_duration = 4,
 		isCharacter = true,
-		flipX = true,
 	}
 )

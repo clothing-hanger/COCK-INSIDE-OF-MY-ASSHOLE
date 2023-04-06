@@ -246,7 +246,8 @@ return graphics.newSprite(
 	},
 	{
 		["cheer"] = {start = 1, stop = 21, speed = 24, offsetX = 0, offsetY = 5},
-		["idle"] = {start = 22, stop = 51, speed = 24, offsetX = 0, offsetY = 0},
+		["danceLeft"] = {start = 22, stop = 34, speed = 24, offsetX = 0, offsetY = 0},
+		["danceRight"] = {start = 35, stop = 51, speed = 24, offsetX = 0, offsetY = 0},
 		["hair landing"] = {start = 52, stop = 81, speed = 24, offsetX = 0, offsetY = 0},
 		["singDOWN"] = {start = 82, stop = 101, speed = 24, offsetX = 0, offsetY = -5},
 		["fear"] = {start = 102, stop = 105, speed = 24, offsetX = 0, offsetY = -4},
@@ -255,9 +256,11 @@ return graphics.newSprite(
 		["singLEFT"] = {start = 128, stop = 142, speed = 24, offsetX = 0, offsetY = -5},
 		["sad"] = {start = 153, stop = 222, speed = 24, offsetX = 0, offsetY = -6}
 	},
-	"idle",
+	"danceLeft",
 	false,
 	{
-		isGirlfriend = true
+		isCharacter = true,
+		danceIdle = true,
+		danceSpeed = 1,
 	}
 )

@@ -927,9 +927,9 @@ return {
 
 					if enemyNote[1]:getAnimName() == "hold" or enemyNote[1]:getAnimName() == "end" then
 						if useAltAnims then
-							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then enemy:animate(curAnim .. " alt", false) end
+							if enemy.holdTimer > enemy.maxHoldTimer then enemy:animate(curAnim .. " alt", false) end
 						else
-							if (not enemy:isAnimated()) or enemy:getAnimName() == "idle" then enemy:animate(curAnim, false) end
+							if enemy.holdTimer > enemy.maxHoldTimer then enemy:animate(curAnim, false) end
 						end
 					else
 						if useAltAnims then
@@ -972,6 +972,8 @@ return {
 
 					table.remove(boyfriendNote, 1)
 
+					boyfriend:animate(curAnim .. " miss", false)
+
 					if combo >= 5 then girlfriend:animate("sad", false) end
 
 					combo = 0
@@ -988,7 +990,7 @@ return {
 						boyfriendArrow.orientation = boyfriendArrow.orientation + arrowAngles[i]
 
 						if boyfriendNote[1]:getAnimName() == "hold" or boyfriendNote[1]:getAnimName() == "end" then
-							if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then boyfriend:animate(curAnim, false) end
+							if boyfriend.holdTimer >= boyfriend.maxHoldTimer then boyfriend:animate(curAnim, false) end
 						else
 							boyfriend:animate(curAnim, false)
 						end
@@ -1164,7 +1166,9 @@ return {
 
 				health = health + 0.0125
 
-				if (not boyfriend:isAnimated()) or boyfriend:getAnimName() == "idle" then boyfriend:animate(curAnim, false) end
+				if boyfriend.holdTimer > boyfriend.maxHoldTimer then
+					boyfriend:animate(curAnim, false)
+				end
 
 				table.remove(boyfriendNote, 1)
 			end
