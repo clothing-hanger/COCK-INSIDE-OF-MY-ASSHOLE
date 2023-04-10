@@ -387,6 +387,8 @@ return {
 							elseif (beatRow % (192 / 32) == 0) then
 								col = 3
 								sprite = sprites.upArrow
+							else
+								col = id
 							end
 						else
 							col = id
@@ -451,6 +453,8 @@ return {
 							elseif (beatRow % (192 / 32) == 0) then
 								col = 3
 								sprite = sprites.upArrow
+							else
+								col = id
 							end
 						else
 							col = id
@@ -518,6 +522,8 @@ return {
 							elseif (beatRow % (192 / 32) == 0) then
 								col = 3
 								sprite = sprites.upArrow
+							else
+								col = id
 							end
 						else
 							col = id
@@ -583,6 +589,8 @@ return {
 							elseif (beatRow % (192 / 32) == 0) then
 								col = 3
 								sprite = sprites.upArrow
+							else
+								col = id
 							end
 						else
 							col = id
