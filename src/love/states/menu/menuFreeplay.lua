@@ -74,12 +74,8 @@ return {
                 graphics:fadeOutWipe(
                     0.7,
                     function()
-    
-                        storyMode = false
-    
-                        music:stop()
-
-                        Gamestate.switch(weekData[2], 1, "")
+        
+                        Gamestate.switch(week1)
      
                         status.setLoading(false)
                     end

@@ -187,12 +187,6 @@ function saveSettings()
         )
     end
 end
---[[
-
-function love.load() -- Todo, add custom framerate support
-
-end
-]]
 
 function love.load()
 	paused = false
@@ -212,17 +206,14 @@ function love.load()
 	status = require "modules.status"
 	audio = require "modules.audio"
 	graphics = require "modules.graphics"
-	camera = require "modules.camera"
-	beatHandler = require "modules.beatHandler"
 	util = require "modules.util"
-	cutscene = require "modules.cutscene"
-	dialogue = require "modules.dialogue"
 	settings = require "settings"
 	modifiers = require "modules.modifiers"
+	beatHandler = require "modules.beatHandler"
+
 
 	modifiers:enter()
 
-	playMenuMusic = true
 
 	if love.filesystem.getInfo("settings") then 
 		settingdata = love.filesystem.read("settings")
@@ -334,147 +325,32 @@ function love.load()
 	--settings = require "settings"
 	input = require "input"
 
-	-- Load Debugs
-	debugMenu = require "states.debug.debugMenu"
-	spriteDebug = require "states.debug.sprite-debug"
-	stageDebug = require "states.debug.stage-debug"
 
-	-- Load stages
-	stages = {
-		["stage"] = require "stages.stage",
-		["hauntedHouse"] = require "stages.hauntedHouse",
-		["city"] = require "stages.city",
-		["sunset"] = require "stages.sunset",
-		["mall"] = require "stages.mall",
-		["school"] = require "stages.school",
-		["evilSchool"] = require "stages.evilSchool",
-		["tank"] = require "stages.tank"
-	}
 
 	-- Load Menus
-	clickStart = require "states.click-start"
-	menu = require "states.menu.menu"
-	menuWeek = require "states.menu.menuWeek"
 	menuFreeplay = require "states.menu.menuFreeplay"
 	menuSettings = require "states.menu.menuSettings"
 	menuCredits = require "states.menu.menuCredits"
 	menuSelect = require "states.menu.menuSelect"
 	results = require "states.menu.results"
 
-
 	firstStartup = true
 
 	-- Load weeks
 	weeks = require "states.weeks"
 
+
+	-- Load gameplay
+
+	week1 = require "weeks.week1"
+
+
 	-- Load substates
 	gameOver = require "substates.game-over"
 	settingsKeybinds = require "substates.settings-keybinds"
 
-	-- Load week data
-	weekData = {
-		require "weeks.tutorial",
-		require "weeks.week1",
-		require "weeks.week2",
-		require "weeks.week3",
-		require "weeks.week4",
-		require "weeks.week5",
-		require "weeks.week6",
-		require "weeks.week7"
-	}
+	love.window.setIcon(love.image.newImageData("icons/default.png"))
 
-	weekDesc = { -- Add your week description here
-		"LEARN TO FUNK",
-		"DADDY DEAREST",
-		"SPOOKY MONTH",
-		"PICO",
-		"MOMMY MUST MURDER",
-		"RED SNOW",
-		"HATING SIMULATOR FT. MOAWLING",
-		"TANKMAN"
-	}
-
-	weekDesc = { -- Add your week description here
-		"LEARN TO FUNK",
-		"DADDY DEAREST",
-		"SPOOKY MONTH",
-		"PICO",
-		"MOMMY MUST MURDER",
-		"RED SNOW",
-		"HATING SIMULATOR FT. MOAWLING",
-		"TANKMAN"
-	}
-	weekMeta = { -- Add/remove weeks here
-		{
-			"Tutorial",
-			{
-				"Tutorial"
-			}
-		},
-		{
-			"Week 1",
-			{
-				"Bopeebo",
-				"Fresh",
-				"Dadbattle"
-			}
-		},
-		{
-			"Week 2",
-			{
-				"Spookeez",
-				"South",
-				"Monster"
-			}
-		},
-		{
-			"Week 3",
-			{
-				"Pico",
-				"Philly Nice",
-				"Blammed"
-			}
-		},
-		{
-			"Week 4",
-			{
-				"Satin Panties",
-				"High",
-				"M.I.L.F"
-			}
-		},
-		{
-			"Week 5",
-			{
-				"Cocoa",
-				"Eggnog",
-				"Winter Horrorland"
-			}
-		},
-		{
-			"Week 6",
-			{
-				"Senpai",
-				"Roses",
-				"Thorns"
-			},
-		},
-		{
-			"Week 7",
-			{
-				"Ugh",
-				"Guns",
-				"Stress"
-			}
-		}
-	}
-
-	-- LÖVE init
-	if curOS == "OS X" then
-		love.window.setIcon(love.image.newImageData("icons/macos.png"))
-	else
-		love.window.setIcon(love.image.newImageData("icons/default.png"))
-	end
 
 	lovesize.set(1280, 720)
 
@@ -489,10 +365,7 @@ function love.load()
 	quaverFontLarge = love.graphics.newFont("fonts/quaver.ttf", 60)
 	quaverFontSmall = love.graphics.newFont("fonts/quaver.ttf", 30)
 
-	weekNum = 1
-	songDifficulty = 2
 
-	storyMode = false
 	countingDown = false
 
 	uiScale = {zoom = 1, x = 1, y = 1, sizeX = 1, sizeY = 1}
@@ -500,19 +373,13 @@ function love.load()
 	musicTime = 0
 	health = 0
 
-	music = love.audio.newSource("music/menu/menu.ogg", "stream")
-	music:setLooping(true)
 
 	fixVol = tonumber(string.format(
 		"%.1f  ",
 		(love.audio.getVolume())
 	))
 
-	if curOS == "Web" then
-		Gamestate.switch(clickStart)
-	else
-		Gamestate.switch(menuFreeplay)
-	end
+	Gamestate.switch(menuFreeplay)
 end
 
 function love.resize(width, height)
@@ -520,13 +387,8 @@ function love.resize(width, height)
 end
 
 function love.keypressed(key)
-	if key == "6" then
-		love.filesystem.createDirectory("screenshots")
 
-		love.graphics.captureScreenshot("screenshots/" .. os.time() .. ".png")
-	elseif key == "7" then
-		Gamestate.switch(debugMenu)
-	elseif key == "0" then
+	if key == "0" then
 		volFade = 1
 		if fixVol == 0 then
 			love.audio.setVolume(lastAudioVolume)
@@ -538,7 +400,7 @@ function love.keypressed(key)
 		volFade = 1
 		if fixVol > 0 then
 			love.audio.setVolume(love.audio.getVolume() - 0.1)
-		end
+		end2
 	elseif key == "=" then
 		volFade = 1
 		if fixVol <= 0.9 then
