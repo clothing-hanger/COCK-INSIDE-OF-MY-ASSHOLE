@@ -24,7 +24,7 @@ return {
 
 
 
-        ratings = { -- i like animals, all of them-clothinghanger
+        ratings = { 
 			X = graphics.newImage(graphics.imagePath("quaver/ratings/grade-small-x")),
 			SS = graphics.newImage(graphics.imagePath("quaver/ratings/grade-small-ss")),
 			S = graphics.newImage(graphics.imagePath("quaver/ratings/grade-small-s")),
@@ -64,20 +64,9 @@ return {
 
         displayJudgments = {0,0,0,0,0,0}
 
-       -- marvs = love.math.random(1, 1000)
-       -- perfs = love.math.random(1, 500)
-       -- greats = love.math.random(1, 100)
-       -- goods = love.math.random(1, 20)
-       -- okays = love.math.random(1, 10)
-       -- misses = love.math.random(1, 5)
-        --ratingPercent = love.math.random(0.8, 0.95)
-
-
 
         Timer.tween(2, displayJudgments, {[1] = marvs, [2] = perfs, [3] = greats, [4] = goods, [5] = okays, [6] = misses})
         
-
---]]
 
 		bg = graphics.newImage(graphics.imagePath("menu/results"))
 
@@ -107,7 +96,7 @@ return {
 
 		if not graphics.isFading() then
 			if input:pressed("confirm") then
-                graphics:fadeInWipe(0.6, function() Gamestate.switch(menu) end)
+                graphics:fadeInWipe(0.6, function() Gamestate.switch(menuFreeplay) end)
                 
             end
 		end
@@ -162,15 +151,7 @@ return {
                 love.graphics.printf(songDisplayName, -580, -300, 500, "left")
                 
 
-
-
-
-               -- local roundedAcc = (math.floor(displayAccuracy[1] * 100 + 0.5) / 100) * 100
-                
-
-
                 love.graphics.printf(string.format("%.2f",displayAccuracy[1]*100) .. "%", percentMeterX-370, percentMeterY-45, 500, "left", nil, 1, 1)
-            --    love.graphics.printf(marvs .. "  " .. perfs .. "  " .. greats .. "  " .. okays .. "  " .. misses, -500, -400, "")
 
             love.graphics.setFont(quaverFontSmall)
 

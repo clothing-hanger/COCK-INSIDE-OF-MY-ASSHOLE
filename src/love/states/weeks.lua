@@ -62,35 +62,20 @@ return {
 		option = option or "normal"
 	
 			sounds = {
-				miss = {
-					love.audio.newSource("sounds/miss1.ogg", "static"),
-					love.audio.newSource("sounds/miss2.ogg", "static"),
-					love.audio.newSource("sounds/miss3.ogg", "static")
-				},
-				death = love.audio.newSource("sounds/death.ogg", "static"),
+
 				breakfast = love.audio.newSource("music/breakfast.ogg", "stream"),
 			}
 
 			images = {
-				icons = love.graphics.newImage(graphics.imagePath("icons")),
 				qnotes = love.graphics.newImage(graphics.imagePath("qnotes")),
-				numbers = love.graphics.newImage(graphics.imagePath("numbers")),
-				notesplashes = love.graphics.newImage(graphics.imagePath("noteSplashes"))
+
 			}
 
 			sprites = {
-				icons = love.filesystem.load("sprites/icons.lua"),
-				numbers = love.filesystem.load("sprites/numbers.lua"),
-				noteSplash = love.filesystem.load("sprites/noteSplashes.lua")
+
 			}
 
-			rating = love.filesystem.load("sprites/rating.lua")()
-
-			rating.sizeX, rating.sizeY = 0.75, 0.75
-
-
-			girlfriend = love.filesystem.load("sprites/girlfriend.lua")()
-			boyfriend = love.filesystem.load("sprites/boyfriend.lua")()
+			
 
 		if settings.downscroll then
 			downscrollOffset = -750
@@ -782,7 +767,6 @@ return {
 						boyfriendArrow:animate(tostring(boyfriendNote[1].col) .. " confirm", false)
 
 
-						boyfriend.lastHit = musicTime
 
 						if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
 							noteCounter = noteCounter + 1
@@ -842,7 +826,6 @@ return {
 								notePos = math.abs(boyfriendNote[j].time - musicTime)
 
 
-								boyfriend.lastHit = musicTime
 
 								if notePos <= 25 then -- "Marv"
 									ratingAnim = "marv"

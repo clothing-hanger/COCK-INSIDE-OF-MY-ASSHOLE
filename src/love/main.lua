@@ -346,7 +346,6 @@ function love.load()
 
 
 	-- Load substates
-	gameOver = require "substates.game-over"
 	settingsKeybinds = require "substates.settings-keybinds"
 
 	love.window.setIcon(love.image.newImageData("icons/default.png"))
@@ -388,6 +387,7 @@ end
 
 function love.keypressed(key)
 
+
 	if key == "0" then
 		volFade = 1
 		if fixVol == 0 then
@@ -400,7 +400,7 @@ function love.keypressed(key)
 		volFade = 1
 		if fixVol > 0 then
 			love.audio.setVolume(love.audio.getVolume() - 0.1)
-		end2
+		end
 	elseif key == "=" then
 		volFade = 1
 		if fixVol <= 0.9 then
