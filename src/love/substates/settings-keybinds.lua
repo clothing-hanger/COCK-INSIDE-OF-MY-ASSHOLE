@@ -10,7 +10,7 @@ local curInput = inputList[i]
 return {
     enter = function(self)
         images = {
-            notes = love.graphics.newImage(graphics.imagePath("notes")),
+            qnotes = love.graphics.newImage(graphics.imagePath("qnotes")),
         } 
         sprites = {
             leftArrow = love.filesystem.load("sprites/left-arrow.lua"),

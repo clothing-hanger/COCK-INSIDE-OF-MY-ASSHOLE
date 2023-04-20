@@ -52,6 +52,10 @@ else
 			debugZoomOut = {"key:["},
 			debugZoomIn = {"key:]"},
 			pause = {"button:start", "key:return"},
+			modsMenu = {"key:m"},
+			rateReset = {"mey:r"},
+			endSong = {"key:t"},
+
 
 			gameLeft = {"key:" .. customBindLeft, "key:left", "axis:triggerleft+", "axis:leftx-", "axis:rightx-", "button:dpleft", "button:x"},
 			gameDown = {"key:" .. customBindDown, "key:down", "axis:lefty+", "axis:righty+", "button:leftshoulder", "button:dpdown", "button:a"},

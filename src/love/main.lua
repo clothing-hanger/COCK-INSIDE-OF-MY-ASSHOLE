@@ -218,6 +218,9 @@ function love.load()
 	cutscene = require "modules.cutscene"
 	dialogue = require "modules.dialogue"
 	settings = require "settings"
+	modifiers = require "modules.modifiers"
+
+	modifiers:enter()
 
 	playMenuMusic = true
 
@@ -356,6 +359,8 @@ function love.load()
 	menuSettings = require "states.menu.menuSettings"
 	menuCredits = require "states.menu.menuCredits"
 	menuSelect = require "states.menu.menuSelect"
+	results = require "states.menu.results"
+
 
 	firstStartup = true
 
@@ -481,6 +486,8 @@ function love.load()
 	pauseFont = love.graphics.newFont("fonts/Dosis-SemiBold.ttf", 96)
 	weekFont = love.graphics.newFont("fonts/Dosis-SemiBold.ttf", 84)
 	weekFontSmall = love.graphics.newFont("fonts/Dosis-SemiBold.ttf", 54)
+	quaverFontLarge = love.graphics.newFont("fonts/quaver.ttf", 60)
+	quaverFontSmall = love.graphics.newFont("fonts/quaver.ttf", 30)
 
 	weekNum = 1
 	songDifficulty = 2
@@ -504,7 +511,7 @@ function love.load()
 	if curOS == "Web" then
 		Gamestate.switch(clickStart)
 	else
-		Gamestate.switch(menu)
+		Gamestate.switch(menuFreeplay)
 	end
 end
 
@@ -558,6 +565,7 @@ function love.update(dt)
 	end
 
 	input:update()
+	modifiers:update()
 
 	if status.getNoResize() then
 		Gamestate.update(dt)
@@ -619,6 +627,12 @@ function love.draw()
 	-- Debug output
 	if settings.showDebug then
 		borderedText(status.getDebugStr(settings.showDebug), 5, 5, nil, 0.6, 0.6)
+	end
+
+	--modifiers
+
+	if modsMenuOpened then
+		modifiers:draw()
 	end
 end
 

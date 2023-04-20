@@ -24,30 +24,32 @@ local stageBack, stageFront, curtains
 return {
 	enter = function(self, from, songNum, songAppend)
 		weeks:enter()
-		stages["stage"]:enter()
+
+
+
+
+		BGIMAGEPATH = "songs/quaver/" .. selectedSong .. "/image.png"
+
 
 		song = songNum
 		difficulty = songAppend
 
-		enemyIcon:animate("daddy dearest", false)
+        backGroundImage = graphics.newImage(BGIMAGEPATH)
+
+
+
 
 		self:load()
 	end,
 
 	load = function(self)
-		weeks:load()
-		stages["stage"]:load()
 
-		if song == 3 then
-			inst = love.audio.newSource("songs/week1/dadbattle/Inst.ogg", "stream")
-			voices = love.audio.newSource("songs/week1/dadbattle/Voices.ogg", "stream")
-		elseif song == 2 then
-			inst = love.audio.newSource("songs/week1/fresh/Inst.ogg", "stream")
-			voices = love.audio.newSource("songs/week1/fresh/Voices.ogg", "stream")
-		else
-			inst = love.audio.newSource("songs/week1/bopeebo/Inst.ogg", "stream")
-			voices = love.audio.newSource("songs/week1/bopeebo/Voices.ogg", "stream")
-		end
+		weeks:load()
+
+		voices = love.audio.newSource("songs/quaver/" .. selectedSong .. "/song.ogg", "stream")
+
+
+
 
 		self:initUI()
 
@@ -57,53 +59,41 @@ return {
 	initUI = function(self)
 		weeks:initUI()
 
-		if song == 3 then
-			weeks:generateNotes("data/week1/dadbattle/dadbattle" .. difficulty .. ".json")
-		elseif song == 2 then
-			weeks:generateNotes("data/week1/fresh/fresh" .. difficulty .. ".json")
-		else
-			weeks:generateNotes("data/week1/bopeebo/bopeebo" .. difficulty .. ".json")
+		weeks:generateNotes("songs/quaver/" .. selectedSong .. "/chart.json")
+
+		if videoBackground == 1 then    -- goofy fake boolean (i promise its for a reason)
+			videoBG = love.graphics.newVideo("songs/quaver/" .. selectedSong .. "/video.ogv")
 		end
+
+
+		print("initUI")
 	end,
 
 	update = function(self, dt)
+
 		weeks:update(dt)
-		stages["stage"]:update(dt)
 
-		if song == 1 and musicThres ~= oldMusicThres and math.fmod(absMusicTime + 500, 480000 / bpm) < 100 then
-			boyfriend:animate("hey", false)
-		end
 
-		if health >= 1.595 then
-			if enemyIcon:getAnimName() == "daddy dearest" then
-				enemyIcon:animate("daddy dearest losing", false)
-			end
-		else
-			if enemyIcon:getAnimName() == "daddy dearest losing" then
-				enemyIcon:animate("daddy dearest", false)
-			end
-		end
 
-		if not (countingDown or graphics.isFading()) and not (inst:isPlaying() and voices:isPlaying()) and not paused then
-			if storyMode and song < 3 then
-				song = song + 1
 
-				self:load()
-			else
+
+		if (not (countingDown or graphics.isFading()) and not voices:isPlaying() and not paused) or input:pressed("endSong") then
+
 				status.setLoading(true)
 
 				graphics:fadeOutWipe(
 					0.7,
 					function()
-						Gamestate.switch(menu)
+						Gamestate.switch(results)
 
 						status.setLoading(false)
 					end
 				)
-			end
+	
 		end
 
 		weeks:updateUI(dt)
+	
 	end,
 
 	draw = function(self)
@@ -111,14 +101,24 @@ return {
 			love.graphics.translate(graphics.getWidth() / 2, graphics.getHeight() / 2)
 			love.graphics.scale(camera.zoom, camera.zoom)
 
-			stages["stage"]:draw()
-		love.graphics.pop()
+			if videoBackground == 1 and mods[1] == 1 then
+				love.graphics.draw(videoBG, -650, -360, 0, 1, 1)
+			else
+				backGroundImage:draw()
+			end
 
-		weeks:drawUI()
+
+		love.graphics.pop()
+		if not mods[6] then
+
+			weeks:drawUI()
+		end
+
 	end,
 
 	leave = function(self)
-		stages["stage"]:leave()
+
+		BGIMAGEPATH = nil
 
 		enemy = nil
 		boyfriend = nil
@@ -127,5 +127,6 @@ return {
 		graphics.clearCache()
 
 		weeks:leave()
+
 	end
 }
