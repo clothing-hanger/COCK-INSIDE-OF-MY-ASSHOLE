@@ -128,6 +128,10 @@ return {
 
 		end
 
+		function lerp(a, b, time)
+			return a * (1.0 - time) + b * time
+		  end
+
 	
 	end,
 
@@ -154,12 +158,32 @@ return {
 		comboPopup = graphics.newImage(graphics.imagePath("quaver/combo"))
 		hitErrorPointer = graphics.newImage(graphics.imagePath("hitErrorPointer"))
 		dyingOverlay = graphics.newImage(graphics.imagePath("dyingOverlay"))
+		topCover = graphics.newImage(graphics.imagePath("laneCover"))
+		BottomCover = graphics.newImage(graphics.imagePath("laneCover"))
+
 
 		dyingOverlay.sizeX = 1500
+
+		topCover.sizeX = 1500
+		BottomCover.sizeX = 1500
+
+		BottomCover.sizeY = -1
+
 		dyingOverlay.x, dyingOverlay.y = 0, 0
 
 		hitErrorPointer.y = 0
 		hitErrorPointer.x = 0
+
+
+		topCover.y = lerp(-850, 100, (mods[10] / 100))
+
+
+
+
+
+		--topCover.y = 100 lowest it can be (this would be fully on)
+
+		--topCover.y = -850 highest it can be (this would be fully off)
 
 
 
@@ -731,6 +755,9 @@ return {
 
 					notMissed[noteNum] = false
 
+
+
+
 					if boyfriendNote[1]:getAnimName() ~= "hold" and boyfriendNote[1]:getAnimName() ~= "end" then 
 						health = health - 0.095
 						misses = misses + 1
@@ -748,15 +775,14 @@ return {
 						elseif ratingPercent > 1 then
 							ratingPercent = 1
 						end
-						
+						combo = 0
 					else
 						health = health - 0.0125
 					end
 
+
+					
 					table.remove(boyfriendNote, 1)
-
-
-					combo = 0
 				end
 			end
 
@@ -1031,6 +1057,7 @@ return {
 
 
 	drawUI = function(self)
+		self:drawHealthbar()
 		if paused then 
 			love.graphics.push()
 				love.graphics.setFont(pauseFont)
@@ -1062,7 +1089,6 @@ return {
 			love.graphics.pop()
 			return 
 		end
-		self:drawHealthbar()
 		
 		love.graphics.push()
 			love.graphics.translate(lovesize.getWidth() / 2, lovesize.getHeight() / 2)
@@ -1132,9 +1158,11 @@ return {
 							end
 						end
 					love.graphics.pop()
-					graphics.setColor(1, 1, 1)
 				love.graphics.pop()
 			end
+			love.graphics.setColor(0,0,0,1)
+			love.graphics.rectangle("fill", -1000, topCover.y-630, 10000, 720)
+			topCover:draw()
 			graphics.setColor(1, 1, 1)
 		love.graphics.pop()
 
@@ -1184,6 +1212,8 @@ return {
 			end
 			judgeTween = Timer.tween(0.1, judgeYPos, {[1] = 0}, "out-expo")
 		love.graphics.pop()
+
+
 	end,
 
 
@@ -1366,6 +1396,7 @@ return {
 		love.graphics.translate(graphics.getWidth(), graphics.getHeight())
 		love.graphics.setColor(1, 1, 1, dyingAlpha)
 		dyingOverlay:draw()
+
 		love.graphics.setColor(1, 1, 1, 1)
 
 		love.graphics.pop()
