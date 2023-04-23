@@ -1333,7 +1333,11 @@ return {
 			love.graphics.setColor(0.8, 0.8, 0, 1)
 			-- use the opposite of ((inst:getDuration("seconds") - musicTime/1000) / inst:getDuration("seconds")) to get the percentage of the song that has passed
 			-- draw a rect to draw the precentage of the song that has passed
-			love.graphics.rectangle("fill", 0, 715, 1282 * ((musicTime/1000) / voices:getDuration("seconds")), 10)
+			--love.graphics.rectangle("fill", 0, 715, 1282 * ((musicTime/1000) / voices:getDuration("seconds")), 10)
+			love.graphics.setColor(0,0,0,1)
+			love.graphics.arc("fill", 1000, 100, 20, 0, 2*math.pi*((musicTime/1000) / voices:getDuration("seconds")))
+
+
 			-- on the left, print the time passed in minutes:seconds in a cyan-like color
 			love.graphics.setColor(0, 0.8, 0.8, 1)
 			love.graphics.setFont(quaverFontSmall)

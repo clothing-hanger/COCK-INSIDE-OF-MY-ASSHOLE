@@ -102,6 +102,7 @@ return {
 		end
 
 	end,
+    
 
 	draw = function(self)
 		love.graphics.push()
