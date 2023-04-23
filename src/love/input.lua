@@ -16,30 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------]]
-if love.system.getOS() == "NX" then
-	return baton.new {
-		controls = {
-			left = {"axis:leftx-", "button:dpleft", "key:left"},
-			down = {"axis:lefty+", "button:dpdown", "key:down"},
-			up = {"axis:lefty-", "button:dpup", "key:up"},
-			right = {"axis:leftx+", "button:dpright", "key:right"},
-			confirm = {"button:b", "key:return"},
-			back = {"button:a", "key:escape"},
-			tab = {"key:tab", "button:back"},
-			debugZoomOut = {"key:["},
-			debugZoomIn = {"key:]"},
-			pause = {"button:start", "key:return"},
-
-			gameLeft = {"axis:triggerleft+", "axis:leftx-", "axis:rightx-", "button:dpleft", "button:x", "key:" .. customBindLeft, "key:left"},
-			gameDown = {"axis:lefty+", "axis:righty+", "button:leftshoulder", "button:dpdown", "button:a", "key:" .. customBindDown, "key:down"},
-			gameUp = {"axis:lefty-", "axis:righty-", "button:rightshoulder", "button:dpup", "button:y", "key:" .. customBindUp, "key:up"},
-			gameRight = {"axis:triggerright+", "axis:leftx+", "axis:rightx+", "button:dpright", "button:b", "key:" .. customBindRight, "key:right"},
-
-			gameBack = {"button:start", "key:escape"},
-		},
-		joystick = love.joystick.getJoysticks()[1]
-	}
-else
 	return baton.new {
 		controls = {
 			left = {"key:left", "axis:leftx-", "button:dpleft"},
@@ -53,8 +29,9 @@ else
 			debugZoomIn = {"key:]"},
 			pause = {"button:start", "key:return"},
 			modsMenu = {"key:m"},
-			rateReset = {"mey:r"},
+			rateReset = {"key:r"},
 			endSong = {"key:t"},
+			shift = {"key:lshift", "key:rshift"},
 
 
 			gameLeft = {"key:" .. customBindLeft, "key:left", "axis:triggerleft+", "axis:leftx-", "axis:rightx-", "button:dpleft", "button:x"},
@@ -66,4 +43,3 @@ else
 		},
 		joystick = love.joystick.getJoysticks()[1]
 	}
-end
